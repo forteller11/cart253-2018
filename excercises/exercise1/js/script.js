@@ -17,8 +17,8 @@ let img2_x = 0;
 let img2_y = 0;
 
 //shape 3
-let shape3x; //starting xpos of shape3
-let shape3y; //starting ypos of shape 3
+let shape3x; //xpos of shape 3;
+let shape3y; //ypos of shape 3;
 const shape3r = 10; //radius of shape 3
 const shape3xinc = 1; //constant at which to increment shape 3's xpos
 
