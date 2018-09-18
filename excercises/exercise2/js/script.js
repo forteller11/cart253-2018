@@ -7,7 +7,7 @@ Starter code for exercise 2.
 // The position and size of our avatar circle
 var avatarX;
 var avatarY;
-var avatarSize = 50;
+var avatarSize = 20;
 
 // The speed and velocity of our avatar circle
 var avatarSpeed = 10;
@@ -18,6 +18,7 @@ var avatarVY = 0;
 var enemyX;
 var enemyY;
 var enemySize = 50;
+let avatarSizeGraphic = 0;
 // How much bigger the enemy circle gets with each successful dodge
 var enemySizeIncrease = 5;
 
@@ -57,7 +58,7 @@ function draw() {
 
    //increases enemy size per dodge
   // A pink background
-  background(255,220,220);
+  background(0);
   fill(0,0,0);
   textSize(fontSize);
   textAlign(CENTER);
@@ -149,14 +150,31 @@ function draw() {
   // Display the current number of successful in the console
   console.log(dodges);
 
+
+
+
+  noFill();
+  stroke(255);
+  if (avatarSizeGraphic < 0) {
+    avatarSizeGraphic = avatarSize;
+  }
+  else {
+    avatarSizeGraphic --;
+  }
   // The player is black
-  fill(0);
+  noFill();
+  stroke(255);
   // Draw the player as a circle
   ellipse(avatarX,avatarY,avatarSize,avatarSize);
+  fill(255,255,255,255);
+  noStroke();
+  ellipse(avatarX,avatarY,avatarSizeGraphic,avatarSizeGraphic);
 
-  // The enemy is red
-  fill(255,0,0);
+  //draw enemy
+  noStroke();
+  fill(255);
   // Draw the enemy as a circle
   ellipse(enemyX,enemyY,enemySize,enemySize);
+
 
 }
