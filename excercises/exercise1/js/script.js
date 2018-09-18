@@ -1,4 +1,15 @@
 
+/* _____________________________
+Exercise1
+Charly Yan Miller
+
+A program in which...
+  a shape moves across the screen,
+  An image appears at the mouse location
+  An image follows the mouse
+  A shape moves across the screen following a sin wave
+_______________________________*/
+
 //shape1
 let shape1x; //starting xpos of shape1
 let shape1y; //starting ypos of shape 1
@@ -39,6 +50,7 @@ function setup(){
   //shape 3
   shape3x = 0 - shape1r;
   shape = height/2;
+
 }
 
 function draw(){
@@ -62,5 +74,7 @@ function draw(){
   shape3x += shape3xinc; //itterate through the xpositions
   ellipse(shape3x,shape3y,shape3r); //draw the current x-y relationship of the sin function with a circle
   console.log(shape3y);
+
+
 
 }
