@@ -19,25 +19,24 @@ var enemyX;
 var enemyY;
 var enemySize = 50;
 let avatarSizeGraphic = 0;
-// How much bigger the enemy circle gets with each successful dodge
-var enemySizeIncrease = 5;
+
 
 // The speed and velocity of our enemy circle
-var enemySpeed = 5;
+var enemySpeed = 2;
 var enemyVX = 5;
-// How much bigger the enemy circle gets with each successful dodge
-var enemySpeedIncrease = 0.5;
+
 
 // How many dodges the player has made
 var dodges = 0;
-let fontSize = 110;
-let textFill = 0;
+let fontSize = 110; //size of score text
+let textFill = 0; //controls the color of the score-text
+let backgroundFill = 0;
 // setup()
 //
 // Make the canvas, position the avatar and anemy
 function setup() {
   // Create our playing area
-  createCanvas(800,800);
+  createCanvas(550,550);
 
   // Put the avatar sin the centre
   avatarX = width/2;
@@ -59,8 +58,9 @@ function draw() {
 
    //increases enemy size per dodge
   // A pink background
-  background(0);
-  fill(textFill);
+  background(backgroundFill); //fill background with background fill, which is usually black but becomes white on loss
+  backgroundFill -= 20;
+  fill(255,255,255,textFill);
   textFill -= 5;
   textSize(fontSize);
   textAlign(CENTER);
@@ -104,6 +104,8 @@ function draw() {
   if (dist(enemyX,enemyY,avatarX,avatarY) < enemySize/2 + avatarSize/2) {
     // Tell the player they lost
     console.log("YOU LOSE!");
+    backgroundFill = 255;
+    background(textFill);
     // Reset the enemy's position
     enemyX = 0;
     enemyY = random(0,height);
@@ -121,7 +123,7 @@ function draw() {
   if (avatarX < 0 || avatarX > width || avatarY < 0 || avatarY > height) {
     // If they went off the screen they lose in the same way as above.
     console.log("YOU LOSE!");
-
+    backgroundFill = 255; //make background white
     enemyX = 0;
     enemyY = random(0,height);
     enemySize = 50;
@@ -138,17 +140,15 @@ function draw() {
     //make text visble
     textFill = 255;
     //increase size of enemy
-    enemySize = enemySize + dodges*5;
+    enemySize = enemySize + dodges*2.5;
     //increase speed of enemy
-    enemySpeed = enemySpeed + dodges/10;
+    enemySpeed = enemySpeed + dodges/9;
     // Tell them how many dodges they have made
     console.log(dodges + " DODGES!");
     // Reset the enemy's position to the left at a random height
     enemyX = 0;
     enemyY = random(0,height);
-    // Increase the enemy's speed and size to make the game harder
-    enemySpeed = enemySpeed + enemySpeedIncrease;
-    enemySize = enemySize + enemySizeIncrease;
+
   }
 
   // Display the current number of successful in the console
@@ -179,6 +179,7 @@ function draw() {
   fill(255);
   // Draw the enemy as a circle
   ellipse(enemyX,enemyY,enemySize,enemySize);
+
 
 
 }
