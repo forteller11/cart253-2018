@@ -30,7 +30,8 @@ var enemySpeedIncrease = 0.5;
 
 // How many dodges the player has made
 var dodges = 0;
-let fontSize = 64;
+let fontSize = 110;
+let textFill = 0;
 // setup()
 //
 // Make the canvas, position the avatar and anemy
@@ -59,10 +60,11 @@ function draw() {
    //increases enemy size per dodge
   // A pink background
   background(0);
-  fill(0,0,0);
+  fill(textFill);
+  textFill -= 5;
   textSize(fontSize);
   textAlign(CENTER);
-  text("Dodges: " + dodges, width/2,fontSize);
+  text(dodges, width/2,fontSize);
   // Default the avatar's velocity to 0 in case no key is pressed this frame
   avatarVX = 0;
   avatarVY = 0;
@@ -133,6 +135,8 @@ function draw() {
   if (enemyX > width) {
     // This means the player dodged so update its dodge statistic
     dodges = dodges + 1;
+    //make text visble
+    textFill = 255;
     //increase size of enemy
     enemySize = enemySize + dodges*5;
     //increase speed of enemy
