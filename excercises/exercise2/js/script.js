@@ -29,13 +29,13 @@ var enemySpeedIncrease = 0.5;
 
 // How many dodges the player has made
 var dodges = 0;
-
+let fontSize = 64;
 // setup()
 //
 // Make the canvas, position the avatar and anemy
 function setup() {
   // Create our playing area
-  createCanvas(500,500);
+  createCanvas(800,800);
 
   // Put the avatar sin the centre
   avatarX = width/2;
@@ -54,9 +54,14 @@ function setup() {
 // Handle moving the avatar and enemy and checking for dodges and
 // game over situations.
 function draw() {
+
+
   // A pink background
   background(255,220,220);
-
+  fill(0,0,0);
+  textSize(fontSize);
+  textAlign(CENTER);
+  text("Dodges: " + dodges, width/2,fontSize);
   // Default the avatar's velocity to 0 in case no key is pressed this frame
   avatarVX = 0;
   avatarVY = 0;
@@ -113,6 +118,7 @@ function draw() {
   if (avatarX < 0 || avatarX > width || avatarY < 0 || avatarY > height) {
     // If they went off the screen they lose in the same way as above.
     console.log("YOU LOSE!");
+
     enemyX = 0;
     enemyY = random(0,height);
     enemySize = 50;
