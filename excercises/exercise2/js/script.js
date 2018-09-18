@@ -55,7 +55,7 @@ function setup() {
 // game over situations.
 function draw() {
 
-
+   //increases enemy size per dodge
   // A pink background
   background(255,220,220);
   fill(0,0,0);
@@ -132,6 +132,10 @@ function draw() {
   if (enemyX > width) {
     // This means the player dodged so update its dodge statistic
     dodges = dodges + 1;
+    //increase size of enemy
+    enemySize = enemySize + dodges*5;
+    //increase speed of enemy
+    enemySpeed = enemySpeed + dodges/10;
     // Tell them how many dodges they have made
     console.log(dodges + " DODGES!");
     // Reset the enemy's position to the left at a random height
