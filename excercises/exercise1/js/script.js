@@ -1,8 +1,6 @@
-
 /* _____________________________
 Exercise1
 Charly Yan Miller
-
 A program in which...
   a shape moves across the screen,
   An image appears at the mouse location
