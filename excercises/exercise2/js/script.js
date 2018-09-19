@@ -11,8 +11,11 @@ var avatarSize = 25;
 
 // The speed and velocity of our avatar circle
 var avatarSpeed = 10;
-var avatarVX = 0;
-var avatarVY = 0;
+let avatarMaxSpeed = 15; //maxium Speed
+let avatarSpeedA = 4.5; //at which to add to speed every frame of keyDown
+let drag = 1.5; //at which speed will decrease per frame
+let avatarVX = 0;
+let avatarVY = 0;
 
 // The position and size of the enemy circle
 var enemyX;
@@ -100,9 +103,7 @@ function draw() {
   textSize(fontSize);
   textAlign(CENTER);
   text(dodges, width/2,fontSize);
-  // Default the avatar's velocity to 0 in case no key is pressed this frame
-  avatarVX = 0;
-  avatarVY = 0;
+
 
 enemyYinc = (noise(enemyX*noiseSpeed)-.5)*height/40; //get Yinc with perlin noise
 if (enemyY < enemySize*2) { //if the enemy is at the top of the screen...
@@ -119,20 +120,35 @@ enemyY += enemyYinc
 
   // Left and right
   if (keyIsDown(LEFT_ARROW)) {
-    avatarVX = -avatarSpeed;
+    avatarVX -= avatarSpeedA;
   }
   else if (keyIsDown(RIGHT_ARROW)) {
-    avatarVX = avatarSpeed;
+    avatarVX += avatarSpeedA;
   }
-
+  if (avatarVX > avatarMaxSpeed) { //constrain to maxspeed
+    avatarVX = avatarMaxSpeed;
+  }
+  else if (avatarVX < -avatarMaxSpeed) { //constrain to maxspeed
+    avatarVX = -avatarMaxSpeed;
+  }
+  avatarVX = avatarVX/drag; //apply drag
+  console.log("VX:" + avatarVX);
   // Up and down (separate if-statements so you can move vertically and
   // horizontally at the same time)
   if (keyIsDown(UP_ARROW)) {
-    avatarVY = -avatarSpeed;
+    avatarVY -= avatarSpeedA;
   }
   else if (keyIsDown(DOWN_ARROW)) {
-    avatarVY = avatarSpeed;
+    avatarVY += avatarSpeedA;
   }
+  if (avatarVY > avatarMaxSpeed) { //constrain to maxspeed
+    avatarVY = avatarMaxSpeed;
+  }
+  else if (avatarVY < -avatarMaxSpeed) { //constrain to maxspeed
+    avatarVY = -avatarMaxSpeed;
+  }
+  avatarVY = avatarVY/drag; //apply drag
+
 
   // Move the avatar according to its calculated velocity
   avatarX = avatarX + avatarVX;
@@ -205,7 +221,7 @@ enemyY += enemyYinc
   strokeWeight(avatarStrokeWeight);
   avatarStrokeWeight = crement(avatarStrokeWeight,1,2,+.1);
   avatarSizeGraphic = crement(avatarSizeGraphic,0,avatarSize,-.5);
-  console.log("sizeGraphic :" +   avatarSizeGraphic);
+  //console.log("sizeGraphic :" +   avatarSizeGraphic);
   // The player is black
   noFill();
   stroke(255);
@@ -227,7 +243,7 @@ enemyY += enemyYinc
   enemySizeGraphic = (noise(enemyX*noiseSpeed))*enemySize;
   fill(0);
   ellipse(enemyX,enemyY,enemySizeGraphic,enemySizeGraphic);
-  console.log("Enemy" + enemySizeGraphic)
+  //console.log("Enemy" + enemySizeGraphic)
 
 
 }
