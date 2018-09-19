@@ -222,7 +222,13 @@ enemyY += enemyYinc
   avatarStrokeWeight = crement(avatarStrokeWeight,1,2,+.1);
   avatarSizeGraphic = crement(avatarSizeGraphic,0,avatarSize,-.5);
   //console.log("sizeGraphic :" +   avatarSizeGraphic);
-  // The player is black
+  noStroke();
+  fill(255);
+  // Draw a white trail behind the player, showing motion
+  ellipse(avatarX-avatarVX/2,avatarY-avatarVY/2,avatarSize,avatarSize);
+  fill(0);
+  //fill the area of the immediate player with black
+  ellipse(avatarX,avatarY,avatarSize,avatarSize);
   noFill();
   stroke(255);
   // Draw the player as a circle
@@ -233,6 +239,10 @@ enemyY += enemyYinc
 
   //draw enemy
   noStroke();
+  fill(255)
+  // Draw the enemy as a circle
+  ellipse(enemyX-enemyVX,enemyY-enemyYinc,enemySize,enemySize);
+  noStroke();
   fill(255);
   // Draw the enemy as a circle
   ellipse(enemyX,enemyY,enemySize,enemySize);
@@ -240,9 +250,9 @@ enemyY += enemyYinc
   //draw expanding hole in the middle of the enemy
   enemySizeGraphic = crement(enemySizeGraphic,0,enemySize/1.2,1);
   noiseDetail(16);
-  enemySizeGraphic = (noise(enemyX*noiseSpeed))*enemySize;
+  enemySizeGraphic = (noise(enemyX*noiseSpeed))*enemySize/1.6 + enemySize/20;
   fill(0);
-  ellipse(enemyX,enemyY,enemySizeGraphic,enemySizeGraphic);
+  ellipse(enemyX+enemyVX,enemyY+enemyYinc,enemySizeGraphic,enemySizeGraphic);
   //console.log("Enemy" + enemySizeGraphic)
 
 
