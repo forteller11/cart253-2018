@@ -20,7 +20,7 @@ var enemyY;
 let enemyYinc;
 var enemySize = 50;
 let avatarSizeGraphic = 0;
-
+let avatarStrokeWeight = 0;
 
 // The speed and velocity of our enemy circle
 var enemySpeed = 2;
@@ -194,7 +194,9 @@ enemyY += enemyYinc
 
   noFill();
   stroke(255);
-  avatarSizeGraphic = crement(avatarSizeGraphic,0,avatarSize,-1);
+  strokeWeight(avatarStrokeWeight);
+  avatarStrokeWeight = crement(avatarStrokeWeight,1,2,+.1);
+  avatarSizeGraphic = crement(avatarSizeGraphic,0,avatarSize,-.5);
   console.log("sizeGraphic :" +   avatarSizeGraphic);
   // The player is black
   noFill();
