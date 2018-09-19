@@ -1,6 +1,6 @@
 /*********************************************************
 Exercise 2 - The Artful Dodger
-Pippin Barr
+Charly Yan Miller
 Starter code for exercise 2.
 *********************************************************/
 
@@ -133,7 +133,7 @@ enemyY += enemyYinc
     avatarVX = -avatarMaxSpeed;
   }
   avatarVX = avatarVX/drag; //apply drag
-  console.log("VX:" + avatarVX);
+  //console.log("VX:" + avatarVX);
   // Up and down (separate if-statements so you can move vertically and
   // horizontally at the same time)
   if (keyIsDown(UP_ARROW)) {
@@ -165,7 +165,7 @@ enemyY += enemyYinc
   // and the centre of the avatar is less that their combined radii
   if (dist(enemyX,enemyY,avatarX,avatarY) < enemySize/2 + avatarSize/2) {
     // Tell the player they lost
-    console.log("YOU LOSE!");
+    console.log("YOU LOSE!"); 
     backgroundFill = 255;
     background(textFill);
     // Reset the enemy's position
@@ -201,6 +201,10 @@ enemyY += enemyYinc
   if (enemyX > width) {
     // This means the player dodged so update its dodge statistic
     dodges = dodges + 1;
+
+    avatarSize = random(22.5,27.5); //randomly set avatar size after each dodge
+    avatarSpeedA = random(4.3,4.7); //randomly set player acceleration after each dodge
+    console.log(avatarSpeedA);
     //make text visble
     textFill = 255;
     //increase size of enemy
