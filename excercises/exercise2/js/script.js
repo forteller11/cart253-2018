@@ -26,7 +26,7 @@ let enemySizeGraphic = 0;
 let avatarSizeGraphic = 0;
 let avatarStrokeWeight = 0;
 let noiseSpeed = 0.02; //changes the speed at which one translates through perlin-noise space
-let noiseSpeed2 = 0.2; //same
+let noiseSpeed2 = 0.01; //same
 // The speed and velocity of our enemy circle
 var enemySpeed = 2;
 var enemyVX = 5;
@@ -179,6 +179,8 @@ enemyY += enemyYinc
     avatarY = height/2;
     // Reset the dodge counter
     dodges = 0;
+    //reset noisespeed
+    noiseSpeed2 = 0.01;
   }
 
   // Check if the avatar has gone off the screen (cheating!)
@@ -206,6 +208,8 @@ enemyY += enemyYinc
     //increase speed of enemy
     enemySpeed = enemySpeed + dodges/16;
 
+    //increase the rate of translation in perlinnoise space
+    noiseSpeed2 += 0.0025;
     // Reset the enemy's position to the left at a random height
     enemyX = 0;
     enemyY = random(0,height);
@@ -220,9 +224,9 @@ enemyY += enemyYinc
   noFill();
   stroke(255);
   strokeWeight(avatarStrokeWeight);
-  avatarStrokeWeight = crement(avatarStrokeWeight,1,4,+.1);
+  avatarStrokeWeight = crement(avatarStrokeWeight,1,4,noiseSpeed2*4);
   //avatarSizeGraphic = crement(avatarSizeGraphic,0,avatarSize,-.5);
-  avatarSizeGraphic = (noise(avatarX*noiseSpeed2,avatarY*noiseSpeed2,enemyX*noiseSpeed)*avatarSize/1.7 + avatarSize/5);
+  avatarSizeGraphic = (noise(avatarX*noiseSpeed2,avatarY*noiseSpeed2,enemyX*noiseSpeed2)*avatarSize/1.7 + avatarSize/5);
 
   //console.log("sizeGraphic :" +   avatarSizeGraphic);
   noStroke();
