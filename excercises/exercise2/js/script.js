@@ -7,7 +7,7 @@ Starter code for exercise 2.
 // The position and size of our avatar circle
 var avatarX;
 var avatarY;
-var avatarSize = 20;
+var avatarSize = 25;
 
 // The speed and velocity of our avatar circle
 var avatarSpeed = 10;
@@ -19,9 +19,10 @@ var enemyX;
 var enemyY;
 let enemyYinc;
 var enemySize = 50;
+let enemySizeGraphic = 0;
 let avatarSizeGraphic = 0;
 let avatarStrokeWeight = 0;
-
+let noiseSpeed = 0.03; //changes the speed at which one translates through perlin-noise space
 // The speed and velocity of our enemy circle
 var enemySpeed = 2;
 var enemyVX = 5;
@@ -103,7 +104,7 @@ function draw() {
   avatarVX = 0;
   avatarVY = 0;
 
-enemyYinc = (noise(enemyX)-.5)*10; //get Yinc with perlin noise
+enemyYinc = (noise(enemyX*noiseSpeed)-.5)*10; //get Yinc with perlin noise
 enemyY += enemyYinc
 //console.log(enemyY);
   // Check which keys are down and set the avatar's velocity based on its
@@ -213,6 +214,13 @@ enemyY += enemyYinc
   // Draw the enemy as a circle
   ellipse(enemyX,enemyY,enemySize,enemySize);
 
+  //draw expanding hole in the middle of the enemy
+  enemySizeGraphic = crement(enemySizeGraphic,0,enemySize/1.2,1);
+  noiseDetail(16);
+  enemySizeGraphic = (noise(enemyX*noiseSpeed))*enemySize;
+  fill(0);
+  ellipse(enemyX,enemyY,enemySizeGraphic,enemySizeGraphic);
+  console.log("Enemy" + enemySizeGraphic)
 
 
 }
