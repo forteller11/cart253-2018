@@ -104,7 +104,14 @@ function draw() {
   avatarVX = 0;
   avatarVY = 0;
 
-enemyYinc = (noise(enemyX*noiseSpeed)-.5)*10; //get Yinc with perlin noise
+enemyYinc = (noise(enemyX*noiseSpeed)-.5)*height/40; //get Yinc with perlin noise
+if (enemyY < enemySize*2) { //if the enemy is at the top of the screen...
+  enemyYinc +=3; //move it down
+}
+if (enemyY > height-enemySize*2) { //if the enemy is at the bottom of the screen
+  enemyYinc -=3; //move it up
+}
+
 enemyY += enemyYinc
 //console.log(enemyY);
   // Check which keys are down and set the avatar's velocity based on its
@@ -178,9 +185,9 @@ enemyY += enemyYinc
     //make text visble
     textFill = 255;
     //increase size of enemy
-    enemySize = enemySize + dodges*2.5;
+    enemySize = enemySize + dodges*2;
     //increase speed of enemy
-    enemySpeed = enemySpeed + dodges/9;
+    enemySpeed = enemySpeed + dodges/16;
 
     // Reset the enemy's position to the left at a random height
     enemyX = 0;
