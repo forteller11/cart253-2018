@@ -32,6 +32,39 @@ var dodges = 0;
 let fontSize = 110; //size of score text
 let textFill = 0; //controls the color of the score-text
 let backgroundFill = 0;
+
+
+function crement (a,b,c,d){
+/*--------------------
+a = value to decrement
+c = minimum size of that value
+b = maximum size of that value
+d = value at which to increment/decrement
+----------------------*/
+  if (d < 0) { //if the function is being used to decrement
+
+    if (a < b) { //once a reaches lessthan min value, make a it its max value (c)
+      a = c;
+    }
+    else {
+      a += d;
+    }
+}
+
+if (d >= 0) //if function is being used to inc
+{
+  if (a > c){ //once a is bigger than max value, make it min value;
+    a = b;
+  }
+  else {
+    a+=d;
+  }
+}
+
+  return a;
+}
+
+
 // setup()
 //
 // Make the canvas, position the avatar and anemy
@@ -72,7 +105,7 @@ function draw() {
 
 enemyYinc = (noise(enemyX)-.5)*10; //get Yinc with perlin noise
 enemyY += enemyYinc
-console.log(enemyY);
+//console.log(enemyY);
   // Check which keys are down and set the avatar's velocity based on its
   // speed appropriately
 
@@ -147,28 +180,22 @@ console.log(enemyY);
     enemySize = enemySize + dodges*2.5;
     //increase speed of enemy
     enemySpeed = enemySpeed + dodges/9;
-    // Tell them how many dodges they have made
-    console.log(dodges + " DODGES!");
+
     // Reset the enemy's position to the left at a random height
     enemyX = 0;
     enemyY = random(0,height);
 
   }
 
-  // Display the current number of successful in the console
-  console.log(dodges);
+
 
 
 
 
   noFill();
   stroke(255);
-  if (avatarSizeGraphic < 0) {
-    avatarSizeGraphic = avatarSize;
-  }
-  else {
-    avatarSizeGraphic --;
-  }
+  avatarSizeGraphic = crement(avatarSizeGraphic,0,avatarSize,-1);
+  console.log("sizeGraphic :" +   avatarSizeGraphic);
   // The player is black
   noFill();
   stroke(255);
