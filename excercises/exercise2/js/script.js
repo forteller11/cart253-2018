@@ -25,7 +25,8 @@ var enemySize = 50;
 let enemySizeGraphic = 0;
 let avatarSizeGraphic = 0;
 let avatarStrokeWeight = 0;
-let noiseSpeed = 0.03; //changes the speed at which one translates through perlin-noise space
+let noiseSpeed = 0.02; //changes the speed at which one translates through perlin-noise space
+let noiseSpeed2 = 0.2; //same
 // The speed and velocity of our enemy circle
 var enemySpeed = 2;
 var enemyVX = 5;
@@ -104,7 +105,7 @@ function draw() {
   textAlign(CENTER);
   text(dodges, width/2,fontSize);
 
-
+noiseDetail(4);
 enemyYinc = (noise(enemyX*noiseSpeed)-.5)*height/40; //get Yinc with perlin noise
 if (enemyY < enemySize*2) { //if the enemy is at the top of the screen...
   enemyYinc +=3; //move it down
@@ -219,8 +220,10 @@ enemyY += enemyYinc
   noFill();
   stroke(255);
   strokeWeight(avatarStrokeWeight);
-  avatarStrokeWeight = crement(avatarStrokeWeight,1,2,+.1);
-  avatarSizeGraphic = crement(avatarSizeGraphic,0,avatarSize,-.5);
+  avatarStrokeWeight = crement(avatarStrokeWeight,1,4,+.1);
+  //avatarSizeGraphic = crement(avatarSizeGraphic,0,avatarSize,-.5);
+  avatarSizeGraphic = (noise(avatarX*noiseSpeed2,avatarY*noiseSpeed2,enemyX*noiseSpeed)*avatarSize/1.7 + avatarSize/5);
+
   //console.log("sizeGraphic :" +   avatarSizeGraphic);
   noStroke();
   fill(255);
@@ -235,13 +238,14 @@ enemyY += enemyYinc
   ellipse(avatarX,avatarY,avatarSize,avatarSize);
   fill(255,255,255,255);
   noStroke();
-  ellipse(avatarX,avatarY,avatarSizeGraphic,avatarSizeGraphic);
+  //ellipse(avatarX,avatarY,avatarSizeGraphic,avatarSizeGraphic);
+  ellipse(avatarX-avatarVX/2,avatarY-avatarVY/2,avatarSizeGraphic,avatarSizeGraphic);
 
   //draw enemy
   noStroke();
   fill(255)
-  // Draw the enemy as a circle
-  ellipse(enemyX-enemyVX,enemyY-enemyYinc,enemySize,enemySize);
+  // Draw a motion trail
+  ellipse(enemyX-enemyVX/2,enemyY-enemyYinc/2,enemySize,enemySize);
   noStroke();
   fill(255);
   // Draw the enemy as a circle
@@ -249,8 +253,8 @@ enemyY += enemyYinc
 
   //draw expanding hole in the middle of the enemy
   enemySizeGraphic = crement(enemySizeGraphic,0,enemySize/1.2,1);
-  noiseDetail(16);
-  enemySizeGraphic = (noise(enemyX*noiseSpeed))*enemySize/1.6 + enemySize/20;
+  noiseDetail(2);
+  enemySizeGraphic = (noise(enemyX*noiseSpeed))*enemySize/1.6 + enemySize/4;
   fill(0);
   ellipse(enemyX+enemyVX,enemyY+enemyYinc,enemySizeGraphic,enemySizeGraphic);
   //console.log("Enemy" + enemySizeGraphic)
