@@ -17,6 +17,7 @@ var avatarVY = 0;
 // The position and size of the enemy circle
 var enemyX;
 var enemyY;
+let enemyYinc;
 var enemySize = 50;
 let avatarSizeGraphic = 0;
 
@@ -69,6 +70,9 @@ function draw() {
   avatarVX = 0;
   avatarVY = 0;
 
+enemyYinc = (noise(enemyX)-.5)*10; //get Yinc with perlin noise
+enemyY += enemyYinc
+console.log(enemyY);
   // Check which keys are down and set the avatar's velocity based on its
   // speed appropriately
 
