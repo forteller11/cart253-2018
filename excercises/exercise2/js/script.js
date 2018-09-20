@@ -141,31 +141,29 @@ noiseDetail(4);
 
   // Left and right
   if (keyIsDown(LEFT_ARROW)) {
-    avatarVX -= avatarSpeedA;
+    avatarVX -= avatarSpeedA; //decrease horizontal velocity by accleration
   }
   else if (keyIsDown(RIGHT_ARROW)) {
-    avatarVX += avatarSpeedA;
+    avatarVX += avatarSpeedA; //increase horizontal velocity by accleration
   }
-  if (avatarVX > avatarMaxSpeed) { //constrain to maxspeed
+  if (avatarVX > avatarMaxSpeed) { //constrain horz velocity to maxspeed
     avatarVX = avatarMaxSpeed;
   }
-  else if (avatarVX < -avatarMaxSpeed) { //constrain to maxspeed
+  else if (avatarVX < -avatarMaxSpeed) { //constrain horz velocity to maxspeed
     avatarVX = -avatarMaxSpeed;
   }
   avatarVX = avatarVX/drag; //apply drag
-  //console.log("VX:" + avatarVX);
-  // Up and down (separate if-statements so you can move vertically and
-  // horizontally at the same time)
+
   if (keyIsDown(UP_ARROW)) {
-    avatarVY -= avatarSpeedA;
+    avatarVY -= avatarSpeedA; //decrease vertical velocity by accleration
   }
-  else if (keyIsDown(DOWN_ARROW)) {
-    avatarVY += avatarSpeedA;
+  if (keyIsDown(DOWN_ARROW)) {
+    avatarVY += avatarSpeedA; //increase vertical velocity by accleration
   }
-  if (avatarVY > avatarMaxSpeed) { //constrain to maxspeed
+  if (avatarVY > avatarMaxSpeed) { //constrain vertical velocity to maxspeed
     avatarVY = avatarMaxSpeed;
   }
-  else if (avatarVY < -avatarMaxSpeed) { //constrain to maxspeed
+  if (avatarVY < -avatarMaxSpeed) { //constrain vertical velocity to maxspeed
     avatarVY = -avatarMaxSpeed;
   }
   avatarVY = avatarVY/drag; //apply drag
@@ -184,7 +182,7 @@ noiseDetail(4);
     console.log("YOU LOSE!");
     backgroundFill = 255;
     background(textFill);
-    canvasHeightIncrease = -(height - canvasHeightInitial) //set canvasheightincrease to number needed to reduce current canvas height to original canvas height
+    canvasHeightIncrease = -(height - canvasHeightInitial); //set canvasheightincrease to number needed to reduce current canvas height to original canvas height
     // Reset the enemy's position
     enemyX = 0;
     enemyY = random(0,height);
@@ -204,7 +202,7 @@ noiseDetail(4);
   if (avatarX < 0 || avatarX > width || avatarY < 0 || avatarY > height) {
     // If they went off the screen they lose in the same way as above.
     console.log("YOU LOSE!");
-    canvasHeightIncrease = -(height - canvasHeightInitial) //set canvasheightincrease to number needed to reduce current canvas height to original canvas height
+    canvasHeightIncrease = -(height - canvasHeightInitial); //set canvasheightincrease to number needed to reduce current canvas height to original canvas height
     backgroundFill = 255; //make background white
     enemyX = 0;
     enemyY = random(0,height);
