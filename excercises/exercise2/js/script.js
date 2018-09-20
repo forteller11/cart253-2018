@@ -11,7 +11,6 @@ let canvasHeightIncreaseAmount = 20; //value to increase height of canvas per do
 var avatarX;
 var avatarY;
 var avatarSize = 25;
-
 // The speed and velocity of our avatar circle
 var avatarSpeed = 10;
 let avatarMaxSpeed = 15; //maxium Speed
@@ -37,9 +36,12 @@ var enemyVX = 5;
 
 // How many dodges the player has made
 var dodges = 0;
+let highscore = 0; //highest number of dodges
 let fontSize = 110; //size of score text
 let textFill = 0; //controls the color of the score-text
 let backgroundFill = 0; //fill color of background
+let textFillHighscore = 0; //controls the color of the highscore text'
+
 
 
 function crement (a,b,c,d){ //function to increment/decrement a value and reset it once it reaches a min/max value
@@ -77,7 +79,7 @@ if (d >= 0) //if function is being used to increment
 //
 // Make the canvas, position the avatar and anemy
 function setup() {
-
+createCanvas(550,canvasHeight);
 
   // Put the avatar sin the centre
   avatarX = width/2;
@@ -117,13 +119,23 @@ createCanvas(550,canvasHeight);
   {
     backgroundFill -= 20;
   }
-  fill(255,255,255,textFill);
-  textFill -= 5;
-  textSize(fontSize);
+
+  //draw text on screen whenever a sucessful dodge occurs
   textAlign(CENTER);
+  fill(255,255,255,textFill);
+  if (textFill > 0) { //fade text to black
+    textFill -= 5;
+  }
+  textSize(fontSize);
   text(dodges, width/2,fontSize);
 
-//movement of enemy
+  //draw high score text on screen after death
+  fill(255,255,255,textFillHighscore);
+  textFillHighscore -= 2.5;
+  textSize(fontSize*2);
+  text(highscore, width/2,height/2+fontSize/1.5);//draw text in center
+
+  //movement of enemy
 noiseDetail(4);
   enemyYinc = (noise(enemyX*noiseSpeed)-.5)*height/40; //get Yinc with perlin noise
   if (enemyY < enemySize*0.5) { //if the enemy is at the top of the screen...
@@ -180,6 +192,8 @@ noiseDetail(4);
   if (dist(enemyX,enemyY,avatarX,avatarY) < enemySize/2 + avatarSize/2) {
     // Tell the player they lost
     console.log("YOU LOSE!");
+    textFillHighscore = 255; //display highscore text
+    textFill = 0; //dont display dodge number
     backgroundFill = 255;
     background(textFill);
     canvasHeightIncrease = -(height - canvasHeightInitial); //set canvasheightincrease to number needed to reduce current canvas height to original canvas height
@@ -203,6 +217,8 @@ noiseDetail(4);
     // If they went off the screen they lose in the same way as above.
     console.log("YOU LOSE!");
     canvasHeightIncrease = -(height - canvasHeightInitial); //set canvasheightincrease to number needed to reduce current canvas height to original canvas height
+    textFillHighscore = 255; //display highscore text
+    textFill = 0; //dont display dodge number
     backgroundFill = 255; //make background white
     enemyX = 0;
     enemyY = random(0,height);
@@ -216,8 +232,11 @@ noiseDetail(4);
   // Check if the enemy has moved all the way across the screen
   if (enemyX > width) {
     // This means the player dodged so update its dodge statistic
-    dodges = dodges + 1;
-    canvasHeightIncrease =   canvasHeightIncreaseAmount; //set canvasHeightIncrease to positive number
+    dodges ++;
+    if (dodges > highscore){ //set highscore to highest number of consecutive dodges
+      highscore = dodges;
+    }
+    canvasHeightIncrease = canvasHeightIncreaseAmount; //set canvasHeightIncrease to positive number
     avatarSize = random(22.5,27.5); //randomly set avatar size after each dodge
     avatarSpeedA = random(4.3,4.7); //randomly set player acceleration after each dodge
     console.log(avatarSpeedA);
