@@ -46,8 +46,10 @@ function lerp2 (a,b,c){ //linearly interpolate between two values by a percentag
   /*--------------------
   a = value1
   b = value2
-  c = percentage to lerp
+  c = percentage to lerp (value between 0-1)
+  d = transforms c into a sin-wave based interpolation
   ----------------------*/
+let d = sin(PI*c); //I am compressing this sin function by PI so that a half-period (in which the sin function >= 1) is completed with a x input of 0-1
 let abDiff = (a - b); //find difference between two values
 if (abDiff < 0) {//find absolute value (for some reason the abs() isn't working for me)
   abDiff = abDiff * -1;
