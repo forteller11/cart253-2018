@@ -202,7 +202,7 @@ noiseDetail(4);
     enemyY = random(0,height);
     // Reset the enemy's size and speed
     enemySize = 50;
-    enemySpeed = 5;
+    enemySpeed = 2;
     // Reset the avatar's position
     avatarX = width/2;
     avatarY = canvasHeightInitial/2;
@@ -223,7 +223,7 @@ noiseDetail(4);
     enemyX = 0;
     enemyY = random(0,height);
     enemySize = 50;
-    enemySpeed = 5;
+    enemySpeed = 2;
     avatarX = width/2;
     avatarY = canvasHeightInitial/2;
     dodges = 0;
