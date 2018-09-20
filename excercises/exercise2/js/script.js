@@ -41,34 +41,13 @@ let fontSize = 110; //size of score text
 let textFill = 0; //controls the color of the score-text
 let backgroundFill = 0; //fill color of background
 let textFillHighscore = 0; //controls the color of the highscore text'
-
-function lerp2 (a,b,c){ //linearly interpolate between two values by a percentage
-  /*--------------------
-  a = value1
-  b = value2
-  c = percentage to lerp (value between 0-1)
-  d = transforms c into a sin-wave based interpolation
-  ----------------------*/
-let d = sin(PI*c); //I am compressing this sin function by PI so that a half-period (in which the sin function >= 1) is completed with a x input of 0-1
-let abDiff = (a - b); //find difference between two values
-if (abDiff < 0) {//find absolute value (for some reason the abs() isn't working for me)
-  abDiff = abDiff * -1;
-}
-let abDiffLerp = abDiff * c; //interpolate linearly
-let lerp = abDiffLerp + a; //add minium value to lerp of mean numbers to get lerp
-
-return lerp;
-}
-
-console.log("lerp = " + lerp2(30,40,0.5));
-
 function crement (a,b,c,d){ //function to increment/decrement a value and reset it once it reaches a min/max value
-/*--------------------
-a = value to be incremented/decremented
-b = minimum value of a
-c = maxium value of a
-d = value at which to increment/decrement per call of function
-----------------------*/
+  /*--------------------
+  a = value to be incremented/decremented
+  b = minimum value of a
+  c = maxium value of a
+  d = value at which to increment/decrement per call of function
+  ----------------------*/
   if (d < 0) { //if the function is being used to decrement
 
     if (a <= b) { //once a is equalto/lessthan min value, make a it its max value (c)
@@ -77,26 +56,46 @@ d = value at which to increment/decrement per call of function
     else {
       a += d; //if a is larger than min value, decrement;
     }
-}
+  }
 
-if (d >= 0) //if function is being used to increment
-{
-  if (a >= c){ //once a is biggerthan/equalto max value, make it min value (b);
-    a = b;
+  if (d >= 0) //if function is being used to increment
+  {
+    if (a >= c){ //once a is biggerthan/equalto max value, make it min value (b);
+      a = b;
+    }
+    else { //if a is within max value, increment
+      a+=d;
+    }
   }
-  else { //if a is within max value, increment
-    a+=d;
-  }
-}
 
   return a;
 }
+
+
+
 
 
 // setup()
 //
 // Make the canvas, position the avatar and anemy
 function setup() {
+
+  function sininterpolation (a,b,c){ //linearly interpolate between two values by a percentage
+    /*--------------------
+    a = value1
+    b = value2
+    c = percentage to lerp (value between 0-1)
+    d = transforms c into a sin-wave based interpolation
+    ----------------------*/
+    let d = sin(PI*c); //I am compressing this sin function by PI so that a half-period (in which the sin function >= 1) is completed with a x input of 0-1
+    let abDiff = abs(a - b); //find difference between two values
+    let abDiffLerp = abDiff * d; //interpolate linearly
+    let lerp = abDiffLerp + a; //add minium value to lerp of mean numbers to get lerp
+
+    return lerp;
+
+  }
+  console.log("lerp = " + lerp2(30,40,0.9));
 createCanvas(550,canvasHeight);
 
   // Put the avatar sin the centre
