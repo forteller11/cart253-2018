@@ -3,8 +3,11 @@ Exercise 2 - The Artful Dodger
 Charly Yan Miller
 Starter code for exercise 2.
 *********************************************************/
-
-// The position and size of our avatar circle
+let canvasHeightInitial = 200; //initial canvas height;
+let canvasHeight = canvasHeightInitial; //set canvas height to initial canvas height
+let canvasHeightIncrease = 0; //amount of pixels to increase canvas;
+let canvasHeightIncreaseIncrement = 3; //amount to increase canvas height per frame until canvasHeightIncrease <= 0;
+let canvasHeightIncreaseAmount = 20; //value to increase height of canvas per dodge;
 var avatarX;
 var avatarY;
 var avatarSize = 25;
@@ -12,8 +15,8 @@ var avatarSize = 25;
 // The speed and velocity of our avatar circle
 var avatarSpeed = 10;
 let avatarMaxSpeed = 15; //maxium Speed
-let avatarSpeedA = 4.5; //at which to add to speed every frame of keyDown
-let drag = 1.5; //at which speed will decrease per frame
+let avatarSpeedA = 4.5; //at which to add to speed every frame of keyDown (acceleration)
+let drag = 1.5; //divide avatarSpeed by drag every frame to slow the avatar down;
 let avatarVX = 0;
 let avatarVY = 0;
 
@@ -36,32 +39,32 @@ var enemyVX = 5;
 var dodges = 0;
 let fontSize = 110; //size of score text
 let textFill = 0; //controls the color of the score-text
-let backgroundFill = 0;
+let backgroundFill = 0; //fill color of background
 
 
-function crement (a,b,c,d){
+function crement (a,b,c,d){ //function to increment/decrement a value and reset it once it reaches a min/max value
 /*--------------------
-a = value to decrement
-c = minimum size of that value
-b = maximum size of that value
-d = value at which to increment/decrement
+a = value to be incremented/decremented
+c = minimum value of a
+b = maxium value of a
+d = value at which to increment/decrement per call of function
 ----------------------*/
   if (d < 0) { //if the function is being used to decrement
 
-    if (a < b) { //once a reaches lessthan min value, make a it its max value (c)
+    if (a <= b) { //once a is equalto/lessthan min value, make a it its max value (c)
       a = c;
     }
     else {
-      a += d;
+      a += d; //if a is larger than min value, decrement;
     }
 }
 
-if (d >= 0) //if function is being used to inc
+if (d >= 0) //if function is being used to increment
 {
-  if (a > c){ //once a is bigger than max value, make it min value;
+  if (a >= c){ //once a is biggerthan/equalto max value, make it min value (b);
     a = b;
   }
-  else {
+  else { //if a is within max value, increment
     a+=d;
   }
 }
@@ -74,8 +77,7 @@ if (d >= 0) //if function is being used to inc
 //
 // Make the canvas, position the avatar and anemy
 function setup() {
-  // Create our playing area
-  createCanvas(550,550);
+
 
   // Put the avatar sin the centre
   avatarX = width/2;
@@ -85,8 +87,7 @@ function setup() {
   enemyX = 0;
   enemyY = random(0,height);
 
-  // No stroke so it looks cleaner
-  noStroke();
+
 }
 
 // draw()
@@ -94,30 +95,43 @@ function setup() {
 // Handle moving the avatar and enemy and checking for dodges and
 // game over situations.
 function draw() {
-
+  if (canvasHeightIncrease > 0) {
+    canvasHeightIncrease -= canvasHeightIncreaseIncrement;
+    canvasHeight += canvasHeightIncreaseIncrement;
+  }
+  if (canvasHeightIncrease < 0) {
+    canvasHeightIncrease += canvasHeightIncreaseIncrement;
+    canvasHeight -= canvasHeightIncreaseIncrement;
+  }
+createCanvas(550,canvasHeight);
    //increases enemy size per dodge
   // A pink background
   background(backgroundFill); //fill background with background fill, which is usually black but becomes white on loss
-  backgroundFill -= 20;
+  if (backgroundFill > 0) //if the screen isn't black, fade it to black
+  {
+    backgroundFill -= 20;
+  }
   fill(255,255,255,textFill);
   textFill -= 5;
   textSize(fontSize);
   textAlign(CENTER);
   text(dodges, width/2,fontSize);
 
+//movement of enemy
 noiseDetail(4);
-enemyYinc = (noise(enemyX*noiseSpeed)-.5)*height/40; //get Yinc with perlin noise
-if (enemyY < enemySize*2) { //if the enemy is at the top of the screen...
-  enemyYinc +=3; //move it down
-}
-if (enemyY > height-enemySize*2) { //if the enemy is at the bottom of the screen
-  enemyYinc -=3; //move it up
-}
+  enemyYinc = (noise(enemyX*noiseSpeed)-.5)*height/40; //get Yinc with perlin noise
+  if (enemyY < enemySize*2) { //if the enemy is at the top of the screen...
+    enemyYinc +=3; //move it down
+  }
+  if (enemyY > height-enemySize*2) { //if the enemy is at the bottom of the screen
+    enemyYinc -=3; //move it up
+  }
+  enemyY += enemyYinc; //increase enemyspeed
+  // The enemy always moves at enemySpeed (which increases)
+  enemyVX = enemySpeed;
+  // Update the enemy's position based on its velocity
+  enemyX = enemyX + enemyVX;
 
-enemyY += enemyYinc
-//console.log(enemyY);
-  // Check which keys are down and set the avatar's velocity based on its
-  // speed appropriately
 
   // Left and right
   if (keyIsDown(LEFT_ARROW)) {
@@ -155,19 +169,16 @@ enemyY += enemyYinc
   avatarX = avatarX + avatarVX;
   avatarY = avatarY + avatarVY;
 
-  // The enemy always moves at enemySpeed (which increases)
-  enemyVX = enemySpeed;
-  // Update the enemy's position based on its velocity
-  enemyX = enemyX + enemyVX;
 
   // Check if the enemy and avatar overlap - if they do the player loses
   // We do this by checking if the distance between the centre of the enemy
   // and the centre of the avatar is less that their combined radii
   if (dist(enemyX,enemyY,avatarX,avatarY) < enemySize/2 + avatarSize/2) {
     // Tell the player they lost
-    console.log("YOU LOSE!"); 
+    console.log("YOU LOSE!");
     backgroundFill = 255;
     background(textFill);
+    canvasHeightIncrease = -(height - canvasHeightInitial) //set canvasheightincrease to number needed to reduce current canvas height to original canvas height
     // Reset the enemy's position
     enemyX = 0;
     enemyY = random(0,height);
@@ -176,7 +187,7 @@ enemyY += enemyYinc
     enemySpeed = 5;
     // Reset the avatar's position
     avatarX = width/2;
-    avatarY = height/2;
+    avatarY = canvasHeightInitial/2;
     // Reset the dodge counter
     dodges = 0;
     //reset noisespeed
@@ -187,13 +198,14 @@ enemyY += enemyYinc
   if (avatarX < 0 || avatarX > width || avatarY < 0 || avatarY > height) {
     // If they went off the screen they lose in the same way as above.
     console.log("YOU LOSE!");
+    canvasHeightIncrease = -(height - canvasHeightInitial) //set canvasheightincrease to number needed to reduce current canvas height to original canvas height
     backgroundFill = 255; //make background white
     enemyX = 0;
     enemyY = random(0,height);
     enemySize = 50;
     enemySpeed = 5;
     avatarX = width/2;
-    avatarY = height/2;
+    avatarY = canvasHeightInitial/2;
     dodges = 0;
   }
 
@@ -201,7 +213,7 @@ enemyY += enemyYinc
   if (enemyX > width) {
     // This means the player dodged so update its dodge statistic
     dodges = dodges + 1;
-
+    canvasHeightIncrease =   canvasHeightIncreaseAmount; //set canvasHeightIncrease to positive number
     avatarSize = random(22.5,27.5); //randomly set avatar size after each dodge
     avatarSpeedA = random(4.3,4.7); //randomly set player acceleration after each dodge
     console.log(avatarSpeedA);
@@ -216,7 +228,8 @@ enemyY += enemyYinc
     noiseSpeed2 += 0.0025;
     // Reset the enemy's position to the left at a random height
     enemyX = 0;
-    enemyY = random(0,height);
+    //because the canvas is increased after the avatar is spawned the program needs to account for the extra play-space which will soon be available to the player.
+    enemyY = random(0,canvasHeight+canvasHeightIncreaseAmount);
 
   }
 
