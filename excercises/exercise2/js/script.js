@@ -95,13 +95,19 @@ function setup() {
 // Handle moving the avatar and enemy and checking for dodges and
 // game over situations.
 function draw() {
-  if (canvasHeightIncrease > 0) {
+  if (canvasHeightIncrease > 0) { //if canvasHeightIncrease is set to a postive number increase canvassize by canvasHeightIncreaseAmount
     canvasHeightIncrease -= canvasHeightIncreaseIncrement;
     canvasHeight += canvasHeightIncreaseIncrement;
+    if (canvasHeightIncrease < 0)  { //incase the decrement overshot 0, make sure canvasHeightIncrease isn't a negative number;
+      canvasHeightIncrease = 0;
+    }
   }
-  if (canvasHeightIncrease < 0) {
-    canvasHeightIncrease += canvasHeightIncreaseIncrement;
-    canvasHeight -= canvasHeightIncreaseIncrement;
+  if (canvasHeightIncrease < 0) {//if canvasHeightIncrease is set to a negative number then decrease canvas size until it is back to its initial height
+    canvasHeightIncrease += canvasHeightIncreaseIncrement*3;
+    canvasHeight -= canvasHeightIncreaseIncrement*3;
+    if (canvasHeightIncrease > 0)  { //incase the decrement overshot 0, make sure canvasHeightIncrease isn't a positive number;
+      canvasHeightIncrease = 0;
+    }
   }
 createCanvas(550,canvasHeight);
    //increases enemy size per dodge
@@ -120,10 +126,10 @@ createCanvas(550,canvasHeight);
 //movement of enemy
 noiseDetail(4);
   enemyYinc = (noise(enemyX*noiseSpeed)-.5)*height/40; //get Yinc with perlin noise
-  if (enemyY < enemySize*2) { //if the enemy is at the top of the screen...
+  if (enemyY < enemySize*0.5) { //if the enemy is at the top of the screen...
     enemyYinc +=3; //move it down
   }
-  if (enemyY > height-enemySize*2) { //if the enemy is at the bottom of the screen
+  if (enemyY > height-enemySize*0.5) { //if the enemy is at the bottom of the screen
     enemyYinc -=3; //move it up
   }
   enemyY += enemyYinc; //increase enemyspeed
