@@ -18,7 +18,6 @@ let avatarSpeedA = 4.5; //at which to add to speed every frame of keyDown (accel
 let drag = 1.5; //divide avatarSpeed by drag every frame to slow the avatar down;
 let avatarVX = 0;
 let avatarVY = 0;
-
 // The position and size of the enemy circle
 var enemyX;
 var enemyY;
@@ -31,6 +30,8 @@ let noiseSpeed = 0.02; //changes the speed at which one translates through perli
 let noiseSpeed2 = 0.01; //same
 // The speed and velocity of our enemy circle
 var enemySpeed = 2;
+let enemySpeedInc = 32; //the rate at which to increase enemySpeed per dodge, higher value is LESS increment
+let enemySizeInc = 2; //rate to increase enemySize per dodge, higher value is MORE increment
 var enemyVX = 5;
 
 
@@ -93,9 +94,9 @@ function setup() {
     let lerp = abDiffLerp + a; //add minium value to lerp of mean numbers to get lerp
 
     return lerp;
-
+//  console.log("lerp = " + lerp2(30,40,0.9));
   }
-  console.log("lerp = " + lerp2(30,40,0.9));
+
 createCanvas(550,canvasHeight);
 
   // Put the avatar sin the centre
@@ -114,6 +115,22 @@ createCanvas(550,canvasHeight);
 // Handle moving the avatar and enemy and checking for dodges and
 // game over situations.
 function draw() {
+  function sininter (a,b,c){ //interpolates between two values by a percentage according to a sin wave
+    /*--------------------
+    a = value1
+    b = value2
+    c = percentage to lerp (value between 0-1)
+    d = transforms c into a sin-wave based interpolation
+    ----------------------*/
+    let d = sin(PI*c); //I am compressing this sin function by PI so that a half-period (in which the sin function >= 1) is completed with a x input of 0-1
+    let abDiff = abs(a - b); //find difference between two values
+    let abDiffLerp = abDiff * d; //interpolate linearly
+    let lerp = abDiffLerp + a; //add minium value to lerp of mean numbers to get lerp
+
+    return lerp;
+//  console.log("lerp = " + lerp2(30,40,0.9));
+  }
+
   if (canvasHeightIncrease > 0) { //if canvasHeightIncrease is set to a postive number increase canvassize by canvasHeightIncreaseAmount
     canvasHeightIncrease -= canvasHeightIncreaseIncrement;
     canvasHeight += canvasHeightIncreaseIncrement;
@@ -206,6 +223,7 @@ noiseDetail(4);
   // Check if the enemy and avatar overlap - if they do the player loses
   // We do this by checking if the distance between the centre of the enemy
   // and the centre of the avatar is less that their combined radii
+
   if (dist(enemyX,enemyY,avatarX,avatarY) < enemySize/2 + avatarSize/2) {
     // Tell the player they lost
     console.log("YOU LOSE!");
@@ -260,9 +278,9 @@ noiseDetail(4);
     //make text visble
     textFill = 255;
     //increase size of enemy
-    enemySize = enemySize + dodges*2;
+    enemySize = enemySize + dodges*enemySizeInc;
     //increase speed of enemy
-    enemySpeed = enemySpeed + dodges/16;
+    enemySpeed = enemySpeed + dodges/enemySpeedInc;
 
     //increase the rate of translation in perlinnoise space
     noiseSpeed2 += 0.0025;
