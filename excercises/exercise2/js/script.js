@@ -252,15 +252,14 @@ function draw() {
   }
 
   // Check if the enemy has moved all the way across the screen
-  if (enemyX > width) {
+  if (enemyX > width + enemySize) {
     // This means the player dodged so update its dodge statistic
     dodges ++;
     cc3Inc += 0.005; //increase rate at which player animation cycles on
-    cc = 0; //reset sinlerp amount
+    cc = 0; //reset sinlerx`p amount
     if (dodges > highscore){ //set highscore to highest number of consecutive dodges
       highscore = dodges;
     }
-
     canvasHeightIncrease = canvasHeightIncreaseAmount; //set canvasHeightIncrease to positive number
     avatarSize = random(22.5,27.5); //randomly set avatar size after each dodge
     avatarSpeedA = random(4.3,4.7); //randomly set player acceleration after each dodge
@@ -275,60 +274,53 @@ function draw() {
     //increase the rate of translation in perlinnoise space
     noiseSpeed2 += noiseSpeed2Inc;
     // Reset the enemy's position to the left at a random height
-    enemyX = 0;
+    enemyX = 0-enemySize;
     //because the canvas is increased after the avatar is spawned the program needs to account for the extra play-space which will soon be available to the player.
     enemyY = random(0,canvasHeight+canvasHeightIncreaseAmount);
-
   }
 
+  drawAvatar();
+  drawEnemy();
+}
 
+function drawEnemy() {
+noStroke();
+fill(255)
+// Draw a motion trail
+ellipse(enemyX-enemyVX/2,enemyY-enemyYacc/2,enemySize,enemySize);
+noStroke();
+fill(255);
+// Draw the enemy as a circle
+ellipse(enemyX,enemyY,enemySize,enemySize);
+//draw expanding hole in the middle of the enemy
+noiseDetail(2);
+enemySizeGraphic = (noise(enemyX*noiseSpeed2/(enemySize/50)))*enemySize/1.6 + enemySize/4;
+fill(0);
+ellipse(enemyX+enemyVX,enemyY+enemyYacc,enemySizeGraphic,enemySizeGraphic);
+}
 
-
-
-
-  noFill();
-  stroke(255);
-  strokeWeight(avatarStrokeWeight);
-
-  cc3 += cc3Inc;
-  avatarStrokeWeight = abs(sininter(0,3,cc3))+1; //will cycle through values between 0 and 4
-  //avatarSizeGraphic = crement(avatarSizeGraphic,0,avatarSize,-.5);
-  avatarSizeGraphic = (noise(avatarX*noiseSpeed2,avatarY*noiseSpeed2,enemyX*noiseSpeed2)*avatarSize/1.7 + avatarSize/5);
-
-  //console.log("sizeGraphic :" +   avatarSizeGraphic);
-  noStroke();
-  fill(255);
-  // Draw a white trail behind the player, showing motion
-  ellipse(avatarX-avatarVX/2,avatarY-avatarVY/2,avatarSize,avatarSize);
-  fill(0);
-  //fill the area of the immediate player with black
-  ellipse(avatarX,avatarY,avatarSize,avatarSize);
-  noFill();
-  stroke(255);
-  // Draw the player as a circle
-  ellipse(avatarX,avatarY,avatarSize,avatarSize);
-  fill(255,255,255,255);
-  noStroke();
-  //ellipse(avatarX,avatarY,avatarSizeGraphic,avatarSizeGraphic);
-  ellipse(avatarX-avatarVX/2,avatarY-avatarVY/2,avatarSizeGraphic,avatarSizeGraphic);
-
-  //draw enemy
-  noStroke();
-  fill(255)
-  // Draw a motion trail
-  ellipse(enemyX-enemyVX/2,enemyY-enemyYacc/2,enemySize,enemySize);
-  noStroke();
-  fill(255);
-  // Draw the enemy as a circle
-  ellipse(enemyX,enemyY,enemySize,enemySize);
-
-  //draw expanding hole in the middle of the enemy
-
-  noiseDetail(2);
-  enemySizeGraphic = (noise(enemyX*noiseSpeed2/(enemySize/50)))*enemySize/1.6 + enemySize/4;
-  fill(0);
-  ellipse(enemyX+enemyVX,enemyY+enemyYacc,enemySizeGraphic,enemySizeGraphic);
-  //console.log("Enemy" + enemySizeGraphic)
-
-
+function drawAvatar(){
+noFill();
+stroke(255);
+strokeWeight(avatarStrokeWeight);
+cc3 += cc3Inc;
+avatarStrokeWeight = abs(sininter(0,3,cc3))+1; //will cycle through values between 0 and 4
+//avatarSizeGraphic = crement(avatarSizeGraphic,0,avatarSize,-.5);
+avatarSizeGraphic = (noise(avatarX*noiseSpeed2,avatarY*noiseSpeed2,enemyX*noiseSpeed2)*avatarSize/1.7 + avatarSize/5);
+//console.log("sizeGraphic :" +   avatarSizeGraphic);
+noStroke();
+fill(255);
+// Draw a white trail behind the player, showing motion
+ellipse(avatarX-avatarVX/2,avatarY-avatarVY/2,avatarSize,avatarSize);
+fill(0);
+//fill the area of the immediate player with black
+ellipse(avatarX,avatarY,avatarSize,avatarSize);
+noFill();
+stroke(255);
+// Draw the player as a circle
+ellipse(avatarX,avatarY,avatarSize,avatarSize);
+fill(255,255,255,255);
+noStroke();
+//ellipse(avatarX,avatarY,avatarSizeGraphic,avatarSizeGraphic);
+ellipse(avatarX-avatarVX/2,avatarY-avatarVY/2,avatarSizeGraphic,avatarSizeGraphic);
 }

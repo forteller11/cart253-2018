@@ -13,13 +13,20 @@ function preload() {
 let ii = i;
   for (var i = 0; i <= 10; i++) { //fills the array with all dog images
     ii = i;
-    dogIndex[i-1] = "assets/images/animals-"+ii+".png";
+  dogIndex[i-1]=  loadImage("assets/images/animals-"+ii+".png");
   }
-  //loads a random dogimage
-  dog = loadImage( dogIndex[round(random(9))] );
+
 
 }
+let dogNumber = 0;
+
 function setup() {
+  while (dogNumber < 25){
+    dogNumber++;
+    image( dog[],random(width),random(height) );
+  }
   createCanvas(windowWidth,windowHeight);
-  image(dog, 0, 0);
+  background(250,240,70);
+  //loads a random dogimage
+image(dogIndex[round(random(9))]) ;
 }
