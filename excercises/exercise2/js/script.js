@@ -103,12 +103,8 @@ function draw() {
     let abDiff = abs(a - b); //find difference between two values
     let abDiffLerp = abDiff * d; //interpolate linearly
     let lerp = abDiffLerp + a; //add minium value to lerp of mean numbers to get lerp
-
     return lerp;
-//  console.log("lerp = " + lerp2(30,40,0.9));
   }
-
-
 
   if (cc < 1) { //increase cc (sin interpolation function) and add value to canvas.
 
@@ -159,7 +155,7 @@ createCanvas(550,canvasHeight);
   text(highscore, width/2,canvasHeightInitial/2+fontSize/1.3);//draw text in center
 
   //movement of enemy
-noiseDetail(4);
+noiseDetail(6);
   enemyYacc = (noise(enemyX*noiseSpeed)-.5)*height/40; //get Yinc with perlin noise
   if (enemyY < enemySize*0.5) { //if the enemy is at the top of the screen...
     enemyYacc +=.5; //move it down
@@ -170,7 +166,7 @@ noiseDetail(4);
   enemyYV += enemyYacc; //add accelreation to velocity;
   enemyYV = enemyYV/enemyDrag; //apply drag to velocity
   enemyY += enemyYV; //apply velocity to position
-  
+
   // The enemy always moves at enemySpeed (which increases)
   enemyVX = enemySpeed;
   // Update the enemy's position based on its velocity
