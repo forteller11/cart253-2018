@@ -63,17 +63,21 @@ let textFillHighscore = 0; //controls the color of the highscore text'
 let lost = false;
 
 
+function sininter (a,b,c) { //interpolates between two values by a percentage according to a sin wave
+  /*--------------------
+  a = value1
+  b = value2
+  c = percentage to lerp (value between 0-1)
+  d = transforms c into a sin-wave based interpolation
+  ----------------------*/
+  let d = sin(PI*c/2); //I am compressing this sin function by PI so that a half-period (in which the sin function >= 1) is completed with a x input of 0-1
+  let abDiff = abs(a - b); //find difference between two values
+  let abDiffLerp = abDiff * d; //interpolate linearly
+  let lerp = abDiffLerp + a; //add minium value to lerp of mean numbers to get lerp
+  return lerp;
+}
 
-
-
-
-// setup()
-//
-// Make the canvas, position the avatar and anemy
 function setup() {
-
-
-
 createCanvas(550,canvasHeight);
 
   // Put the avatar sin the centre
@@ -83,37 +87,17 @@ createCanvas(550,canvasHeight);
   // Put the enemy to the left at a random y coordinate within the canvas
   enemyX = 0;
   enemyY = random(0,height);
-
-
 }
 
-// draw()
-//
-// Handle moving the avatar and enemy and checking for dodges and
-// game over situations.
 function draw() {
-  function sininter (a,b,c){ //interpolates between two values by a percentage according to a sin wave
-    /*--------------------
-    a = value1
-    b = value2
-    c = percentage to lerp (value between 0-1)
-    d = transforms c into a sin-wave based interpolation
-    ----------------------*/
-    let d = sin(PI*c/2); //I am compressing this sin function by PI so that a half-period (in which the sin function >= 1) is completed with a x input of 0-1
-    let abDiff = abs(a - b); //find difference between two values
-    let abDiffLerp = abDiff * d; //interpolate linearly
-    let lerp = abDiffLerp + a; //add minium value to lerp of mean numbers to get lerp
-    return lerp;
-  }
 
+  //ajust canvas height according to game state
   if (cc < 1) { //increase cc (sin interpolation function) and add value to canvas.
-
       cc += canvasSinIncrement;
     }
     else if (cc > 1){
       cc = 1;
     }
-
     //draw canvas height according to initial canvas height + amount of dodges + sin interpolation.
     if (lost === false) {
       canvasHeight = canvasHeightInitial + sininter(0,canvasHeightIncreaseAmount,cc) + (dodges*canvasHeightIncreaseAmount);
