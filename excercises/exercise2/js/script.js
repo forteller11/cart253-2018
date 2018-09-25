@@ -34,7 +34,9 @@ let enemySpeedInc = 32; //the rate at which to increase enemySpeed per dodge, hi
 let enemySizeInc = 2; //rate to increase enemySize per dodge, higher value is MORE increment
 var enemyVX = 5;
 let cc = 0; //controls sininterpolation controlling the increase of canvas height post dodge
-let cc2 = 1; //controls sininterpolation controlling the decrease of canvas height post death
+let cc2 = 1;//controls sininterpolation controlling the decrease of canvas height post death
+let cc3 = 0; //controls rate at which the line thickness changes on avatar
+let cc3Inc = 0.01; //
 // How many dodges the player has made
 var dodges = 0;
 let lastdodge = 6;
@@ -294,6 +296,7 @@ noiseDetail(4);
   if (enemyX > width) {
     // This means the player dodged so update its dodge statistic
     dodges ++;
+    cc3Inc += 0.005; //increase rate at which player animation cycles
     cc = 0; //reset sinlerp amount
     if (dodges > highscore){ //set highscore to highest number of consecutive dodges
       highscore = dodges;
@@ -326,7 +329,9 @@ noiseDetail(4);
   noFill();
   stroke(255);
   strokeWeight(avatarStrokeWeight);
-  avatarStrokeWeight = crement(avatarStrokeWeight,1,4,noiseSpeed2*4);
+
+  cc3 += cc3Inc;
+  avatarStrokeWeight = abs(sininter(0,3,cc3))+1; //will cycle through values between 0 and 4
   //avatarSizeGraphic = crement(avatarSizeGraphic,0,avatarSize,-.5);
   avatarSizeGraphic = (noise(avatarX*noiseSpeed2,avatarY*noiseSpeed2,enemyX*noiseSpeed2)*avatarSize/1.7 + avatarSize/5);
 
