@@ -30,7 +30,9 @@ let avatarVY = 0;
 // The position and size of the enemy circle
 let enemyX;
 let enemyY;
-let enemyYinc;
+let enemyYacc;
+let enemyYV = 0;
+let enemyDrag = 2;
 let enemySize = 50;
 let enemySizeGraphic = 0;
 let avatarSizeGraphic = 0;
@@ -158,14 +160,17 @@ createCanvas(550,canvasHeight);
 
   //movement of enemy
 noiseDetail(4);
-  enemyYinc = (noise(enemyX*noiseSpeed)-.5)*height/40; //get Yinc with perlin noise
+  enemyYacc = (noise(enemyX*noiseSpeed)-.5)*height/40; //get Yinc with perlin noise
   if (enemyY < enemySize*0.5) { //if the enemy is at the top of the screen...
-    enemyYinc +=3; //move it down
+    enemyYacc +=.5; //move it down
   }
   if (enemyY > height-enemySize*0.5) { //if the enemy is at the bottom of the screen
-    enemyYinc -=3; //move it up
+    enemyYacc -=.5; //move it up
   }
-  enemyY += enemyYinc; //increase enemyspeed
+  enemyYV += enemyYacc; //add accelreation to velocity;
+  enemyYV = enemyYV/enemyDrag; //apply drag to velocity
+  enemyY += enemyYV; //apply velocity to position
+  
   // The enemy always moves at enemySpeed (which increases)
   enemyVX = enemySpeed;
   // Update the enemy's position based on its velocity
@@ -330,7 +335,7 @@ noiseDetail(4);
   noStroke();
   fill(255)
   // Draw a motion trail
-  ellipse(enemyX-enemyVX/2,enemyY-enemyYinc/2,enemySize,enemySize);
+  ellipse(enemyX-enemyVX/2,enemyY-enemyYacc/2,enemySize,enemySize);
   noStroke();
   fill(255);
   // Draw the enemy as a circle
@@ -341,7 +346,7 @@ noiseDetail(4);
   noiseDetail(2);
   enemySizeGraphic = (noise(enemyX*noiseSpeed2/(enemySize/50)))*enemySize/1.6 + enemySize/4;
   fill(0);
-  ellipse(enemyX+enemyVX,enemyY+enemyYinc,enemySizeGraphic,enemySizeGraphic);
+  ellipse(enemyX+enemyVX,enemyY+enemyYacc,enemySizeGraphic,enemySizeGraphic);
   //console.log("Enemy" + enemySizeGraphic)
 
 
