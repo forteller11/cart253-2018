@@ -67,10 +67,11 @@ function sininter (a,b,c) { //interpolates between two values by a percentage ac
   /*--------------------
   a = value1
   b = value2
-  c = percentage to lerp (value between 0-1)
+  c = percentage to lerp (value between 0 = value a; 1 = value b)
   d = transforms c into a sin-wave based interpolation
   ----------------------*/
-  let d = sin(PI*c/2); //I am compressing this sin function by PI so that a half-period (in which the sin function >= 1) is completed with a x input of 0-1
+  //compression by pi and stretch by 2 so that if an input of 0-1 will result in output of a-b
+  let d = sin(PI*c/2);
   let abDiff = abs(a - b); //find difference between two values
   let abDiffLerp = abDiff * d; //interpolate linearly
   let lerp = abDiffLerp + a; //add minium value to lerp of mean numbers to get lerp
@@ -78,7 +79,7 @@ function sininter (a,b,c) { //interpolates between two values by a percentage ac
 }
 
 function setup() {
-createCanvas(550,canvasHeight);
+  createCanvas(550,canvasHeight);
 
   // Put the avatar sin the centre
   avatarX = width/2;
@@ -98,23 +99,23 @@ function draw() {
     else if (cc > 1){
       cc = 1;
     }
-    //draw canvas height according to initial canvas height + amount of dodges + sin interpolation.
+  // On each dodge, increase canvas height via interpolation
     if (lost === false) {
       canvasHeight = canvasHeightInitial + sininter(0,canvasHeightIncreaseAmount,cc) + (dodges*canvasHeightIncreaseAmount);
     }
+//in lost state canvas interpolates back to canvasHeightInitial
+    if (lost === true) {
+      background(51);
+      cc2 -= canvasSinIncrement;
 
-if (lost === true) {
-  background(51);
-cc2 -= canvasSinIncrement;
+  if (cc2 < 0) {
+    cc2 = 0;
+    lost = false;
+  }
+  canvasHeight = canvasHeightInitial + sininter(0,lastdodge*canvasHeightIncreaseAmount,cc2) + sininter(0,canvasHeightIncreaseAmount,cc);
+    }
 
-if (cc2 < 0) {
-  cc2 = 0;
-  lost = false;
-}
-canvasHeight = canvasHeightInitial + sininter(0,lastdodge*canvasHeightIncreaseAmount,cc2) + sininter(0,canvasHeightIncreaseAmount,cc);
-}
-
-createCanvas(550,canvasHeight);
+  createCanvas(550,canvasHeight);
    //increases enemy size per dodge
   // A pink background
   background(backgroundFill); //fill background with background fill, which is usually black but becomes white on loss
@@ -139,7 +140,7 @@ createCanvas(550,canvasHeight);
   text(highscore, width/2,canvasHeightInitial/2+fontSize/1.3);//draw text in center
 
   //movement of enemy
-noiseDetail(6);
+  noiseDetail(6);
   enemyYacc = (noise(enemyX*noiseSpeed)-.5)*height/40; //get Yinc with perlin noise
   if (enemyY < enemySize*0.5) { //if the enemy is at the top of the screen...
     enemyYacc +=.5; //move it down
