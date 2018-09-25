@@ -1,44 +1,57 @@
 /*********************************************************
 Exercise 2 - The Artful Dodger
 Charly Yan Miller
-Starter code for exercise 2.
+In which one controls an avatar with the arrow keys
+and must avoid enemies in order to increase thier dodge/highscore counter.
+
+The Enemy's vertical movement is controlled by perlin-noise,
+and that perlin noise is visualized in the form of a pulsating black spheroid in their center.
+The avatar has acceleration based movement,
+and has one animation (pulsation of a black spheroid) which is controlled by perlin noise,
+but also has a animation which changes the line weight of their outline which is controlled by a custom sin interpoaltion function
+As the amount of dodges increases, so does the height of the canvas, and its increase is interpolated with the sin function.
+
 *********************************************************/
 let canvasHeightInitial = 200; //initial canvas height;
 let canvasHeight = canvasHeightInitial; //set canvas height to initial canvas height
 
 
 let canvasHeightIncreaseAmount = 20; //value to increase height of canvas per dodge;
-var avatarX;
-var avatarY;
-var avatarSize = 25;
+let avatarX;
+let avatarY;
+let avatarSize = 25;
 // The speed and velocity of our avatar circle
-var avatarSpeed = 10;
+let avatarSpeed = 10;
 let avatarMaxSpeed = 15; //maxium Speed
 let avatarSpeedA = 4.5; //at which to add to speed every frame of keyDown (acceleration)
 let drag = 1.5; //divide avatarSpeed by drag every frame to slow the avatar down;
 let avatarVX = 0;
 let avatarVY = 0;
 // The position and size of the enemy circle
-var enemyX;
-var enemyY;
+let enemyX;
+let enemyY;
 let enemyYinc;
-var enemySize = 50;
+let enemySize = 50;
 let enemySizeGraphic = 0;
 let avatarSizeGraphic = 0;
 let avatarStrokeWeight = 0;
-let noiseSpeed = 0.02; //changes the speed at which one translates through perlin-noise space
-let noiseSpeed2 = 0.01; //same
-// The speed and velocity of our enemy circle
-var enemySpeed = 2;
-let enemySpeedInc = 32; //the rate at which to increase enemySpeed per dodge, higher value is LESS increment
-let enemySizeInc = 2; //rate to increase enemySize per dodge, higher value is MORE increment
-var enemyVX = 5;
+//vars pertaining to noise function and/or sin interpolation function
+let noiseSpeed = 0.02; //changes the speed at which one translates through perlin-noise space (used for enemy)
+let noiseSpeed2 = 0.01; //changes the speed at which one translates through perlin-noise space (used for avatar)
+let noiseSpeed2Inc = 0.0025; //rate at which noiseSpeed2 increases each dodge
 let cc = 0; //controls sininterpolation controlling the increase of canvas height post dodge
 let cc2 = 1;//controls sininterpolation controlling the decrease of canvas height post death
+let canvasSinIncrement = 0.05; //percentage rate per frame (5%) at which to increase/decrease hieght of canvas
 let cc3 = 0; //controls rate at which the line thickness changes on avatar
-let cc3Inc = 0.01; //
-// How many dodges the player has made
-var dodges = 0;
+let cc3Inc = 0.01; //rate at which to increment/decremnt cc3
+// The speed and velocity of our enemy circle
+let enemySpeed = 2;
+let enemySpeedInc = 32; //affects the rate at which to increase enemySpeed per dodge(), higher value is LESS increment
+let enemySizeInc = 2; //affects the rate to increase enemySize per dodge, higher value is MORE increment
+let enemyVX = 5;
+
+
+let dodges = 0;
 let lastdodge = 6;
 let highscore = 0; //highest number of dodges
 let fontSize = 110; //size of score text
@@ -47,35 +60,6 @@ let backgroundFill = 0; //fill color of background
 let textFillHighscore = 0; //controls the color of the highscore text'
 let lost = false;
 
-function crement (a,b,c,d){ //function to increment/decrement a value and reset it once it reaches a min/max value
-  /*--------------------
-  a = value to be incremented/decremented
-  b = minimum value of a
-  c = maxium value of a
-  d = value at which to increment/decrement per call of function
-  ----------------------*/
-  if (d < 0) { //if the function is being used to decrement
-
-    if (a <= b) { //once a is equalto/lessthan min value, make a it its max value (c)
-      a = c;
-    }
-    else {
-      a += d; //if a is larger than min value, decrement;
-    }
-  }
-
-  if (d >= 0) //if function is being used to increment
-  {
-    if (a >= c){ //once a is biggerthan/equalto max value, make it min value (b);
-      a = b;
-    }
-    else { //if a is within max value, increment
-      a+=d;
-    }
-  }
-
-  return a;
-}
 
 
 
@@ -86,21 +70,7 @@ function crement (a,b,c,d){ //function to increment/decrement a value and reset 
 // Make the canvas, position the avatar and anemy
 function setup() {
 
-  function sininterpolation (a,b,c){ //linearly interpolate between two values by a percentage
-    /*--------------------
-    a = value1
-    b = value2
-    c = percentage to lerp (value between 0-1)
-    d = transforms c into a sin-wave based interpolation
-    ----------------------*/
-    let d = sin(PI*c*2); //I am compressing this sin function by PI so that a quarter-period (in which the sin function >= 1) is completed with a x input of 0-1
-    let abDiff = abs(a - b); //find difference between two values
-    let abDiffLerp = abDiff * d; //interpolate linearly
-    let lerp = abDiffLerp + a; //add minium value to lerp of mean numbers to get lerp
 
-    return lerp;
-//  console.log("lerp = " + lerp2(30,40,0.9));
-  }
 
 createCanvas(550,canvasHeight);
 
@@ -131,12 +101,12 @@ function draw() {
     let abDiff = abs(a - b); //find difference between two values
     let abDiffLerp = abDiff * d; //interpolate linearly
     let lerp = abDiffLerp + a; //add minium value to lerp of mean numbers to get lerp
-    print(sin(PI))
+
     return lerp;
 //  console.log("lerp = " + lerp2(30,40,0.9));
   }
 
-let canvasSinIncrement = 0.05;
+
 
   if (cc < 1) { //increase cc (sin interpolation function) and add value to canvas.
 
@@ -244,7 +214,8 @@ noiseDetail(4);
   if (dist(enemyX,enemyY,avatarX,avatarY) < enemySize/2 + avatarSize/2) {
     // Tell the player they lost
     console.log("YOU LOSE!");
-
+    print("Highscore:"+highscore);
+    print("LastRound's dodges:" + lastdodge)
 
     textFillHighscore = 255; //display highscore text
     textFill = 0; //dont display dodge number
@@ -288,7 +259,9 @@ noiseDetail(4);
     lost = true;
     cc2 = 1;
     lastdodge = dodges; //dodge number before losing
-    print("lastdodge:"+lastdodge);
+
+    print("Highscore:"+highscore);
+    print("LastRound's dodges:" + lastdodge)
     dodges = 0;
   }
 
@@ -296,15 +269,16 @@ noiseDetail(4);
   if (enemyX > width) {
     // This means the player dodged so update its dodge statistic
     dodges ++;
-    cc3Inc += 0.005; //increase rate at which player animation cycles
+    cc3Inc += 0.005; //increase rate at which player animation cycles on
     cc = 0; //reset sinlerp amount
     if (dodges > highscore){ //set highscore to highest number of consecutive dodges
       highscore = dodges;
     }
+
     canvasHeightIncrease = canvasHeightIncreaseAmount; //set canvasHeightIncrease to positive number
     avatarSize = random(22.5,27.5); //randomly set avatar size after each dodge
     avatarSpeedA = random(4.3,4.7); //randomly set player acceleration after each dodge
-    console.log(avatarSpeedA);
+    //console.log(avatarSpeedA);
     //make text visble
     textFill = 255;
     //increase size of enemy
@@ -313,7 +287,7 @@ noiseDetail(4);
     enemySpeed = enemySpeed + dodges/enemySpeedInc;
 
     //increase the rate of translation in perlinnoise space
-    noiseSpeed2 += 0.0025;
+    noiseSpeed2 += noiseSpeed2Inc;
     // Reset the enemy's position to the left at a random height
     enemyX = 0;
     //because the canvas is increased after the avatar is spawned the program needs to account for the extra play-space which will soon be available to the player.
@@ -363,9 +337,9 @@ noiseDetail(4);
   ellipse(enemyX,enemyY,enemySize,enemySize);
 
   //draw expanding hole in the middle of the enemy
-  enemySizeGraphic = crement(enemySizeGraphic,0,enemySize/1.2,1);
+
   noiseDetail(2);
-  enemySizeGraphic = (noise(enemyX*noiseSpeed))*enemySize/1.6 + enemySize/4;
+  enemySizeGraphic = (noise(enemyX*noiseSpeed2))*enemySize/1.6 + enemySize/4;
   fill(0);
   ellipse(enemyX+enemyVX,enemyY+enemyYinc,enemySizeGraphic,enemySizeGraphic);
   //console.log("Enemy" + enemySizeGraphic)
