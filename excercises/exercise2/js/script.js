@@ -33,15 +33,18 @@ var enemySpeed = 2;
 let enemySpeedInc = 32; //the rate at which to increase enemySpeed per dodge, higher value is LESS increment
 let enemySizeInc = 2; //rate to increase enemySize per dodge, higher value is MORE increment
 var enemyVX = 5;
-let cc = 0;
-
+let cc = 0; //controls sininterpolation controlling the increase of canvas height post dodge
+let cc2 = 1; //controls sininterpolation controlling the decrease of canvas height post death
 // How many dodges the player has made
 var dodges = 0;
+let lastdodge = 6;
 let highscore = 0; //highest number of dodges
 let fontSize = 110; //size of score text
 let textFill = 0; //controls the color of the score-text
 let backgroundFill = 0; //fill color of background
 let textFillHighscore = 0; //controls the color of the highscore text'
+let lost = false;
+
 function crement (a,b,c,d){ //function to increment/decrement a value and reset it once it reaches a min/max value
   /*--------------------
   a = value to be incremented/decremented
@@ -130,26 +133,33 @@ function draw() {
     return lerp;
 //  console.log("lerp = " + lerp2(30,40,0.9));
   }
+
 let canvasSinIncrement = 0.05;
 
-  if (cc < .82) { //if canvasHeightIncrease is set to a postive number increase canvassize by canvasHeightIncreaseAmount
+  if (cc < 1) { //increase cc (sin interpolation function) and add value to canvas.
 
       cc += canvasSinIncrement;
-
-    canvasHeight += canvasHeightIncreaseIncrement;
     }
     else if (cc > 1){
       cc = 1;
     }
-canvasHeight = canvasHeightInitial + sininter(0,canvasHeightIncreaseAmount,cc) + (dodges*canvasHeightIncreaseAmount);
 
-  if (canvasHeightIncrease < 0) {//if canvasHeightIncrease is set to a negative number then decrease canvas size until it is back to its initial height
-    canvasHeightIncrease += canvasHeightIncreaseIncrement*3;
-    canvasHeight -= canvasHeightIncreaseIncrement*3;
-    if (canvasHeightIncrease > 0)  { //incase the decrement overshot 0, make sure canvasHeightIncrease isn't a positive number;
-      canvasHeightIncrease = 0;
+    //draw canvas height according to initial canvas height + amount of dodges + sin interpolation.
+    if (lost === false) {
+      canvasHeight = canvasHeightInitial + sininter(0,canvasHeightIncreaseAmount,cc) + (dodges*canvasHeightIncreaseAmount);
     }
-  }
+
+if (lost === true) {
+  background(51);
+cc2 -= canvasSinIncrement;
+
+if (cc2 < 0) {
+  cc2 = 0;
+  lost = false;
+}
+canvasHeight = canvasHeightInitial + sininter(0,lastdodge*canvasHeightIncreaseAmount,cc2) + sininter(0,canvasHeightIncreaseAmount,cc);
+}
+
 createCanvas(550,canvasHeight);
    //increases enemy size per dodge
   // A pink background
@@ -172,7 +182,7 @@ createCanvas(550,canvasHeight);
   fill(255,255,255,textFillHighscore);
   textFillHighscore -= 2.5;
   textSize(fontSize*2);
-  text(highscore, width/2,height/2+fontSize/1.5);//draw text in center
+  text(highscore, width/2,canvasHeightInitial/2+fontSize/1.3);//draw text in center
 
   //movement of enemy
 noiseDetail(4);
@@ -232,6 +242,8 @@ noiseDetail(4);
   if (dist(enemyX,enemyY,avatarX,avatarY) < enemySize/2 + avatarSize/2) {
     // Tell the player they lost
     console.log("YOU LOSE!");
+
+
     textFillHighscore = 255; //display highscore text
     textFill = 0; //dont display dodge number
     backgroundFill = 255;
@@ -247,9 +259,13 @@ noiseDetail(4);
     avatarX = width/2;
     avatarY = canvasHeightInitial/2;
     // Reset the dodge counter
-    dodges = 0;
+
+    lost = true;
+    cc2 = 1;
+    lastdodge = dodges; //dodge number before losing
     //reset noisespeed
     noiseSpeed2 = 0.01;
+    dodges = 0;
   }
 
   // Check if the avatar has gone off the screen (cheating!)
@@ -266,6 +282,11 @@ noiseDetail(4);
     enemySpeed = 2;
     avatarX = width/2;
     avatarY = canvasHeightInitial/2;
+
+    lost = true;
+    cc2 = 1;
+    lastdodge = dodges; //dodge number before losing
+    print("lastdodge:"+lastdodge);
     dodges = 0;
   }
 
