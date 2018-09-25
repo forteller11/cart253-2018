@@ -33,7 +33,7 @@ var enemySpeed = 2;
 let enemySpeedInc = 32; //the rate at which to increase enemySpeed per dodge, higher value is LESS increment
 let enemySizeInc = 2; //rate to increase enemySize per dodge, higher value is MORE increment
 var enemyVX = 5;
-
+let cc = 0;
 
 // How many dodges the player has made
 var dodges = 0;
@@ -88,7 +88,7 @@ function setup() {
     c = percentage to lerp (value between 0-1)
     d = transforms c into a sin-wave based interpolation
     ----------------------*/
-    let d = sin(PI*c); //I am compressing this sin function by PI so that a half-period (in which the sin function >= 1) is completed with a x input of 0-1
+    let d = sin(PI*c*2); //I am compressing this sin function by PI so that a quarter-period (in which the sin function >= 1) is completed with a x input of 0-1
     let abDiff = abs(a - b); //find difference between two values
     let abDiffLerp = abDiff * d; //interpolate linearly
     let lerp = abDiffLerp + a; //add minium value to lerp of mean numbers to get lerp
@@ -122,22 +122,27 @@ function draw() {
     c = percentage to lerp (value between 0-1)
     d = transforms c into a sin-wave based interpolation
     ----------------------*/
-    let d = sin(PI*c); //I am compressing this sin function by PI so that a half-period (in which the sin function >= 1) is completed with a x input of 0-1
+    let d = sin(PI*c/2); //I am compressing this sin function by PI so that a half-period (in which the sin function >= 1) is completed with a x input of 0-1
     let abDiff = abs(a - b); //find difference between two values
     let abDiffLerp = abDiff * d; //interpolate linearly
     let lerp = abDiffLerp + a; //add minium value to lerp of mean numbers to get lerp
-
+    print(sin(PI))
     return lerp;
 //  console.log("lerp = " + lerp2(30,40,0.9));
   }
+let canvasSinIncrement = 0.05;
 
-  if (canvasHeightIncrease > 0) { //if canvasHeightIncrease is set to a postive number increase canvassize by canvasHeightIncreaseAmount
-    canvasHeightIncrease -= canvasHeightIncreaseIncrement;
+  if (cc < .82) { //if canvasHeightIncrease is set to a postive number increase canvassize by canvasHeightIncreaseAmount
+
+      cc += canvasSinIncrement;
+
     canvasHeight += canvasHeightIncreaseIncrement;
-    if (canvasHeightIncrease < 0)  { //incase the decrement overshot 0, make sure canvasHeightIncrease isn't a negative number;
-      canvasHeightIncrease = 0;
     }
-  }
+    else if (cc > 1){
+      cc = 1;
+    }
+canvasHeight = canvasHeightInitial + sininter(0,canvasHeightIncreaseAmount,cc) + (dodges*canvasHeightIncreaseAmount);
+
   if (canvasHeightIncrease < 0) {//if canvasHeightIncrease is set to a negative number then decrease canvas size until it is back to its initial height
     canvasHeightIncrease += canvasHeightIncreaseIncrement*3;
     canvasHeight -= canvasHeightIncreaseIncrement*3;
@@ -268,6 +273,7 @@ noiseDetail(4);
   if (enemyX > width) {
     // This means the player dodged so update its dodge statistic
     dodges ++;
+    cc = 0; //reset sinlerp amount
     if (dodges > highscore){ //set highscore to highest number of consecutive dodges
       highscore = dodges;
     }
