@@ -339,7 +339,7 @@ noiseDetail(4);
   //draw expanding hole in the middle of the enemy
 
   noiseDetail(2);
-  enemySizeGraphic = (noise(enemyX*noiseSpeed2))*enemySize/1.6 + enemySize/4;
+  enemySizeGraphic = (noise(enemyX*noiseSpeed2/(enemySize/50)))*enemySize/1.6 + enemySize/4;
   fill(0);
   ellipse(enemyX+enemyVX,enemyY+enemyYinc,enemySizeGraphic,enemySizeGraphic);
   //console.log("Enemy" + enemySizeGraphic)
