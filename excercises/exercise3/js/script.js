@@ -8,25 +8,29 @@ author, and this description to match your project!
 
 ******************/
 let dogIndex = [];
-let dog;
+let dog = [];
+let dogPop = 200; //population of dogs
 function preload() {
 let ii = i;
   for (var i = 0; i <= 10; i++) { //fills the array with all dog images
     ii = i;
-  dogIndex[i-1]=  loadImage("assets/images/animals-"+ii+".png");
+    dogIndex[i-1] = "assets/images/animals-"+ii+".png";
+
   }
-
-
+  //loads a random dogimage
+  for (var i = 0; i <= 9; i++) {
+    dog[i] = loadImage(dogIndex[i]);
+  }
 }
-let dogNumber = 0;
 
 function setup() {
-  while (dogNumber < 25){
-    dogNumber++;
-    image( dog[],random(width),random(height) );
-  }
+  imageMode(CENTER);
   createCanvas(windowWidth,windowHeight);
   background(250,240,70);
-  //loads a random dogimage
-image(dogIndex[round(random(9))]) ;
+  for (let i = 0; i < dogPop; i++ ) {
+  image(dog[round(random(9))],random(width),random(height));
+}
+
+
+
 }
