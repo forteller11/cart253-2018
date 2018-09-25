@@ -5,8 +5,8 @@ Starter code for exercise 2.
 *********************************************************/
 let canvasHeightInitial = 200; //initial canvas height;
 let canvasHeight = canvasHeightInitial; //set canvas height to initial canvas height
-let canvasHeightIncrease = 0; //amount of pixels to increase canvas;
-let canvasHeightIncreaseIncrement = 3; //amount to increase canvas height per frame until canvasHeightIncrease <= 0;
+
+
 let canvasHeightIncreaseAmount = 20; //value to increase height of canvas per dodge;
 var avatarX;
 var avatarY;
