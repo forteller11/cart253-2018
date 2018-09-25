@@ -10,11 +10,14 @@ author, and this description to match your project!
 let dogIndex = [];
 let dog = [];
 let dogPop = 20; //population of dogs
-let dogImageNumber = 11; //number of dog images
+let dogImageNumber = 11; //number of dog images in assets/images
+let waldoX;
+let waldoY;
 
 function preload() {
 let ii = i;
-  for (var i = 0; i <= dogImageNumber; i++) { //fills the array with all strings of all dog repositories
+//fills the array with all strings of all dog repositories
+  for (var i = 0; i <= dogImageNumber; i++) {
     ii = i;
     dogIndex[i-1] = "assets/images/animals-"+ii+".png";
 
@@ -32,9 +35,20 @@ function setup() {
 
   //spawn dogs
   for (let i = 0; i < dogPop; i++ ) {
-  image(dog[round(random(9))],random(width),random(height));
-  //spawn special dog;
-}
+    let index = round(random(9));
+    image(dog[index],random(width),random(height));
+  }
+
+
+  //spawn and display waldo
+  waldoX = random(width);
+  waldoY = random(height);
+  let index = round(random(9));
+  image(dog[index],random(width),random(height));
+
+
+
+
 
 
 
