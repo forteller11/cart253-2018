@@ -9,7 +9,7 @@ author, and this description to match your project!
 ******************/
 let dogIndex = [];
 let dog = [];
-let dogPop = 20; //population of dogs
+let dogPop = 0; //population of dogs
 let dogImageNumber = 11; //number of dog images in assets/images
 let waldoX;
 let waldoY;
@@ -30,10 +30,10 @@ let ii = i;
 
 function setup() {
   imageMode(CENTER);
-  createCanvas(windowWidth,windowHeight);
+  createCanvas(400,400);
   background(250,240,70);
 
-  //spawn dogs
+  //spawn random dogs randomly
   for (let i = 0; i < dogPop; i++ ) {
     let index = round(random(9));
     image(dog[index],random(width),random(height));
@@ -41,12 +41,24 @@ function setup() {
 
 
   //spawn and display waldo
+  imageMode(CENTER);
   waldoX = random(width);
   waldoY = random(height);
-  let index = round(random(9));
-  image(dog[index],random(width),random(height));
+  let waldoIndex = round(random(9));
+  waldoIndex = 10;
+  image(dog[waldoIndex],waldoX,waldoY);
+  waldoWidth = dog[waldoIndex].width/1.5;
+  print("waldo Width:"+waldoWidth);
+}
 
+function draw(){
 
+  //if mouse is on top of waldo...
+  if ( (mouseX > waldoX-waldoWidth/2) && (mouseX < waldoX + waldoWidth/2) ){
+    if ((mouseY > waldoY - waldoWidth/2) && (mouseY < waldoY + waldoWidth/2)){
+        print("I FOUND WALDO");
+    }
+  }
 
 
 
