@@ -9,10 +9,11 @@ author, and this description to match your project!
 ******************/
 let dogIndex = [];
 let dog = [];
-let dogPop = 20; //population of dogs
+let dogPop = 5; //population of dogs
 let dogImageNumber = 11; //number of dog images in assets/images
 let waldoX;
 let waldoY;
+let framesPressed; //tracks the frames for which mouse has been pressed
 
 function preload() {
 //fills the dogIndex array with strings/directories to all dog images
@@ -50,13 +51,21 @@ function setup() {
 }
 
 function draw(){
+  
+if (mouseIsPressed){
+  framesPressed ++;
+}
+else {
+  framesPressed = 0;
+}
 
-  //if mouse is on top of waldo...
-  if ( (mouseX > waldoX-waldoWidth/2) && (mouseX < waldoX + waldoWidth/2) ){
-    if ((mouseY > waldoY - waldoWidth/2) && (mouseY < waldoY + waldoWidth/2)){
-        print("I FOUND WALDO");
+  if (framesPressed == 1){ //if the mouse is being clicked and not held...
+    if ( (mouseX > waldoX-waldoWidth/2) && (mouseX < waldoX + waldoWidth/2) ){
+      if ((mouseY > waldoY - waldoWidth/2) && (mouseY < waldoY + waldoWidth/2)){
+          print("I FOUND WALDO");
+      }
     }
-  }
+}
 
 
 
