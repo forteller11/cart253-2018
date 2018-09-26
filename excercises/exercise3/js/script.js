@@ -65,7 +65,7 @@ function setup() {
   //set vars of waldo (position in play space)
   waldoX = random(waldoDisplayW);
   waldoXinitial = waldoX;
-  waldoY = random(playSpaceH)+waldoDisplayH;
+  waldoY = random(playSpaceH)+waldoDisplayH+avgImgW;
   waldoYinitial = waldoY;
   waldoWidth = dog[waldoIndex].width/1.5;
 }
@@ -122,10 +122,15 @@ else {
   }
 
   imageMode(CENTER);
-  //draws waldo in user interface space
-  image(dog[waldoIndex],width/2,waldoDisplayH/2+dog[waldoIndex].width/3,dog[waldoIndex].width*2,dog[waldoIndex].height*2);
+  //draw image at full opacity until waldoYinc decreases (gamestate = won)
+  tint(255, (waldoYinc+1)*255);
   //draw waldo in game-space
   image(dog[waldoIndex],waldoX,waldoY);
+  //draws at full opacity
+  tint(255, 255);
+  //draws waldo in user interface space
+  image(dog[waldoIndex],width/2,waldoDisplayH/2+dog[waldoIndex].width/3,dog[waldoIndex].width*2,dog[waldoIndex].height*2);
+
 
 }
 
