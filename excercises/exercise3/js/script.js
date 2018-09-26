@@ -9,18 +9,21 @@ author, and this description to match your project!
 ******************/
 let dogIndex = [];
 let dog = [];
-let dogPop = 5; //population of dogs
+let dogPop = 20; //population of dogs
 let dogImageNumber = 11; //number of dog images in assets/images
 let waldoX;
 let waldoY;
 let framesPressed; //tracks the frames for which mouse has been pressed
-
+let waldoDisplayW = 400; //size of canvas in which to display target dog (waldo)
+let waldoDisplayH = waldoDisplayW;
+let playSpaceH = waldoDisplayH*8; //play space is area to spawn dogs in
+let avgImgW = 128; //avg img width
 function preload() {
 //fills the dogIndex array with strings/directories to all dog images
   for (var i = 0; i <= dogImageNumber; i++) {
     dogIndex[i-1] = "assets/images/animals-"+i+".png";
-
   }
+
   //fills the dog array with images containing all dog images
   for (var i = 0; i <= dogImageNumber-1; i++) {
     dog[i] = loadImage(dogIndex[i]);
@@ -28,21 +31,28 @@ function preload() {
 }
 
 function setup() {
+
+  createCanvas(400,waldoDisplayH+playSpaceH);
+  imageMode(CORNER);
+  noStroke();
+  fill(250,240,70);
+  rect(0,0,waldoDisplayW,waldoDisplayH); //fills dog-space in with yellow
+  imageMode(CORNER);
+  fill(250,40,20);
+  rect(0,waldoDisplayH,width,height); //fills in user-interface-space with white;
   imageMode(CENTER);
-  createCanvas(400,400);
-  background(250,240,70);
 
   //spawn random dogs randomly
   for (let i = 0; i < dogPop; i++ ) {
     let index = round(random(9));
-    image(dog[index],random(width),random(height));
+    image(dog[index],random(waldoDisplayW),avgImgW+random(playSpaceH-64)+waldoDisplayH);
   }
 
 
   //spawn and display waldo
   imageMode(CENTER);
-  waldoX = random(width);
-  waldoY = random(height);
+  waldoX = random(waldoDisplayW);
+  waldoY = random(playSpaceH)+waldoDisplayH;
   let waldoIndex = round(random(9));
   waldoIndex = 10;
   image(dog[waldoIndex],waldoX,waldoY);
@@ -51,7 +61,7 @@ function setup() {
 }
 
 function draw(){
-  
+
 if (mouseIsPressed){
   framesPressed ++;
 }
