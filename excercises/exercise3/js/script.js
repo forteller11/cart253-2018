@@ -35,11 +35,11 @@ function setup() {
   createCanvas(400,waldoDisplayH+playSpaceH);
   imageMode(CORNER);
   noStroke();
-  fill(250,240,70);
-  rect(0,0,waldoDisplayW,waldoDisplayH); //fills dog-space in with yellow
+  fill(250,240,70);//yellow
+  rect(0,0,waldoDisplayW,waldoDisplayH); //fills in UI space
   imageMode(CORNER);
-  fill(250,40,20);
-  rect(0,waldoDisplayH,width,height); //fills in user-interface-space with white;
+  fill(250,40,20);//red
+  rect(0,waldoDisplayH,width,height); //fills in dog-space;
   imageMode(CENTER);
 
   //spawn random dogs randomly
