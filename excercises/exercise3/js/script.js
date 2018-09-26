@@ -9,7 +9,7 @@ author, and this description to match your project!
 ******************/
 let dogIndex = [];
 let dog = [];
-let dogPop = 20; //population of dogs
+let dogPop = 200; //population of dogs
 let dogImageNumber = 11; //number of dog images in assets/images
 let waldoX;
 let waldoY;
@@ -18,6 +18,7 @@ let waldoDisplayW = 400; //size of canvas in which to display target dog (waldo)
 let waldoDisplayH = waldoDisplayW;
 let playSpaceH = waldoDisplayH*8; //play space is area to spawn dogs in
 let avgImgW = 128; //avg img width
+let fontSize = 60;
 function preload() {
 //fills the dogIndex array with strings/directories to all dog images
   for (var i = 0; i <= dogImageNumber; i++) {
@@ -45,19 +46,24 @@ function setup() {
   //spawn random dogs randomly
   for (let i = 0; i < dogPop; i++ ) {
     let index = round(random(9));
-    image(dog[index],random(waldoDisplayW),avgImgW+random(playSpaceH-64)+waldoDisplayH);
+    image(dog[index],random(waldoDisplayW),waldoDisplayH+avgImgW+random(playSpaceH-avgImgW));
   }
 
 
-  //spawn and display waldo
+  //spawn and display waldo in play-space
   imageMode(CENTER);
   waldoX = random(waldoDisplayW);
   waldoY = random(playSpaceH)+waldoDisplayH;
   let waldoIndex = round(random(9));
-  waldoIndex = 10;
+
   image(dog[waldoIndex],waldoX,waldoY);
   waldoWidth = dog[waldoIndex].width/1.5;
   print("waldo Width:"+waldoWidth);
+  //spawns waldo in user interface space
+  image(dog[waldoIndex],width/2,waldoDisplayH/2+dog[waldoIndex].width/3,dog[waldoIndex].width*2,dog[waldoIndex].height*2);
+  textSize(fontSize);
+  textAlign(CENTER);
+  text("find me",width/2,fontSize*1.4);
 }
 
 function draw(){
