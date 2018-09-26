@@ -13,7 +13,10 @@ let dog = [];
 let dogPop = 20; //population of dogs
 let dogImageNumber = 11; //number of dog images in assets/images
 let waldoX;
+let waldoXinitial;
 let waldoY;
+let waldoYinitial;
+let waldoYinc = 0; //rate at which to interpolate waldo's Y pos
 let framesPressed; //tracks the frames for which mouse has been pressed
 let waldoDisplayW = 400; //size of canvas in which to display target dog (waldo)
 let waldoDisplayH = waldoDisplayW;
@@ -61,7 +64,9 @@ function setup() {
 
   //set vars of waldo (position in play space)
   waldoX = random(waldoDisplayW);
+  waldoXinitial = waldoX;
   waldoY = random(playSpaceH)+waldoDisplayH;
+  waldoYinitial = waldoY;
   waldoWidth = dog[waldoIndex].width/1.5;
 }
 
@@ -96,7 +101,18 @@ else {
     textAlign(CENTER);
     fill(250,40,20);
     text("YOU FOUND ME",width/2,fontSize*1.4);
+    if (waldoYinc > -1){
+      waldoYinc -= 0.05;
+      waldoY = sininter(waldoYinitial,waldoDisplayH/2+dog[waldoIndex].width/3,waldoYinc);
+      waldoX = sininter(waldoXinitial,width/2,waldoYinc);
+      print(waldoYinc);
+
+    }
+    else {
+      waldoYinc = -1;
+    }
   }
+
   else {
     //display text in user interface space
     fill(250,40,20);
@@ -111,4 +127,19 @@ else {
   //draw waldo in game-space
   image(dog[waldoIndex],waldoX,waldoY);
 
+}
+
+function sininter (a,b,c) { //interpolates between two values by a percentage according to a sin wave
+  /*--------------------
+  a = value1
+  b = value2
+  c = percentage to lerp (value between 0 = value a; 1 = value b)
+  d = transforms c into a sin-wave based interpolation
+  ----------------------*/
+  //compression by pi and stretch by 2 so that if an input of 0-1 will result in output of a-b
+  let d = sin(PI*c/2);
+  let abDiff = abs(a - b); //find difference between two values
+  let abDiffLerp = abDiff * d; //interpolate linearly
+  let lerp = abDiffLerp + a; //add minium value to lerp of mean numbers to get lerp
+  return lerp;
 }
