@@ -9,20 +9,18 @@ author, and this description to match your project!
 ******************/
 let dogIndex = [];
 let dog = [];
-let dogPop = 0; //population of dogs
+let dogPop = 20; //population of dogs
 let dogImageNumber = 11; //number of dog images in assets/images
 let waldoX;
 let waldoY;
 
 function preload() {
-let ii = i;
-//fills the array with all strings of all dog repositories
+//fills the dogIndex array with strings/directories to all dog images
   for (var i = 0; i <= dogImageNumber; i++) {
-    ii = i;
-    dogIndex[i-1] = "assets/images/animals-"+ii+".png";
+    dogIndex[i-1] = "assets/images/animals-"+i+".png";
 
   }
-  //loads a random dogimage
+  //fills the dog array with images containing all dog images
   for (var i = 0; i <= dogImageNumber-1; i++) {
     dog[i] = loadImage(dogIndex[i]);
   }
