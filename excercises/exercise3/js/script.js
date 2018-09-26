@@ -9,7 +9,7 @@ author, and this description to match your project!
 ******************/
 let dogIndex = [];
 let dog = [];
-let dogPop = 200; //population of dogs
+let dogPop = 2; //population of dogs
 let dogImageNumber = 11; //number of dog images in assets/images
 let waldoX;
 let waldoY;
@@ -32,7 +32,7 @@ function preload() {
 }
 
 function setup() {
-
+  //create canvas, fill WaldoDisplay and playarea with distinct colors
   createCanvas(400,waldoDisplayH+playSpaceH);
   imageMode(CORNER);
   noStroke();
@@ -43,9 +43,15 @@ function setup() {
   rect(0,waldoDisplayH,width,height); //fills in dog-space;
   imageMode(CENTER);
 
+  //set index of waldo (animal to be found)
+  let waldoIndex = round(random(9));
+
   //spawn random dogs randomly
   for (let i = 0; i < dogPop; i++ ) {
     let index = round(random(9));
+    while (index === waldoIndex){ //make sure a waldo-type-dog isn't spawned
+      index = round(random(9));
+    }
     image(dog[index],random(waldoDisplayW),waldoDisplayH+avgImgW+random(playSpaceH-avgImgW));
   }
 
@@ -54,7 +60,7 @@ function setup() {
   imageMode(CENTER);
   waldoX = random(waldoDisplayW);
   waldoY = random(playSpaceH)+waldoDisplayH;
-  let waldoIndex = round(random(9));
+
 
   image(dog[waldoIndex],waldoX,waldoY);
   waldoWidth = dog[waldoIndex].width/1.5;
@@ -75,7 +81,7 @@ else {
   framesPressed = 0;
 }
 
-  if (framesPressed == 1){ //if the mouse is being clicked and not held...
+  if (framesPressed === 1){ //if the mouse is being clicked and not held...
     if ( (mouseX > waldoX-waldoWidth/2) && (mouseX < waldoX + waldoWidth/2) ){
       if ((mouseY > waldoY - waldoWidth/2) && (mouseY < waldoY + waldoWidth/2)){
           print("I FOUND WALDO");
