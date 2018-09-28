@@ -10,7 +10,7 @@ so because of this var names tend to feature the word "dog";
 ******************/
 let dogIndex = [];
 let dog = [];
-let dogPop = 20; //population of dogs
+let dogPop = 30; //population of dogs
 let dogImageNumber = 11; //number of dog images in assets/images
 let waldoX;
 let waldoXinitial;
@@ -25,10 +25,12 @@ let playSpaceH = waldoDisplayH*8; //play space is area to spawn dogs in
 let avgImgW = 128; //avg img width
 let fontSize = 60;
 let win = false; //have you found waldo? FALSE
+
+//preload: fills array "dog[]" with all animal images
 function preload() {
 //fills the dogIndex array with strings/directories to all dog images
   for (var i = 0; i <= dogImageNumber; i++) {
-    dogIndex[i-1] = "assets/images/animals-"+i+".png";
+    dogIndex[i-1] = "assets/abstract_images/animals-"+i+".png";
   }
 
   //fills the dog array with images containing all dog images
@@ -36,6 +38,7 @@ function preload() {
     dog[i] = loadImage(dogIndex[i]);
   }
 }
+
 
 function setup() {
   //create canvas, fill WaldoDisplay and playarea with distinct colors
@@ -49,20 +52,21 @@ function setup() {
   rect(0,waldoDisplayH,width,height); //fills in dog-space;
 
 
-  //set index of waldo (animal to be found)
+  //set index of waldo (animal to be found) to random animal/image
   waldoIndex = round(random(9));
 
-  //spawn random dogs randomly
+  //spawn non waldo-animals randomly in play-space
   for (let i = 0; i < dogPop; i++ ) {
-    let index = round(random(9));
+    let index = round(random(9)); //random dog image index
     while (index === waldoIndex){ //make sure a waldo-type-dog isn't spawned
       index = round(random(9));
     }
-    image(dog[index],random(waldoDisplayW),waldoDisplayH+avgImgW+random(playSpaceH-avgImgW));
+    image(dog[index],random(waldoDisplayW),waldoDisplayH+avgImgW+random(playSpaceH-avgImgW),avgImgW,avgImgW);
+
   }
 
 
-  //set vars of waldo (position in play space)
+  //set or get vars of waldo image
   waldoX = random(waldoDisplayW);
   waldoXinitial = waldoX;
   waldoY = random(playSpaceH)+waldoDisplayH+avgImgW;
@@ -75,6 +79,7 @@ function draw(){
   fill(250,240,70);//yellow
   rect(0,0,waldoDisplayW,waldoDisplayH); //fills in UI space
 
+//Allows program to know if mouse is being pressed, held, and for how many frames
 if (mouseIsPressed){
   framesPressed ++;
 }
@@ -83,37 +88,38 @@ else {
 }
 
   if (framesPressed === 1){ //if the mouse is being clicked and not held...
+    //if mouse is ontop of waldo
     if ( (mouseX > waldoX-waldoWidth/2) && (mouseX < waldoX + waldoWidth/2) ){
       if ((mouseY > waldoY - waldoWidth/2) && (mouseY < waldoY + waldoWidth/2)){
           print("I FOUND WALDO");
           win = true;
-
       }
     }
   }
 
-
+  //if waldo has been clicked
   if (win === true){
-    fill(250,40,20,20);//red
-    rect(0,waldoDisplayH,width,height); //fills in dog-space;
-    //display text in user interface space
+    //slowly fill in playspace with color, obscuring all non-waldo animals
+    fill(250,40,20,20);
+    rect(0,waldoDisplayH,width,height);
+    //display text YOU FOUND ME in user interface space
     textSize(fontSize*0.7);
     textAlign(CENTER);
     fill(250,40,20);
     text("YOU FOUND ME",width/2,fontSize*1.4);
+    //interpolate playspace waldo's position until it equals UI waldo
     if (waldoYinc > -1){
       waldoYinc -= 0.05;
       waldoY = sininter(waldoYinitial,waldoDisplayH/2+dog[waldoIndex].width/3,waldoYinc);
       waldoX = sininter(waldoXinitial,width/2,waldoYinc);
       print(waldoYinc);
-
     }
     else {
       waldoYinc = -1;
     }
   }
 
-  else {
+  else { //if win != true...
     //display text in user interface space
     fill(250,40,20);
     textSize(fontSize);
@@ -121,12 +127,13 @@ else {
     text("find me",width/2,fontSize*1.4);
   }
 
+  //draw waldos...
   imageMode(CENTER);
-  //draw image at full opacity until waldoYinc decreases (gamestate = won)
+  //draw image at full opacity until win, then fade out as gamespace waldo meets UI waldo
   tint(255, (waldoYinc+1)*255);
   //draw waldo in game-space
   image(dog[waldoIndex],waldoX,waldoY);
-  //draws at full opacity
+  //draws UI waldo at full opacity ALWAYS
   tint(255, 255);
   //draws waldo in user interface space
   image(dog[waldoIndex],width/2,waldoDisplayH/2+dog[waldoIndex].width/3,dog[waldoIndex].width*2,dog[waldoIndex].height*2);
