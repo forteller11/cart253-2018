@@ -10,6 +10,9 @@ so because of this var names tend to feature the word "dog";
 ******************/
 let dogIndex = [];
 let dog = [];
+let findMe;
+let youFoundMe;
+let frame;
 let dogPop = 30; //population of dogs
 let dogImageNumber = 11; //number of dog images in assets/images
 let waldoX;
@@ -22,9 +25,12 @@ let waldoDisplayW = 400; //size of canvas in which to display target dog (waldo)
 let waldoDisplayH = waldoDisplayW;
 let waldoIndex; //make index of waldo a global var
 let playSpaceH = waldoDisplayH*8; //play space is area to spawn dogs in
-let avgImgW = 128; //avg img width
+let imgW = 128; //avg img width
 let fontSize = 60;
 let win = false; //have you found waldo? FALSE
+let r = 250;
+let g = 240;
+let b = 70;
 
 //preload: fills array "dog[]" with all animal images
 function preload() {
@@ -37,6 +43,11 @@ function preload() {
   for (var i = 0; i <= dogImageNumber-1; i++) {
     dog[i] = loadImage(dogIndex[i]);
   }
+
+  //load UI
+  findMe = loadImage("assets/abstract_images/UI-find_me.png");
+  youFoundMe = loadImage("assets/abstract_images/UI-you_found_me.png");
+  frame = loadImage("assets/abstract_images/UI-frame.png");
 }
 
 
@@ -45,10 +56,9 @@ function setup() {
   createCanvas(400,waldoDisplayH+playSpaceH);
 
   noStroke();
-  fill(250,240,70);//yellow
   rect(0,0,waldoDisplayW,waldoDisplayH); //fills in UI space
 
-  fill(250,40,20);//red
+  fill(r,g,b);//red
   rect(0,waldoDisplayH,width,height); //fills in dog-space;
 
 
@@ -61,7 +71,7 @@ function setup() {
     while (index === waldoIndex){ //make sure a waldo-type-dog isn't spawned
       index = round(random(9));
     }
-    image(dog[index],random(waldoDisplayW),waldoDisplayH+avgImgW+random(playSpaceH-avgImgW),avgImgW,avgImgW);
+    image(dog[index],random(waldoDisplayW),waldoDisplayH+imgW+random(playSpaceH-imgW),imgW,imgW);
 
   }
 
@@ -69,14 +79,13 @@ function setup() {
   //set or get vars of waldo image
   waldoX = random(waldoDisplayW);
   waldoXinitial = waldoX;
-  waldoY = random(playSpaceH)+waldoDisplayH+avgImgW;
+  waldoY = random(playSpaceH)+waldoDisplayH+imgW;
   waldoYinitial = waldoY;
   waldoWidth = dog[waldoIndex].width/1.5;
 }
 
 function draw(){
   //fill displaySPace with yellow
-  fill(250,240,70);//yellow
   rect(0,0,waldoDisplayW,waldoDisplayH); //fills in UI space
 
 //Allows program to know if mouse is being pressed, held, and for how many frames
@@ -100,13 +109,10 @@ else {
   //if waldo has been clicked
   if (win === true){
     //slowly fill in playspace with color, obscuring all non-waldo animals
-    fill(250,40,20,20);
+    fill(r,g,b,20);
     rect(0,waldoDisplayH,width,height);
-    //display text YOU FOUND ME in user interface space
-    textSize(fontSize*0.7);
-    textAlign(CENTER);
-    fill(250,40,20);
-    text("YOU FOUND ME",width/2,fontSize*1.4);
+    //display  YOU FOUND ME in user interface space
+    image(youFoundMe,width/2,waldoDisplayH/7,youFoundMe.width*waldoDisplayW/900,youFoundMe.height*waldoDisplayW/900);
     //interpolate playspace waldo's position until it equals UI waldo
     if (waldoYinc > -1){
       waldoYinc -= 0.05;
@@ -120,11 +126,9 @@ else {
   }
 
   else { //if win != true...
-    //display text in user interface space
-    fill(250,40,20);
-    textSize(fontSize);
-    textAlign(CENTER);
-    text("find me",width/2,fontSize*1.4);
+    //display "find me" in user interface space
+    fill(r,g,b);
+    image(findMe,width/2,waldoDisplayH/7,findMe.width*waldoDisplayW/900,findMe.height*waldoDisplayW/900);
   }
 
   //draw waldos...
@@ -132,11 +136,12 @@ else {
   //draw image at full opacity until win, then fade out as gamespace waldo meets UI waldo
   tint(255, (waldoYinc+1)*255);
   //draw waldo in game-space
-  image(dog[waldoIndex],waldoX,waldoY);
+  image(dog[waldoIndex],waldoX,waldoY,imgW,imgW);
   //draws UI waldo at full opacity ALWAYS
   tint(255, 255);
-  //draws waldo in user interface space
-  image(dog[waldoIndex],width/2,waldoDisplayH/2+dog[waldoIndex].width/3,dog[waldoIndex].width*2,dog[waldoIndex].height*2);
+  //draws waldo and frame in user interface space
+  image(dog[waldoIndex],width/2,waldoDisplayH/1.6,waldoDisplayW/1.4,waldoDisplayW/1.4);
+  image(frame,width/2,waldoDisplayH/1.6,waldoDisplayW/1.3,waldoDisplayW/1.3);
 
 
 }
