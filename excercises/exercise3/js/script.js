@@ -15,6 +15,7 @@ let findMe; //img of text "find me"
 let youFoundMe; //img of text "YOU FOUND ME"
 let frame; //img of frame sourronding UI
 let facePop = 90; //population of faces
+let facePopExtra = 0; //number of faces more than starting facePop
 let faceImageNumber = 11; //number of face-images in assets/images
 let waldoX;
 let waldoXinitial;
@@ -87,15 +88,25 @@ else {
   framesPressed = 0;
 }
 
-  if (framesPressed === 1){ //if the mouse is being clicked and not held...
+  if (framesPressed === 1) { //if the mouse is being clicked and not held...
     //if mouse is ontop of waldo
     if ( (mouseX > waldoX-waldoWidth/2) && (mouseX < waldoX + waldoWidth/2) ){
       if ((mouseY > waldoY - waldoWidth/2) && (mouseY < waldoY + waldoWidth/2)){
           print("I FOUND WALDO");
           win = true;
       }
+
     }
-  }
+    //if player clicks something besides waldo, spawn a head which looks like waldo
+    else {
+      facePopExtra ++;
+      face [facePop + facePopExtra] = new Face;
+      face[facePop + facePopExtra].index = waldoIndex;
+      face[facePop + facePopExtra].display();
+    }
+    }
+
+
 
   //if waldo has been clicked
   if (win === true){
