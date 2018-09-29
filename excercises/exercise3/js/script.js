@@ -8,14 +8,14 @@ author, and this description to match your project!
 Sidenote: I kinda thought all the animals were faces for some reason,
 so because of this var names tend to feature the word "face";
 ******************/
-let faceIndex = [];
-let faceImg = [];
-let Face = {}; //class of faces
-let findMe;
-let youFoundMe;
-let frame;
+let faceIndex = []; //containing strings of file directories
+let faceImg = []; //containing images of faces
+let face = []; //containg face objs
+let findMe; //img of text "find me"
+let youFoundMe; //img of text "YOU FOUND ME"
+let frame; //img of frame sourronding UI
 let facePop = 30; //population of faces
-let faceImageNumber = 11; //number of face images in assets/images
+let faceImageNumber = 11; //number of face-images in assets/images
 let waldoX;
 let waldoXinitial;
 let waldoY;
@@ -55,39 +55,30 @@ function preload() {
 function setup() {
   //create canvas, fill WaldoDisplay and playarea with distinct colors
   createCanvas(400,waldoDisplayH+playSpaceH);
+  background(r,g,b);
 
   noStroke();
-  rect(0,0,waldoDisplayW,waldoDisplayH); //fills in UI space
 
-  fill(r,g,b);//red
-  rect(0,waldoDisplayH,width,height); //fills in faceImg-space;
-
-
+  //spawn and set waldo vars
   //set index of waldo (animal to be found) to random animal/image
   waldoIndex = round(random(9));
-
-  //spawn non waldo-animals randomly in play-space
-  for (let i = 0; i < facePop; i++ ) {
-    let index = round(random(9)); //random face image index
-    while (index === waldoIndex){ //make sure a waldo-type-face isn't spawned
-      index = round(random(9));
-    }
-    image(faceImg[index],random(waldoDisplayW),waldoDisplayH+imgW+random(playSpaceH-imgW),imgW,imgW);
-
-  }
-
-
   //set or get vars of waldo image
   waldoX = random(waldoDisplayW);
   waldoXinitial = waldoX;
   waldoY = random(playSpaceH)+waldoDisplayH+imgW;
   waldoYinitial = waldoY;
   waldoWidth = faceImg[waldoIndex].width/1.5;
+
+  //spawn all non-waldo faces
+  for (let i = 0; i < facePop; i++ ) {
+  face[i] = new Face;
+  face[i].display();
+  }
 }
 
 function draw(){
   //fill displaySPace with yellow
-  rect(0,0,waldoDisplayW,waldoDisplayH); //fills in UI space
+//  background(r,g,b);
 
 //Allows program to know if mouse is being pressed, held, and for how many frames
 if (mouseIsPressed){
@@ -109,6 +100,8 @@ else {
 
   //if waldo has been clicked
   if (win === true){
+    fill(r,g,b);
+    rect(0,0,waldoDisplayW,waldoDisplayH); //fills in UI space
     //slowly fill in playspace with color, obscuring all non-waldo animals
     fill(r,g,b,20);
     rect(0,waldoDisplayH,width,height);
@@ -122,12 +115,14 @@ else {
       print(waldoYinc);
     }
     else {
+
       waldoYinc = -1;
     }
   }
 
   else { //if win != true...
     //display "find me" in user interface space
+    rect(0,0,waldoDisplayW,waldoDisplayH); //fills in UI space
     fill(r,g,b);
     image(findMe,width/2,waldoDisplayH/7,findMe.width*waldoDisplayW/900,findMe.height*waldoDisplayW/900);
   }
@@ -144,8 +139,39 @@ else {
   image(faceImg[waldoIndex],width/2,waldoDisplayH/1.6,waldoDisplayW/1.4,waldoDisplayW/1.4);
   image(frame,width/2,waldoDisplayH/1.6,waldoDisplayW/1.3,waldoDisplayW/1.3);
 
+  //draw face populationfor (let i = 0; i < facePop; i++ ) {
+
+
 
 }
+class Face {
+  constructor () {
+  //spawn non waldo-animals randomly in play-space
+    this.index = round(random(9)); //random face image index
+    while (this.index === waldoIndex){ //make sure a waldo-type-face isn't spawned
+      this.index = round(random(9));
+    }
+    this.x = random(waldoDisplayW);
+    this.y = waldoDisplayH+imgW+random(playSpaceH-imgW);
+    this.w = imgW;
+    this.h = imgW;
+  }
+
+  display (){
+    image(faceImg[this.index],this.x,this.y,this.w,this.h);
+  }
+
+  move (x,y){
+    //x = dist x to move
+    //y = dist y to move
+
+    this.x += x;
+    this.y += y;
+  }
+
+
+}
+
 
 function sininter (a,b,c) { //interpolates between two values by a percentage according to a sin wave
   /*--------------------
