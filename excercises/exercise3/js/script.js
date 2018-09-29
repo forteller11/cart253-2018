@@ -5,26 +5,27 @@ Charly Yan Miller
 
 This is a template. You must fill in the title,
 author, and this description to match your project!
-Sidenote: I kinda thought all the animals were dogs for some reason,
-so because of this var names tend to feature the word "dog";
+Sidenote: I kinda thought all the animals were faces for some reason,
+so because of this var names tend to feature the word "face";
 ******************/
-let dogIndex = [];
-let dog = [];
+let faceIndex = [];
+let faceImg = [];
+let Face = {}; //class of faces
 let findMe;
 let youFoundMe;
 let frame;
-let dogPop = 30; //population of dogs
-let dogImageNumber = 11; //number of dog images in assets/images
+let facePop = 30; //population of faces
+let faceImageNumber = 11; //number of face images in assets/images
 let waldoX;
 let waldoXinitial;
 let waldoY;
 let waldoYinitial;
 let waldoYinc = 0; //rate at which to interpolate waldo's Y pos
 let framesPressed; //tracks the frames for which mouse has been pressed
-let waldoDisplayW = 400; //size of canvas in which to display target dog (waldo)
+let waldoDisplayW = 400; //size of canvas in which to display target face (waldo)
 let waldoDisplayH = waldoDisplayW;
 let waldoIndex; //make index of waldo a global var
-let playSpaceH = waldoDisplayH*8; //play space is area to spawn dogs in
+let playSpaceH = waldoDisplayH*8; //play space is area to spawn faces in
 let imgW = 128; //avg img width
 let fontSize = 60;
 let win = false; //have you found waldo? FALSE
@@ -32,16 +33,16 @@ let r = 250;
 let g = 240;
 let b = 70;
 
-//preload: fills array "dog[]" with all animal images
+//preload: fills array "faceImg[]" with all animal images; loads UI assets
 function preload() {
-//fills the dogIndex array with strings/directories to all dog images
-  for (var i = 0; i <= dogImageNumber; i++) {
-    dogIndex[i-1] = "assets/abstract_images/animals-"+i+".png";
+//fills the faceIndex array with strings/directories to all face images
+  for (var i = 0; i <= faceImageNumber; i++) {
+    faceIndex[i-1] = "assets/abstract_images/animals-"+i+".png";
   }
 
-  //fills the dog array with images containing all dog images
-  for (var i = 0; i <= dogImageNumber-1; i++) {
-    dog[i] = loadImage(dogIndex[i]);
+  //fills the face array with images containing all face images
+  for (var i = 0; i <= faceImageNumber-1; i++) {
+    faceImg[i] = loadImage(faceIndex[i]);
   }
 
   //load UI
@@ -59,19 +60,19 @@ function setup() {
   rect(0,0,waldoDisplayW,waldoDisplayH); //fills in UI space
 
   fill(r,g,b);//red
-  rect(0,waldoDisplayH,width,height); //fills in dog-space;
+  rect(0,waldoDisplayH,width,height); //fills in faceImg-space;
 
 
   //set index of waldo (animal to be found) to random animal/image
   waldoIndex = round(random(9));
 
   //spawn non waldo-animals randomly in play-space
-  for (let i = 0; i < dogPop; i++ ) {
-    let index = round(random(9)); //random dog image index
-    while (index === waldoIndex){ //make sure a waldo-type-dog isn't spawned
+  for (let i = 0; i < facePop; i++ ) {
+    let index = round(random(9)); //random face image index
+    while (index === waldoIndex){ //make sure a waldo-type-face isn't spawned
       index = round(random(9));
     }
-    image(dog[index],random(waldoDisplayW),waldoDisplayH+imgW+random(playSpaceH-imgW),imgW,imgW);
+    image(faceImg[index],random(waldoDisplayW),waldoDisplayH+imgW+random(playSpaceH-imgW),imgW,imgW);
 
   }
 
@@ -81,7 +82,7 @@ function setup() {
   waldoXinitial = waldoX;
   waldoY = random(playSpaceH)+waldoDisplayH+imgW;
   waldoYinitial = waldoY;
-  waldoWidth = dog[waldoIndex].width/1.5;
+  waldoWidth = faceImg[waldoIndex].width/1.5;
 }
 
 function draw(){
@@ -116,7 +117,7 @@ else {
     //interpolate playspace waldo's position until it equals UI waldo
     if (waldoYinc > -1){
       waldoYinc -= 0.05;
-      waldoY = sininter(waldoYinitial,waldoDisplayH/2+dog[waldoIndex].width/3,waldoYinc);
+      waldoY = sininter(waldoYinitial,waldoDisplayH/2+faceImg[waldoIndex].width/3,waldoYinc);
       waldoX = sininter(waldoXinitial,width/2,waldoYinc);
       print(waldoYinc);
     }
@@ -136,11 +137,11 @@ else {
   //draw image at full opacity until win, then fade out as gamespace waldo meets UI waldo
   tint(255, (waldoYinc+1)*255);
   //draw waldo in game-space
-  image(dog[waldoIndex],waldoX,waldoY,imgW,imgW);
+  image(faceImg[waldoIndex],waldoX,waldoY,imgW,imgW);
   //draws UI waldo at full opacity ALWAYS
   tint(255, 255);
   //draws waldo and frame in user interface space
-  image(dog[waldoIndex],width/2,waldoDisplayH/1.6,waldoDisplayW/1.4,waldoDisplayW/1.4);
+  image(faceImg[waldoIndex],width/2,waldoDisplayH/1.6,waldoDisplayW/1.4,waldoDisplayW/1.4);
   image(frame,width/2,waldoDisplayH/1.6,waldoDisplayW/1.3,waldoDisplayW/1.3);
 
 
