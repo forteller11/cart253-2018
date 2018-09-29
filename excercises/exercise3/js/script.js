@@ -97,14 +97,14 @@ else {
       }
 
     }
-    //if player clicks something besides waldo, spawn a head which looks like waldo
-    else {
-      facePopExtra ++;
-      face [facePop + facePopExtra] = new Face;
-      face[facePop + facePopExtra].index = waldoIndex;
-      face[facePop + facePopExtra].display();
-    }
-    }
+  }
+  //if mouse clicks NOT on waldo, spawn random waldo-looking face
+  if ((framesPressed === 1)&&( win === false)) {
+    facePopExtra ++;
+    face [facePop + facePopExtra] = new Face;
+    face[facePop + facePopExtra].index = waldoIndex;
+    face[facePop + facePopExtra].display();
+  }
 
 
 
