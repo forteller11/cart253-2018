@@ -11,10 +11,12 @@ so because of this var names tend to feature the word "face";
 let faceIndex = []; //containing strings of file directories
 let faceImg = []; //containing images of faces
 let face = []; //containg face objs
-let findMe; //img of text "find me"
-let youFoundMe; //img of text "YOU FOUND ME"
-let frame; //img of frame sourronding UI
-let facePop = 40; //population of faces
+let findMeImg; //img of text "find me"
+let youFoundMeImg; //img of text "YOU FOUND ME"
+let youFoundMe = [];
+let youFoundMeExists = false; //does instance youFoundMe exist?
+let frameImg; //img of frame sourronding UI
+let facePop = 5; //population of faces
 let facePopExtra = 0; //number of faces more than starting facePop
 let faceImageNumber = 11; //number of face-images in assets/images
 let waldoX;
@@ -47,9 +49,9 @@ function preload() {
   }
 
   //load UI
-  findMe = loadImage("assets/abstract_images/UI-find_me.png");
-  youFoundMe = loadImage("assets/abstract_images/UI-you_found_me.png");
-  frame = loadImage("assets/abstract_images/UI-frame.png");
+  findMeImg = loadImage("assets/abstract_images/UI-find_me.png");
+  youFoundMeImg = loadImage("assets/abstract_images/UI-you_found_me.png");
+  frameImg = loadImage("assets/abstract_images/UI-frame.png");
 }
 /*------------------------------------------
 Setupfunction:
@@ -76,7 +78,7 @@ function setup() {
 
   //spawn all non-waldo faces
   for (let i = 0; i < facePop; i++ ) {
-  face[i] = new Face;
+  face[i] = new Face();
   face[i].display(255);
   }
 }
@@ -112,12 +114,25 @@ else {
   if (win === true){
 
     //slowly fade out facesand leave a brief trail with all moving objs
-    background(r,g,b,4);
+    background(r,g,b,150);
     //display  YOU FOUND ME in user interface space, randomly flash faces
     for (i = 0; i < facePop; i ++){
     }
     face[round(random(facePop-1))].display(50);
-    image(youFoundMe,width/2,waldoDisplayH/7,youFoundMe.width*waldoDisplayW/900,youFoundMe.height*waldoDisplayW/900);
+    if (youFoundMeExists === false){ //if text "youFoundMe" doesn't exist, create instances
+      for (i = 0; i < 12; i ++){
+        youFoundMe[i] = new YouFoundMe(width/2,i*height/12,youFoundMeImg.width*waldoDisplayW/900,youFoundMeImg.height*waldoDisplayW/900);
+        youFoundMeExists = true;
+      }
+    }
+     //if instance of texts does exist, draw it, and translate it down
+     else {
+       for (i = 0; i < 12; i ++){
+        youFoundMe[i].display();
+        youFoundMe[i].move(0,20);
+      }
+    }
+
     //interpolate playspace waldo's position until it equals UI waldo
     if (waldoYinc > -1){
       waldoYinc -= 0.05;
@@ -129,9 +144,9 @@ else {
 
   else { //if win != true...
     //display "find me" in user interface space
-    rect(0,0,waldoDisplayW,waldoDisplayH); //fills in UI space
     fill(r,g,b);
-    image(findMe,width/2,waldoDisplayH/7,findMe.width*waldoDisplayW/900,findMe.height*waldoDisplayW/900);
+    rect(0,0,waldoDisplayW,waldoDisplayH); //fills in UI space
+    image(findMeImg,width/2,waldoDisplayH/7,findMeImg.width*waldoDisplayW/900,findMeImg.height*waldoDisplayW/900);
   }
 
   //draw waldos...
@@ -144,13 +159,47 @@ else {
   tint(255, 255);
   //draws waldo and frame in user interface space
   image(faceImg[waldoIndex],width/2,waldoDisplayH/1.6,waldoDisplayW/1.4,waldoDisplayW/1.4);
-  image(frame,width/2,waldoDisplayH/1.6,waldoDisplayW/1.3,waldoDisplayW/1.3);
+  image(frameImg,width/2,waldoDisplayH/1.6,waldoDisplayW/1.3,waldoDisplayW/1.3);
 
 
 
 
 }
 
+
+class YouFoundMe {
+  constructor(x,y,w,h){
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+  }
+  move(x,y){
+    this.x += x;
+    this.y += y;
+
+    //screenwrap
+    if (this.x - this.w/2 > width) { //if off right
+      this.x = 0-this.w/2;
+    }
+    else if (this.x < 0 - this.w/2) { //if off left
+      this.x = width+this.w/2;
+    }
+    if (this.y - this.w/2 > height) { //if off right
+      this.y = 0-this.w/2;
+    }
+    else if (this.y < 0 - this.w/2) { //if off left
+      this.y = height+this.w/2;
+    }
+
+  }
+
+  display() {
+    tint(255, 255);
+    image(youFoundMeImg,this.x,this.y,this.w,this.h);
+  }
+
+}
 class Face {
   constructor () {
   //spawn non waldo-animals randomly in play-space
@@ -184,7 +233,7 @@ class Face {
     else if (this.x < 0 - this.w/2) { //if off left
       this.x = width+this.w/2;
     }
-    else if (this.y - this.w/2 > height) { //if off right
+    if (this.y - this.w/2 > height) { //if off right
       this.y = 0-this.w/2;
     }
     else if (this.y < 0 - this.w/2) { //if off left
