@@ -16,7 +16,7 @@ let youFoundMeImg; //img of text "YOU FOUND ME"
 let youFoundMe = [];
 let youFoundMeExists = false; //does instance youFoundMe exist?
 let frameImg; //img of frame sourronding UI
-let facePop = 5; //population of faces
+let facePop = 40; //population of faces
 let facePopExtra = 0; //number of faces more than starting facePop
 let faceImageNumber = 11; //number of face-images in assets/images
 let waldoX;
@@ -207,8 +207,8 @@ class Face {
     while (this.index === waldoIndex){ //make sure a waldo-type-face isn't spawned
       this.index = round(random(9));
     }
-    this.x = random(waldoDisplayW);
-    this.y = waldoDisplayH+imgW+random(playSpaceH-imgW);
+    this.x = random(waldoDisplayW-(imgW/6)+(imgW/3));
+    this.y = waldoDisplayH+(imgW/1.5)+random(playSpaceH-imgW);
     this.w = imgW;
     this.h = imgW;
   }
@@ -216,6 +216,7 @@ class Face {
   display (a){
     //a = opacity 1-255 of image;
     tint(255,a);
+    imageMode(CENTER);
     image(faceImg[this.index],this.x,this.y,this.w,this.h);
   }
 
