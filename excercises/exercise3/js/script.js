@@ -1,12 +1,11 @@
 /*****************
 
-Title of Project
+Find a Face
 Charly Yan Miller
 
-This is a template. You must fill in the title,
-author, and this description to match your project!
-Sidenote: I kinda thought all the animals were faces for some reason,
-so because of this var names tend to feature the word "face";
+In which a randomly chosen face is chosen to be "waldo" (a face which you must find)
+once waldo is found, text "you found me" scrolls down the screen and wraps.
+
 ******************/
 let faceIndex = []; //containing strings of file directories
 let faceImg = []; //containing images of faces
@@ -118,13 +117,14 @@ else {
     for (i = 0; i < facePop; i ++){
     }
     face[round(random(facePop-1))].display(200);
-    if (youFoundMeExists === false){ //if text "youFoundMe" doesn't exist, create instances
+    //if instances of "youFoundMe" don't exist, create instances
+    if (youFoundMeExists === false){
       for (i = 0; i < 12; i ++){
         youFoundMe[i] = new YouFoundMe(width/2,i*height/12,youFoundMeImg.width*waldoDisplayW/900,youFoundMeImg.height*waldoDisplayW/900);
         youFoundMeExists = true;
       }
     }
-     //if instance of texts does exist, draw it, and translate it down
+     //if instance of texts do exist, draw them, and translate them down
      else {
        for (i = 0; i < 12; i ++){
         youFoundMe[i].display();
@@ -133,11 +133,12 @@ else {
     }
 
     //interpolate playspace waldo's position until it equals UI waldo
+    //(make waldo in playspace move to meet the UI waldo)
     if (waldoYinc > -1){
       waldoYinc -= 0.05;
       waldoY = sininter(waldoYinitial,waldoDisplayH/2+faceImg[waldoIndex].width/3,waldoYinc);
       waldoX = sininter(waldoXinitial,width/2,waldoYinc);
-      print(waldoYinc);
+      print("waldoYinc: " + waldoYinc);
     }
   }
 
@@ -159,10 +160,6 @@ else {
   //draws waldo and frame in user interface space
   image(faceImg[waldoIndex],width/2,waldoDisplayH/1.6,waldoDisplayW/1.4,waldoDisplayW/1.4);
   image(frameImg,width/2,waldoDisplayH/1.6,waldoDisplayW/1.3,waldoDisplayW/1.3);
-
-
-
-
 }
 
 
