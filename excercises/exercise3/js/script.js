@@ -16,7 +16,7 @@ let youFoundMeImg; //img of text "YOU FOUND ME"
 let youFoundMe = [];
 let youFoundMeExists = false; //does instance youFoundMe exist?
 let frameImg; //img of frame sourronding UI
-let facePop = 40; //population of faces
+let facePop = 100; //population of faces
 let facePopExtra = 0; //number of faces more than starting facePop
 let faceImageNumber = 11; //number of face-images in assets/images
 let waldoX;
@@ -33,8 +33,8 @@ let imgW = 128; //avg img width
 let fontSize = 60;
 let win = false; //have you found waldo? FALSE
 let r = 250;
-let g = 240;
-let b = 70;
+let g = 255;
+let b = 255;
 
 //preload: fills array "faceImg[]" with all animal images; loads UI assets
 function preload() {
@@ -54,14 +54,14 @@ function preload() {
   frameImg = loadImage("assets/abstract_images/UI-frame.png");
 }
 /*------------------------------------------
-Setupfunction:
+Setup function:
 creates canvas and fills it w/yellow
-//sets the faceindex, position, and size waldo hitbox (waldoIndex)
-spawn instances of Face at random locations and draw them
+sets the image, position, and size (hitbox) of Waldo (the thing to be found)
+spawn instances of Face (non waldo faces) at random locations and draw them
 -----------------------------------*/
 function setup() {
   //create canvas, fill WaldoDisplay and playarea with distinct colors
-  createCanvas(400,waldoDisplayH+playSpaceH);
+  createCanvas(waldoDisplayW,waldoDisplayH+playSpaceH);
   background(r,g,b);
 
   noStroke();
@@ -70,16 +70,16 @@ function setup() {
   //set index of waldo (animal to be found) to random animal/image
   waldoIndex = round(random(9));
   //set or get vars of waldo image
-  waldoX = random(waldoDisplayW);
+  waldoX = random(waldoDisplayW-imgW)+(imgW/2);
   waldoXinitial = waldoX;
-  waldoY = random(playSpaceH)+waldoDisplayH+imgW;
+  waldoY = random(playSpaceH-imgW)+waldoDisplayH+(imgW/2);
   waldoYinitial = waldoY;
   waldoWidth = faceImg[waldoIndex].width/1.5; //waldoWidth used for hitbox
 
   //spawn all non-waldo faces
   for (let i = 0; i < facePop; i++ ) {
-  face[i] = new Face();
-  face[i].display(255);
+  face[i] = new Face(); //the constructor handles the randomization of starting position
+  face[i].display(255); //draw them at full opacity
   }
 }
 
@@ -101,7 +101,7 @@ else {
       }
 
     }
-    //if mouse clicks NOT on waldo, spawn random waldo-looking face
+    //if mouse clicks NOT on waldo, spawn random waldo-looking face (anti-abuse mechanic)
     if( win === false) {
       facePopExtra ++;
       face [facePop + facePopExtra] = new Face;
@@ -110,15 +110,14 @@ else {
     }
   }
 
-  //if waldo has been clicked
+  //if waldo has been clicke
   if (win === true){
-
-    //slowly fade out facesand leave a brief trail with all moving objs
+    //slowly fade out faces and leave a brief trail with all moving objs
     background(r,g,b,150);
-    //display  YOU FOUND ME in user interface space, randomly flash faces
+    //make random non-waldo faces flash into visibility briefly
     for (i = 0; i < facePop; i ++){
     }
-    face[round(random(facePop-1))].display(50);
+    face[round(random(facePop-1))].display(200);
     if (youFoundMeExists === false){ //if text "youFoundMe" doesn't exist, create instances
       for (i = 0; i < 12; i ++){
         youFoundMe[i] = new YouFoundMe(width/2,i*height/12,youFoundMeImg.width*waldoDisplayW/900,youFoundMeImg.height*waldoDisplayW/900);
@@ -207,8 +206,8 @@ class Face {
     while (this.index === waldoIndex){ //make sure a waldo-type-face isn't spawned
       this.index = round(random(9));
     }
-    this.x = random(waldoDisplayW-(imgW/6)+(imgW/3));
-    this.y = waldoDisplayH+(imgW/1.5)+random(playSpaceH-imgW);
+    this.x = random(waldoDisplayW-imgW)+(imgW/2);
+    this.y = waldoDisplayH+(imgW/2)+random(playSpaceH-imgW);
     this.w = imgW;
     this.h = imgW;
   }
