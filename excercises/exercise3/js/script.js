@@ -77,8 +77,9 @@ function setup() {
 
   //spawn all non-waldo faces
   for (let i = 0; i < facePop; i++ ) {
-  face[i] = new Face(); //the constructor handles the randomization of starting position
-  face[i].display(255); //draw them at full opacity
+    let rr = random(0.8,1.2);
+    face[i] = new Face(imgW*rr,imgW*rr); //the constructor handles the randomization of starting position
+    face[i].display(255); //draw them at full opacity
   }
 }
 
@@ -197,16 +198,21 @@ class YouFoundMe {
 
 }
 class Face {
-  constructor () {
+  constructor (w,h) {
   //spawn non waldo-animals randomly in play-space
     this.index = round(random(9)); //random face image index
     while (this.index === waldoIndex){ //make sure a waldo-type-face isn't spawned
       this.index = round(random(9));
     }
     this.x = random(waldoDisplayW-imgW)+(imgW/2);
-    this.y = waldoDisplayH+(imgW/2)+random(playSpaceH-imgW);
-    this.w = imgW;
-    this.h = imgW;
+    this.y = (imgW/2)+random(playSpaceH-imgW);
+
+    while (this.y < waldoDisplayH+imgW)  { //if y of image intersects displaySpace,
+      this.x = random(waldoDisplayW-imgW)+(imgW/2);
+      this.y = (imgW/2)+random(playSpaceH-imgW);
+    }
+    this.w = w;
+    this.h = h;
   }
 
   display (a){
