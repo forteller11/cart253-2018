@@ -17,7 +17,7 @@ Daniel Shiffman's "Coding Challenge #90: Floyd-Stienberg Dithering"
 was my main introduction to the p5.js pixel array and gave me the idea
 of using thresholds to display the fluid objects
 ******************/
-let fluidPop = 3;
+let fluidPop = 20;
 let fluid = [];
 let fluidDisplayThreshold = 1;
 
@@ -25,19 +25,23 @@ function setup(){
   createCanvas(600,600);
   pixelDensity(1); //so pixel array behaves uniformly between dispalys w/natively dissimilar pixel densities
   for (let i = 0; i < fluidPop; i ++){
-    fluid[i] = new Fluid(random(width),random(height),15);
+    fluid[i] = new Fluid(random(width),random(height),random(2,6));
   }
 }
 
 function draw(){
   background(51);
   for (let i = 0; i < fluidPop; i ++){
-    fluid[i].display();
+    //fluid[i].displayRadius();
+    fluid[i].move();
   }
   fluid[0].x = mouseX;
   fluid[0].y = mouseY;
 
-  //go through every pixel in pixel array, add up all values from the metaballs, draw them if surpasses threshold
+  //go through every pixel in pixel array, add up all values from the metaballs
+  //(values radiate from the x,y centers of each metaball,
+  //draw that pixel if those values surpasses a threshold
+
   loadPixels();
   //display metaballs
   for (let i = 0; i < width; i ++){
@@ -50,10 +54,13 @@ function draw(){
       //if all the radiate values combined are greater than displaythreshold draw pixels
       if (netRadiateValue > fluidDisplayThreshold)
       {
-        pixels[index+0] = 255;
-        pixels[index+1] = 0;
-        pixels[index+2] = 255;
-        pixels[index+3] = 255;
+
+        //add to pixel array so that metaballs from two different paddles can combine colors
+        pixels[index+0] += 180; //r
+        pixels[index+1] += 100; //g
+        pixels[index+2] += 180; //b
+        pixels[index+3] += 255; //alpha
+
       }
     }
   }
