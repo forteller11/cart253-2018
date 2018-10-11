@@ -31,12 +31,14 @@ function setup(){
     fluid[i] = new Fluid(random(width),random(height),random(2,6));
   }
   //intiialize right paddle with appropriate key codes and r,g,b values
-  padR = new Paddle(38,40,37,232,97,76);
+  padR = new Paddle(38,40,37,39,77,232,97,76);
+  padR.padLeft = false; //tells the paddle that it is right
   //set appropriate position, give paddle a full fluid-meter and set velocity to 0
   padRReset();
 
   //intiialize left paddle with corresponding key codes and rgb color values
-  padL= new Paddle(87,83,65,80,164,229);
+  padL= new Paddle(87,83,65,68,69,80,164,229);
+  padR.padLeft = true; //tells the paddle that it is left
   //set appropriate position, give paddle a full fluid-meter and set velocity to 0
   padLReset();
 
@@ -50,7 +52,10 @@ function draw(){
   padL.displayFluidMeter();
   padR.displayPaddle();
   padL.displayPaddle();
-  padR.y++;
+  padR.accelerate();
+  padL.accelerate();
+  padR.changePos();
+  padL.changePos();
 
   for (let i = 0; i < fluidPop; i ++){
     //fluid[i].displayRadius();
