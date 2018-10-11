@@ -22,7 +22,7 @@ let fluid = [];
 let fluidDisplayThreshold = 1;
 let padR; //right paddle
 let padL; //let paddle
-let horzPaddleIndent = 64; //indent of paddle
+let horzPaddleIndent = 32; //indent of paddle
 
 function setup(){
   createCanvas(800,800);
@@ -39,14 +39,18 @@ function setup(){
   padL= new Paddle(87,83,65,80,164,229);
   //set appropriate position, give paddle a full fluid-meter and set velocity to 0
   padLReset();
+
 }
 
 function draw(){
   background(0);
 
   //deal with paddles input, movement etc...
+  padR.displayFluidMeter();
+  padL.displayFluidMeter();
   padR.displayPaddle();
-
+  padL.displayPaddle();
+  padR.y++;
 
   for (let i = 0; i < fluidPop; i ++){
     //fluid[i].displayRadius();
@@ -94,9 +98,9 @@ function padRReset(){
 }
 
 function padLReset(){
-  padR.x = horzPaddleIndent;
-  padR.y = height/2;
-  padR.velX = 0;
-  padR.velY = 0;
-  padR.fluidMeter = 1;
+  padL.x = horzPaddleIndent;
+  padL.y = height/2;
+  padL.velX = 0;
+  padL.velY = 0;
+  padL.fluidMeter = 1;
 }
