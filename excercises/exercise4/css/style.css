@@ -1,0 +1,18 @@
+/*********************************************
+
+Here is a description of any special CSS used.
+In this case it's just padding and margin to 0
+so the canvas is flush with the top left corner.
+
+**********************************************/
+
+body {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  padding: 0;
+  margin: 0;
+  margin-top: -400px;
+  margin-left: -400px;
+  text-align:center;
+}
