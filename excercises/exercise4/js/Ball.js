@@ -32,7 +32,7 @@ class Ball {
   display(){
     rectMode(RADIUS);
     noStroke();
-    fill(255);
+    fill(this.r,this.g,this.b);
     rect(this.x,this.y,this.radius,this.radius);
     //ellipse(this.x,this.y,this.radius,this.radius);
   }
@@ -40,7 +40,7 @@ class Ball {
   checkCanvasCollision(){
     //if ball goes off left then rightpaddle score increases
     if  (this.x+(this.radius*4) < 0){
-      padL.score ++;
+      padR.score ++;
       this.reset();
     }
     //if ball goes off right then leftpaddle score increases

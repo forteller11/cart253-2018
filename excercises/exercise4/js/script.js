@@ -63,6 +63,8 @@ function draw(){
   padR.changePos();
   padL.changePos();
   //display
+  padR.displayScore();
+  padL.displayScore();
   padR.displayFluidMeter();
   padL.displayFluidMeter();
   padR.displayPaddle();

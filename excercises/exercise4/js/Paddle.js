@@ -135,6 +135,10 @@ class Paddle{
       //if colliding...
       if ((xx < x+w+r)&& (xx > x-w-r-r)){
         if ((yy < y+h+r) && (yy > y-h-r)){
+          ball.r = this.r;
+          ball.g = this.g;
+          ball.b = this.b;
+
           //if the ball is traveling towards the left, make it travel towards the right
           if (ball.velX < 0){
             ball.velX *=-1;
@@ -165,6 +169,9 @@ class Paddle{
       //if colliding...
       if ((xx < x+w+r)&& (xx > x-w-r-r)){
         if ((yy < y+h+r) && (yy > y-h-r)){
+          ball.r = this.r;
+          ball.g = this.g;
+          ball.b = this.b;
           //if the ball is traveling towards the left, make it travel towards the right
           if (ball.velX > 0){
             ball.velX *=-1;
@@ -186,20 +193,30 @@ class Paddle{
           && (ball.y < y+h+r) && (ball.y > y-h-r) ){
             ball.x -= 1;
           }
-
         }
       }
     }
-    //ball.velX += this.velX;
-    // while(((xx < x+w+r)&& (xx > x-w-r))&&((yy < y+h+r) && (yy > y-h-r))){
-    //   ball.x += sin(ball.velX);
-    //   w = this.width/2;
-    //   h = this.width/2;
-    //   r = ball.radius;
-    //   x = this.x;
-    //   y = this.y;
-    //   xx = ball.x;
-    //   yy = ball.y;
-    // }
   }
+
+  displayScore(){
+    //draws dotted line down center of screen
+    let hPI;
+    if (this.r > 200){ //if right offset score by positive
+      hPI = horzPaddleIndent;
+    } else{ //if left offset by negative
+      hPI = -horzPaddleIndent;
+    }
+
+    let xx = (width/2)+hPI;
+    let lineAmount = 40;
+    let lineH = height/lineAmount;
+    stroke(this.r,this.g,this.b);
+    strokeWeight(this.strokeWeight);
+    for (i = 0; i < this.score; i ++){
+      let y1 = ((lineH*i)*2)+(lineH/2); //
+      let y2 = y1+lineH;
+      line(xx,y1,xx,y2);
+    }
+  }
+
 }
