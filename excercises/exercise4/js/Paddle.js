@@ -14,13 +14,13 @@ class Paddle{
 
     this.x;
     this.y;
-    this.accX = 2;
-    this.accY = 4;
+    this.accX = 5;
+    this.accY = 7;
     this.velX = 0; //velocity
     this.velY = 0; //velocity
-    this.maxVelY = 8;
+    this.maxVelY = 14;
     this.maxVelX = 6;
-    this.drag = 1.8;
+    this.drag = 2.4;
     this.width = 16;
     this.height = 100;
     this.fluidMeter = 1; //how much fluid can this paddle produce? (0-1)
@@ -52,17 +52,13 @@ class Paddle{
     let y1 = -h+this.y;
     let y2 = h+this.y;
     stroke(255);
-    //draw paddle with width and color
+    //draw paddle with width and color, increase stroke weight as paddle is closer to center of screen
     if (this.padLeft === true) {
       this.strokeWeight = map(this.x,width,width/2,minStrokeWidth,maxStrokeWidth);
     }
     else {
       this.strokeWeight = map(this.x,0,width/2,minStrokeWidth,maxStrokeWidth);
     }
-
-
-
-    print(this.strokeWeight);
     strokeWeight(this.strokeWeight);
     line(x1,y1,x2,y1);
     line(x2,y1,x2,y2);

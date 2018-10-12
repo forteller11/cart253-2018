@@ -23,7 +23,7 @@ let fluidDisplayThreshold = 1;
 let padR; //right paddle
 let padL; //let paddle
 let horzPaddleIndent = 32; //indent of paddle
-let minStrokeWidth = 2;
+let minStrokeWidth = 3;
 let maxStrokeWidth = 8;
 
 function setup(){
@@ -48,7 +48,7 @@ function setup(){
 
 function draw(){
   background(0);
-
+  centerLineDisplay();
   //deal with paddles input, movement etc...
   padR.displayFluidMeter();
   padL.displayFluidMeter();
@@ -110,4 +110,18 @@ function padLReset(){
   padL.velX = 0;
   padL.velY = 0;
   padL.fluidMeter = 1;
+}
+
+function centerLineDisplay(){
+  //draws dotted line down center of screen
+  let xx = width/2;
+  let lineAmount = 40;
+  let lineH = height/lineAmount;
+  stroke(100);
+  strokeWeight(2);
+  for (i = 0; i < (lineAmount/2); i ++){
+    let y1 = ((lineH*i)*2)+(lineH/2); //
+    let y2 = y1+lineH;
+    line(xx,y1,xx,y2);
+  }
 }
