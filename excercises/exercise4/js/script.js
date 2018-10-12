@@ -25,6 +25,7 @@ let padL; //let paddle
 let horzPaddleIndent = 32; //indent of paddle
 let minStrokeWidth = 3;
 let maxStrokeWidth = 8;
+let ball;
 
 function setup(){
   createCanvas(800,800);
@@ -44,21 +45,30 @@ function setup(){
   //set appropriate position, give paddle a full fluid-meter and set velocity to 0
   padLReset();
 
+  //intiialize left paddle with corresponding key codes and rgb color values
+  ball = new Ball();
+  ball.reset();
 }
 
 function draw(){
   background(0);
-  centerLineDisplay();
-  //deal with paddles input, movement etc...
-  padR.displayFluidMeter();
-  padL.displayFluidMeter();
-  padR.displayPaddle();
-  padL.displayPaddle();
+  centerLineDisplay(); //draw dotted line down center of screen;
+
+  //for paddles...
+  //move and deal with inputs
   padR.accelerate();
   padL.accelerate();
   padR.changePos();
   padL.changePos();
+  //display
+  padR.displayFluidMeter();
+  padL.displayFluidMeter();
+  padR.displayPaddle();
+  padL.displayPaddle();
 
+  //deal with Ball
+  ball.changePosition();
+  ball.display();
   for (let i = 0; i < fluidPop; i ++){
     //fluid[i].displayRadius();
     fluid[i].move();
