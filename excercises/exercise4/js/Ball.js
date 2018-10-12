@@ -21,14 +21,15 @@ class Ball {
     //check for collisions
   }
 
-  reset(){
+  reset(xDirection){
     //resets pos, color and velocity of ball
     this.r = 255;
     this.g = 255;
     this.b = 255;
     this.x = width/2;
     this.y = height/2+(random(-width/3,width/3));
-    this.velX = random(-8,-4);
+    //x direction is either 1 or -1 depending on which paddle won
+    this.velX = random(4,8)*xDirection;
     this.velY = random(-2,2);
   }
 
@@ -44,12 +45,12 @@ class Ball {
     //if ball goes off left then rightpaddle score increases
     if  (this.x+(this.radius*4) < 0){
       padR.score ++;
-      this.reset();
+      this.reset(1);
     }
     //if ball goes off right then leftpaddle score increases
     if (this.x-(this.radius*4) > width){
       padL.score ++;
-      this.reset();
+      this.reset(-1);
     }
 
     if ((this.y+this.radius > height) || (this.y-this.radius < 0)){

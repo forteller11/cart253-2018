@@ -24,7 +24,7 @@ let padR; //right paddle
 let padL; //let paddle
 let horzPaddleIndent = 32; //indent of paddle
 let minStrokeWidth = 3;
-let maxStrokeWidth = 8;
+let maxStrokeWidth = 6;
 let ball;
 
 function setup(){
@@ -47,7 +47,15 @@ function setup(){
 
   //intiialize left paddle with corresponding key codes and rgb color values
   ball = new Ball();
-  ball.reset();
+  //resets ball pos, color and velocities
+  let direction;
+  if (random(1) > .5) {
+    direction = 1;
+  }
+  else {
+    direction = -1;
+  }
+  ball.reset(direction);
 }
 
 function draw(){
