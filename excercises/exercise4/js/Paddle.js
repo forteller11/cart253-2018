@@ -139,6 +139,7 @@ class Paddle{
           ball.g = this.g;
           ball.b = this.b;
 
+          let ballVelXStore = ball.velX*1;
           //if the ball is traveling towards the left, make it travel towards the right
           if (ball.velX < 0){
             ball.velX *=-1;
@@ -160,7 +161,7 @@ class Paddle{
           && (ball.y < y+h+r) && (ball.y > y-h-r) ){
             ball.x += 1;
           }
-
+          this.velX = ballVelXStore; //make paddles bounce back on collsion
         }
       }
     }
@@ -172,6 +173,7 @@ class Paddle{
           ball.r = this.r;
           ball.g = this.g;
           ball.b = this.b;
+          let ballVelXStore = ball.velX;
           //if the ball is traveling towards the left, make it travel towards the right
           if (ball.velX > 0){
             ball.velX *=-1;
@@ -193,6 +195,8 @@ class Paddle{
           && (ball.y < y+h+r) && (ball.y > y-h-r) ){
             ball.x -= 1;
           }
+
+          this.velX = ballVelXStore; //make paddles bounce back on collsion
         }
       }
     }

@@ -22,11 +22,14 @@ class Ball {
   }
 
   reset(){
-    //resets pos and velocity of ball
-      this.x = width/2;
-      this.y = height/2+(random(-width/3,width/3));
-      this.velX = random(-8,-4);
-      this.velY = random(-2,2);
+    //resets pos, color and velocity of ball
+    this.r = 255;
+    this.g = 255;
+    this.b = 255;
+    this.x = width/2;
+    this.y = height/2+(random(-width/3,width/3));
+    this.velX = random(-8,-4);
+    this.velY = random(-2,2);
   }
 
   display(){
