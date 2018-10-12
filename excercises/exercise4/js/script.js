@@ -41,7 +41,7 @@ function setup(){
 
   //intiialize left paddle with corresponding key codes and rgb color values
   padL= new Paddle(87,83,65,68,69,80,164,229);
-  padR.padLeft = true; //tells the paddle that it is left
+  padL.padLeft = true; //tells the paddle that it is left
   //set appropriate position, give paddle a full fluid-meter and set velocity to 0
   padLReset();
 
@@ -65,6 +65,8 @@ function draw(){
   padL.displayFluidMeter();
   padR.displayPaddle();
   padL.displayPaddle();
+  padR.checkBallCollision();
+  padL.checkBallCollision();
 
   //deal with Ball
   ball.changePosition();

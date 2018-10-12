@@ -53,7 +53,7 @@ class Paddle{
     let y2 = h+this.y;
     stroke(255);
     //draw paddle with width and color, increase stroke weight as paddle is closer to center of screen
-    if (this.padLeft === true) {
+    if (this.padLeft === false) {
       this.strokeWeight = map(this.x,width,width/2,minStrokeWidth,maxStrokeWidth);
     }
     else {
@@ -64,7 +64,6 @@ class Paddle{
     line(x2,y1,x2,y2);
     line(x2,y2,x1,y2);
     line(x1,y2,x1,y1);
-
   }
 
   accelerate(){
@@ -114,13 +113,46 @@ class Paddle{
     let h = (this.height/2)+this.strokeWeight/2;
 
     //constrain x positions based on if the paddle is left or right, constrains y pos identically
-    if (this.padLeft === true){ //if right paddle
+    if (this.padLeft === false){ //if right paddle
       this.x = constrain(this.x,(width/2)+w,width-w);
     }
     else{
       this.x = constrain(this.x,w,(width/2)-w);
     }
       this.y = constrain(this.y,h,height-h);
+  }
 
+  checkBallCollision(){
+    let w = this.width/2;
+    let h = this.width/2;
+    let r = ball.radius;
+    let x = this.x;
+    let y = this.y;
+    let xx = ball.x;
+    let yy = ball.y;
+
+    if ((xx < x+w+r+r)&& (xx > x-w-r-r)){
+      if ((yy < y+h+r) && (yy > y-h-r)){
+        if ((this.padLeft === true) && (ball.velX <= 0)){
+          ball.velX *=-1;
+        }
+        else if ((this.padLeft === false) && (ball.velX >= 0))
+        ball.velX *=-1;
+        // if (this.velX > ball.velX){
+        //   ball.velX = this.velX;
+        // }
+      }
+    }
+    //ball.velX += this.velX;
+    while(((xx < x+w+r)&& (xx > x-w-r))&&((yy < y+h+r) && (yy > y-h-r))){
+      ball.x += sin(ball.velX);
+      w = this.width/2;
+      h = this.width/2;
+      r = ball.radius;
+      x = this.x;
+      y = this.y;
+      xx = ball.x;
+      yy = ball.y;
+    }
   }
 }
