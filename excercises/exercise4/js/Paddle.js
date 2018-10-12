@@ -39,7 +39,9 @@ class Paddle{
 
     rectMode(CORNERS);
     noStroke();
-    fill(this.r,this.g,this.b);
+    // let distX = ball.x-this.x
+    // let alpha = map(distX,0,width,255,0);
+    fill(this.r,this.g,this.b,alpha);
     rect(x1,y2,x2,y1Dynamic);
   }
 

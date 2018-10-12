@@ -79,6 +79,7 @@ function draw(){
   padL.displayPaddle();
   //deal with Ball
   ball.changePosition();
+  ball.displayTrail();
   ball.display();
 
 

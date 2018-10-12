@@ -4,6 +4,7 @@ class Ball {
   this.y;
   this.xHist = []; //history of x positions
   this.yHist = []; //history of y positions
+  this.trailLength = 8;
   this.velX = 0;
   this.velY = 0;
   this.radius = 8;
@@ -17,8 +18,18 @@ class Ball {
   changePosition(){
     this.x += this.velX;
     this.y += this.velY;
-    this.checkCanvasCollision();
-    //check for collisions
+    this.canvasCollision(); //has the ball collided with the canvas?
+    this.addToHistory(this.x,this.y); //store balls postional history for trail drawing
+
+
+  }
+
+  addToHistory(x,y){ //remove oldest ball postion history, add newest ball position history
+    this.xHist.splice(0,1);
+    this.yHist.splice(0,1);
+
+    this.xHist.push(this.x);
+    this.yHist.push(this.y);
   }
 
   reset(xDirection){
@@ -31,6 +42,15 @@ class Ball {
     //x direction is either 1 or -1 depending on which paddle won
     this.velX = random(4,8)*xDirection;
     this.velY = random(-2,2);
+
+    //fill array at start of game to trailLength
+    for (let i = 0; i < this.trailLength; i++){
+      this.xHist[i] = this.x;
+      this.yHist[i] = this.y;
+
+      this.xHist[i] = this.x;
+      this.yHist[i] = this.y;
+    }
   }
 
   display(){
@@ -41,7 +61,19 @@ class Ball {
     //ellipse(this.x,this.y,this.radius,this.radius);
   }
 
-  checkCanvasCollision(){
+  displayTrail(){ //draw trail of ball's histories
+    rectMode(RADIUS);
+    noStroke();
+    for (let i = 0; i < this.xHist.length; i ++){
+      //trail increases alpha based on balls speed,
+      //alpha is greatest near the current position of the ball, then it fades to 0
+      fill(this.r,this.g,this.b,i*(abs((ball.velX+ball.velY)*15)/this.trailLength));
+      rect(this.xHist[i],this.yHist[i],this.radius,this.radius);
+    }
+    //ellipse(this.x,this.y,this.radius,this.radius);
+  }
+
+  canvasCollision(){
     //if ball goes off left then rightpaddle score increases
     if  (this.x+(this.radius*4) < 0){
       padR.score ++;
