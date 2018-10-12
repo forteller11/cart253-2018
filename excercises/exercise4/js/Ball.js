@@ -25,7 +25,7 @@ class Ball {
     //resets pos and velocity of ball
       this.x = width/2;
       this.y = height/2+(random(-width/3,width/3));
-      this.velX = random(-8,8);
+      this.velX = random(-8,-4);
       this.velY = random(-2,2);
   }
 

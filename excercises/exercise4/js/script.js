@@ -56,6 +56,8 @@ function draw(){
 
   //for paddles...
   //move and deal with inputs
+  padR.checkBallCollision();
+  padL.checkBallCollision();
   padR.accelerate();
   padL.accelerate();
   padR.changePos();
@@ -65,12 +67,13 @@ function draw(){
   padL.displayFluidMeter();
   padR.displayPaddle();
   padL.displayPaddle();
-  padR.checkBallCollision();
-  padL.checkBallCollision();
-
   //deal with Ball
   ball.changePosition();
   ball.display();
+
+
+
+
   for (let i = 0; i < fluidPop; i ++){
     //fluid[i].displayRadius();
     fluid[i].move();

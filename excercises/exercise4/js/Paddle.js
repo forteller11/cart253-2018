@@ -124,35 +124,82 @@ class Paddle{
 
   checkBallCollision(){
     let w = this.width/2;
-    let h = this.width/2;
+    let h = this.height/2;
     let r = ball.radius;
     let x = this.x;
     let y = this.y;
     let xx = ball.x;
     let yy = ball.y;
 
-    if ((xx < x+w+r+r)&& (xx > x-w-r-r)){
-      if ((yy < y+h+r) && (yy > y-h-r)){
-        if ((this.padLeft === true) && (ball.velX <= 0)){
-          ball.velX *=-1;
+    if (this.r < 200){ //if right paddle
+      //if colliding...
+      if ((xx < x+w+r)&& (xx > x-w-r-r)){
+        if ((yy < y+h+r) && (yy > y-h-r)){
+          //if the ball is traveling towards the left, make it travel towards the right
+          if (ball.velX < 0){
+            ball.velX *=-1;
+          }
+          ball.velX += this.velX/10; //increase speed of ball based on speed of paddle
+
+          //increase/decrease speed of ball depending on how close the paddle
+          //is to the center of the screen (closer = faster)
+          let spdInc = map(this.x,0,width/2,.6,1.5);
+          print(spdInc);
+          ball.velX = ball.velX*spdInc;
+
+          //make sure that the ball is not moving slower than the paddle (or else ball wud go through paddle)
+          if (ball.velX < this.velX){
+            ball.velX = this.velX;
+          }
+          //move the ball outside the paddle hitbox
+          while ( (ball.x < x+w+r)&& (ball.x > x-w-r-r)
+          && (ball.y < y+h+r) && (ball.y > y-h-r) ){
+            ball.x += 1;
+          }
+
         }
-        else if ((this.padLeft === false) && (ball.velX >= 0))
-        ball.velX *=-1;
-        // if (this.velX > ball.velX){
-        //   ball.velX = this.velX;
-        // }
+      }
+    }
+
+    if (this.r > 200){ //if right paddle
+      //if colliding...
+      if ((xx < x+w+r)&& (xx > x-w-r-r)){
+        if ((yy < y+h+r) && (yy > y-h-r)){
+          //if the ball is traveling towards the left, make it travel towards the right
+          if (ball.velX > 0){
+            ball.velX *=-1;
+          }
+          ball.velX += this.velX/10; //increase speed of ball based on speed of paddle
+
+          //increase/decrease speed of ball depending on how close the paddle
+          //is to the center of the screen (closer = faster)
+          let spdInc = map(this.x,width/2,width,1.5,.6);
+          print(spdInc);
+          ball.velX = ball.velX*spdInc;
+
+          //make sure that the ball is not moving slower than the paddle (or else ball wud go through paddle)
+          if (ball.velX > this.velX){
+            ball.velX = this.velX;
+          }
+          //move the ball outside the paddle hitbox
+          while ( (ball.x < x+w+r)&& (ball.x > x-w-r-r)
+          && (ball.y < y+h+r) && (ball.y > y-h-r) ){
+            ball.x -= 1;
+          }
+
+        }
       }
     }
     //ball.velX += this.velX;
-    while(((xx < x+w+r)&& (xx > x-w-r))&&((yy < y+h+r) && (yy > y-h-r))){
-      ball.x += sin(ball.velX);
-      w = this.width/2;
-      h = this.width/2;
-      r = ball.radius;
-      x = this.x;
-      y = this.y;
-      xx = ball.x;
-      yy = ball.y;
-    }
+    // while(((xx < x+w+r)&& (xx > x-w-r))&&((yy < y+h+r) && (yy > y-h-r))){
+    //   ball.x += sin(ball.velX);
+    //   w = this.width/2;
+    //   h = this.width/2;
+    //   r = ball.radius;
+    //   x = this.x;
+    //   y = this.y;
+    //   xx = ball.x;
+    //   yy = ball.y;
+    // }
   }
 }
