@@ -23,6 +23,8 @@ let fluidDisplayThreshold = 1;
 let padR; //right paddle
 let padL; //let paddle
 let horzPaddleIndent = 32; //indent of paddle
+let minStrokeWidth = 2;
+let maxStrokeWidth = 8;
 
 function setup(){
   createCanvas(800,800);

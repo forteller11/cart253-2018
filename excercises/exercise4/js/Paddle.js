@@ -10,18 +10,21 @@ class Paddle{
     this.g = g;
     this.b = b;
     this.padLeft; //is this the left paddle?
+    this.score = 0;
 
     this.x;
     this.y;
-    this.acc = 2.5;
+    this.accX = 2;
+    this.accY = 4;
     this.velX = 0; //velocity
     this.velY = 0; //velocity
-    this.maxVel = 6;
+    this.maxVelY = 8;
+    this.maxVelX = 6;
     this.drag = 1.8;
     this.width = 16;
     this.height = 100;
     this.fluidMeter = 1; //how much fluid can this paddle produce? (0-1)
-    this.strokeWeight = 4;
+    this.strokeWeight = (minStrokeWidth+maxStrokeWidth)/2;
   }
   displayFluidMeter(){
     //fills in the paddle repsenting how much fluidMeter the paddle has;
@@ -41,8 +44,7 @@ class Paddle{
   }
 
   displayPaddle(){
-    //draw paddle with width and color
-    strokeWeight(this.strokeWeight);
+
     let w = this.width/2;
     let h = this.height/2;
     let x1 = -w+this.x;
@@ -50,6 +52,18 @@ class Paddle{
     let y1 = -h+this.y;
     let y2 = h+this.y;
     stroke(255);
+    //draw paddle with width and color
+    if (this.padLeft === true) {
+      this.strokeWeight = map(this.x,width,width/2,minStrokeWidth,maxStrokeWidth);
+    }
+    else {
+      this.strokeWeight = map(this.x,0,width/2,minStrokeWidth,maxStrokeWidth);
+    }
+
+
+
+    print(this.strokeWeight);
+    strokeWeight(this.strokeWeight);
     line(x1,y1,x2,y1);
     line(x2,y1,x2,y2);
     line(x2,y2,x1,y2);
@@ -65,20 +79,20 @@ class Paddle{
     (keyIsDown(this.leftKey)) )
     {
       if (keyIsDown(this.upKey)) {
-        this.velY -= this.acc;
+        this.velY -= this.accY;
       }
       if (keyIsDown(this.downKey)) {
-        this.velY += this.acc;
+        this.velY += this.accY;
       }
       if (keyIsDown(this.leftKey)) {
-        this.velX -= this.acc;
+        this.velX -= this.accX;
       }
       if (keyIsDown(this.rightKey)) {
-        this.velX += this.acc;
+        this.velX += this.accX;
       }
       //here i apply drag so that the player seems to accelerate more at lower speeds,
       //and less quickly at higher speeds --> creates for a nice ramp of acceleration which feels better
-      this.velX = this.velX/(this.drag/1.4);
+      this.velX = this.velX/(this.drag/1.6);
       this.velY = this.velY/(this.drag/1.4);
   }
   //if not currently accelerate apply more drag so that the player
@@ -91,8 +105,8 @@ class Paddle{
   }
 
     //constrain velocities
-    this.velX = constrain(this.velX,-this.maxVel,this.maxVel);
-    this.velY = constrain(this.velY,-this.maxVel,this.maxVel);
+    this.velX = constrain(this.velX,-this.maxVelX,this.maxVelX);
+    this.velY = constrain(this.velY,-this.maxVelY,this.maxVelY);
   }
 
   changePos(){ //changes position based on velocity
