@@ -6,10 +6,10 @@ class Paddle{
     this.leftKey = leftKey;
     this.rightKey = rightKey;
     this.fluidKey = fluidKey; //key which shoots fluid
-    this.r = r;
+    //rgb color values of paddle
+    this.r = r; //this is also used to check whether the player is the right or left paddle
     this.g = g;
     this.b = b;
-    this.padLeft; //is this the left paddle?
     this.score = 0;
     this.scored = 0;
 
@@ -57,7 +57,7 @@ class Paddle{
     stroke(255);
     stroke(this.r,this.g,this.b);
     //draw paddle with width and color, increase stroke weight as paddle is closer to center of screen
-    if (this.padLeft === false) {
+    if (this.r > 200) {
       this.strokeWeight = map(this.x,width,width/2,minStrokeWidth,maxStrokeWidth);
     }
     else {
@@ -117,7 +117,7 @@ class Paddle{
     let h = (this.height/2)+this.strokeWeight/2;
 
     //constrain x positions based on if the paddle is left or right, constrains y pos identically
-    if (this.padLeft === false){ //if right paddle
+    if (this.r > 200){ //if right paddle
       this.x = constrain(this.x,(width/2)+w+w,width-w);
     }
     else{
@@ -233,7 +233,7 @@ class Paddle{
       line(xx,y1,xx,y2);
     }
   }
-  Score(){
+  flashOnScore(){
     if (this.scored > 0){
       background(this.r*this.scored,this.g*this.scored,this.b*this.scored);
       this.scored -= 0.02;

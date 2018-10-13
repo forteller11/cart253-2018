@@ -35,13 +35,11 @@ function setup(){
   }
   //intiialize right paddle with appropriate key codes and r,g,b values
   padR = new Paddle(38,40,37,39,77,232,97,76);
-  padR.padLeft = false; //tells the paddle that it is right
   //set appropriate position, give paddle a full fluid-meter and set velocity to 0
   padRReset();
 
   //intiialize left paddle with corresponding key codes and rgb color values
   padL= new Paddle(87,83,65,68,69,80,164,229);
-  padL.padLeft = true; //tells the paddle that it is left
   //set appropriate position, give paddle a full fluid-meter and set velocity to 0
   padLReset();
 
@@ -60,7 +58,6 @@ function setup(){
 
 function draw(){
   background(0);
-  centerLineDisplay(); //draw dotted line down center of screen;
 
   //for paddles...
   //move and deal with inputs
@@ -71,15 +68,16 @@ function draw(){
   padR.changePos();
   padL.changePos();
   //display
-  padR.Score();
-  padL.Score();
-    centerLineDisplay(); //draw dotted line down center of screen;
-  padR.displayScore();
+  padR.flashOnScore(); //fashes screen red/blue on score
+  padL.flashOnScore();
+  centerLineDisplay(); //draw dotted line down center of screen;
+  padR.displayScore(); //dispalys player score
   padL.displayScore();
   padR.displayFluidMeter();
   padL.displayFluidMeter();
   padR.displayPaddle();
   padL.displayPaddle();
+
   //deal with Ball
   ball.changePosition();
   ball.displayTrail();
