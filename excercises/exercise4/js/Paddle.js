@@ -22,7 +22,7 @@ class Paddle{
     this.maxVelX = 6;
     this.drag = 2.4;
     this.width = 16;
-    this.height = 100;
+    this.height = 80;
     this.fluidMeter = 1; //how much fluid can this paddle produce? (0-1)
     this.strokeWeight = (minStrokeWidth+maxStrokeWidth)/2;
   }
@@ -54,6 +54,7 @@ class Paddle{
     let y1 = -h+this.y;
     let y2 = h+this.y;
     stroke(255);
+    stroke(this.r,this.g,this.b);
     //draw paddle with width and color, increase stroke weight as paddle is closer to center of screen
     if (this.padLeft === false) {
       this.strokeWeight = map(this.x,width,width/2,minStrokeWidth,maxStrokeWidth);
@@ -207,7 +208,8 @@ class Paddle{
   }
 
   displayScore(){
-    //draws dotted line down center of screen
+    //for everypoint each paddle draws a dotted line near the middle of the map in thier own color
+    // once the dotted line reaches the edge of the canvas the dotted line is wrapped around the screen
     let hPI;
     if (this.r > 200){ //if right offset score by positive
       hPI = horzPaddleIndent;
@@ -215,31 +217,19 @@ class Paddle{
       hPI = -horzPaddleIndent;
     }
 
-
     let lineAmount = 40;
     let lineH = height/lineAmount;
+    let xOffset;
+    let yOffset;
     stroke(this.r,this.g,this.b);
-    strokeWeight(this.strokeWeight);
+    strokeWeight(minStrokeWidth);
     for (i = 0; i < this.score; i ++){
-      let y1 = ((lineH*i)*2)+(lineH/2); //
+      let yReset = floor(map(i,0,19,0,1)); //used tp wrap the lines vertically once at edge of canvas
+      let y1 = ((lineH*i)*2)+(lineH/2)-(width*yReset);
       let y2 = y1+lineH;
-      let xx = (width/2)+hPI;
+      let xOffset = floor(map(i,0,19,1,2)); //once scores wraps vetically, offset horiziontally
+      let xx = (width/2)+(hPI*xOffset);
       line(xx,y1,xx,y2);
-    }
-    if (this.score > 20) {
-      background(this.r,this.g,this.b);
-      fill(255);
-      noStroke();
-      textAlign(CENTER);
-      textSize(64);
-      ball.r = 255;
-      ball.g = 255;
-      ball.b = 255;
-      if (this.r < 200){
-        text("BLUE PLAYER WINS",width/2,height/2);
-      }else{
-        text("RED PLAYER WINS",width/2,height/2);
-      }
     }
 
   }
