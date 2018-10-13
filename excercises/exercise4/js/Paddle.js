@@ -116,10 +116,10 @@ class Paddle{
 
     //constrain x positions based on if the paddle is left or right, constrains y pos identically
     if (this.padLeft === false){ //if right paddle
-      this.x = constrain(this.x,(width/2)+w,width-w);
+      this.x = constrain(this.x,(width/2)+w+w,width-w);
     }
     else{
-      this.x = constrain(this.x,w,(width/2)-w);
+      this.x = constrain(this.x,w,(width/2)-w-w);
     }
       this.y = constrain(this.y,h,height-h);
   }
