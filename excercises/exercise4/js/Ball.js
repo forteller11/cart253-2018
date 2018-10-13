@@ -79,11 +79,13 @@ class Ball {
     //if ball goes off left then rightpaddle score increases
     if  (this.x+(this.radius*4) < 0){
       padR.score ++;
+      padR.scored = .5;
       this.reset(1);
     }
     //if ball goes off right then leftpaddle score increases
     if (this.x-(this.radius*4) > width){
       padL.score ++;
+      padL.scored = .5;
       this.reset(-1);
     }
 

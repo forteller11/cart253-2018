@@ -71,6 +71,9 @@ function draw(){
   padR.changePos();
   padL.changePos();
   //display
+  padR.Score();
+  padL.Score();
+    centerLineDisplay(); //draw dotted line down center of screen;
   padR.displayScore();
   padL.displayScore();
   padR.displayFluidMeter();

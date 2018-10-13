@@ -11,6 +11,7 @@ class Paddle{
     this.b = b;
     this.padLeft; //is this the left paddle?
     this.score = 0;
+    this.scored = 0;
 
     this.x;
     this.y;
@@ -231,7 +232,15 @@ class Paddle{
       let xx = (width/2)+(hPI*xOffset);
       line(xx,y1,xx,y2);
     }
-
   }
+  Score(){
+    if (this.scored > 0){
+      background(this.r*this.scored,this.g*this.scored,this.b*this.scored);
+      this.scored -= 0.02;
+    }
+  }
+
+
+
 
 }
