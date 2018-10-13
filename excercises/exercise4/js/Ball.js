@@ -5,6 +5,7 @@ class Ball {
   this.xHist = []; //history of x positions
   this.yHist = []; //history of y positions
   this.trailLength = 8;
+  this.maxVelX = 19;
   this.velX = 0;
   this.velY = 0;
   this.radius = 8;
@@ -21,6 +22,7 @@ class Ball {
     this.canvasCollision(); //has the ball collided with the canvas?
     this.addToHistory(this.x,this.y); //store balls postional history for trail drawing
 
+    this.velX = constrain(this.velX,-this.maxVelX,this.maxVelX);
 
   }
 
@@ -40,7 +42,7 @@ class Ball {
     this.x = width/2;
     this.y = height/2+(random(-width/3,width/3));
     //x direction is either 1 or -1 depending on which paddle won
-    this.velX = random(4,8)*xDirection;
+    this.velX = random(2,3)*xDirection;
     this.velY = random(-2,2);
 
     //fill array at start of game to trailLength

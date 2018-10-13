@@ -133,9 +133,9 @@ class Paddle{
     let xx = ball.x;
     let yy = ball.y;
 
-    if (this.r < 200){ //if right paddle
+    if (this.r < 200){ //if left paddle
       //if colliding...
-      if ((xx < x+w+r)&& (xx > x-w-r-r)){
+      if ((xx < x+w+r)&& (xx > x-w-r)){
         if ((yy < y+h+r) && (yy > y-h-r)){
           ball.r = this.r;
           ball.g = this.g;
@@ -146,8 +146,9 @@ class Paddle{
           if (ball.velX < 0){
             ball.velX *=-1;
           }
-          ball.velX += this.velX/10; //increase speed of ball based on speed of paddle
-
+          ball.velX += this.velX/10; //increase xspeed of ball based on speed of paddle
+          ball.velY = (ball.y - this.y)/20; //
+          ball.velY += this.velY/4; //increase yspeed of ball based on speed of paddle
           //increase/decrease speed of ball depending on how close the paddle
           //is to the center of the screen (closer = faster)
           let spdInc = map(this.x,0,width/2,.6,1.5);
@@ -180,8 +181,9 @@ class Paddle{
           if (ball.velX > 0){
             ball.velX *=-1;
           }
-          ball.velX += this.velX/10; //increase speed of ball based on speed of paddle
-
+          ball.velX += this.velX/10; //increase xspeed of ball based on speed of
+          ball.velY = (ball.y - this.y)/20;
+          ball.velY += this.velY/4; //increase yspeed of ball based on speed of paddle
           //increase/decrease speed of ball depending on how close the paddle
           //is to the center of the screen (closer = faster)
           let spdInc = map(this.x,width/2,width,1.5,.6);
@@ -213,7 +215,7 @@ class Paddle{
       hPI = -horzPaddleIndent;
     }
 
-    let xx = (width/2)+hPI;
+
     let lineAmount = 40;
     let lineH = height/lineAmount;
     stroke(this.r,this.g,this.b);
@@ -221,8 +223,25 @@ class Paddle{
     for (i = 0; i < this.score; i ++){
       let y1 = ((lineH*i)*2)+(lineH/2); //
       let y2 = y1+lineH;
+      let xx = (width/2)+hPI;
       line(xx,y1,xx,y2);
     }
+    if (this.score > 20) {
+      background(this.r,this.g,this.b);
+      fill(255);
+      noStroke();
+      textAlign(CENTER);
+      textSize(64);
+      ball.r = 255;
+      ball.g = 255;
+      ball.b = 255;
+      if (this.r < 200){
+        text("BLUE PLAYER WINS",width/2,height/2);
+      }else{
+        text("RED PLAYER WINS",width/2,height/2);
+      }
+    }
+
   }
 
 }
