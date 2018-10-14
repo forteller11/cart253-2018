@@ -225,10 +225,10 @@ class Paddle{
     stroke(this.r,this.g,this.b);
     strokeWeight(minStrokeWidth);
     for (i = 0; i < this.score; i ++){
-      let yReset = floor(map(i,0,19,0,1)); //used tp wrap the lines vertically once at edge of canvas
+      let yReset = floor(map(i,0,20,0,1)); //used tp wrap the lines vertically once at edge of canvas
       let y1 = ((lineH*i)*2)+(lineH/2)-(width*yReset);
       let y2 = y1+lineH;
-      let xOffset = floor(map(i,0,19,1,2)); //once scores wraps vetically, offset horiziontally
+      let xOffset = floor(map(i,0,20,1,2)); //once scores wraps vetically, offset horiziontally
       let xx = (width/2)+(hPI*xOffset);
       line(xx,y1,xx,y2);
     }

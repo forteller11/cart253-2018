@@ -104,7 +104,8 @@ else {
     //if mouse clicks NOT on waldo, spawn random waldo-looking face (anti-abuse mechanic)
     if( win === false) {
       facePopExtra ++;
-      face [facePop + facePopExtra] = new Face;
+      let rr = random(0.8,1.2)
+      face [facePop + facePopExtra] = new Face(imgW*rr,imgW*rr);
       face[facePop + facePopExtra].index = waldoIndex;
       face[facePop + facePopExtra].display();
     }
