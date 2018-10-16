@@ -15,7 +15,7 @@ a random xvel and yvel directed towards the paddle which most recently won.
 
 Challenge 4: embelished the game visually in a variety of ways: each paddle has its own colour
 the ball flashes white on collision b4 becoming the colour of the paddle it most recently
-collided with, it also displays a short trail... 
+collided with, it also displays a short trail...
 
 Optional Challenges:
 added a second dimension,
@@ -36,7 +36,7 @@ of using thresholds to display the fluid objects
 ******************/
 let fluidPop = 20;
 let fluid = [];
-let fluidDisplayThreshold = 1;
+let fluidDisplayThreshold = 2;
 let padR; //right paddle
 let padL; //let paddle
 let horzPaddleIndent = 32; //indent of paddle
@@ -92,16 +92,26 @@ function draw(){
   centerLineDisplay(); //draw dotted line down center of screen;
   padR.displayScore(); //dispalys player score
   padL.displayScore();
+  padR.spawnFluid(); //dispalys player score
+  padL.spawnFluid();
   padR.displayFluidMeter();
   padL.displayFluidMeter();
   padR.displayPaddle();
   padL.displayPaddle();
+
+  for (let i = 0; i < padL.fluid.length;i++){
+    padL.fluid[i].displayRadius();
+    //padL.fluid[i].displayRadius();
+    //padR.fluid[i].displayRadius();
+  }
 
   //deal with Ball
   ball.changePosition();
   ball.displayTrail();
   ball.display();
   ball.decrHit();
+
+
 
 
 
@@ -117,29 +127,29 @@ function draw(){
   // //(values radiate from the x,y centers of each metaball,
   // //draw that pixel if those values surpasses a threshold
   //
-  // loadPixels();
-  // //display metaballs
-  // for (let i = 0; i < width; i ++){
-  //   for (let j = 0; j < height; j ++){
-  //     let index = ( i*4 + (j*width*4) );
-  //     let netRadiateValue = 0;
-  //     for (let k = 0; k < fluidPop; k++){
-  //       netRadiateValue += fluid[k].radiateValues(i,j);
-  //     }
-  //     //if all the radiate values combined are greater than displaythreshold draw pixels
-  //     if (netRadiateValue > fluidDisplayThreshold)
-  //     {
-  //
-  //       //add to pixel array so that metaballs from two different paddles can combine colors
-  //       pixels[index+0] += 180; //r
-  //       pixels[index+1] += 100; //g
-  //       pixels[index+2] += 180; //b
-  //       pixels[index+3] += 255; //alpha
-  //
-  //     }
-  //   }
-  // }
-  // updatePixels();
+  loadPixels();
+  //display metaballs
+  for (let i = 0; i < width; i ++){
+    for (let j = 0; j < height; j ++){
+      let index = ( i*4 + (j*width*4) );
+      let netRadiateValue = 0;
+      for (let k = 0; k < padL.fluid.length; k++){
+        netRadiateValue += padL.fluid[k].radiateValues(i,j);
+      }
+      //if all the radiate values combined are greater than displaythreshold draw pixels
+      if (netRadiateValue > fluidDisplayThreshold)
+      {
+
+        //add to pixel array so that metaballs from two different paddles can combine colors
+        pixels[index+0] += 180; //r
+        pixels[index+1] += 100; //g
+        pixels[index+2] += 180; //b
+        pixels[index+3] += 255; //alpha
+
+      }
+    }
+  }
+  updatePixels();
 
 }
 

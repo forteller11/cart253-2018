@@ -20,7 +20,7 @@ class Fluid{
 
   displayRadius(){
     noStroke();
-    fill(0,0,0);
+    fill(255);
     ellipse(this.x,this.y,this.radius);
   }
 

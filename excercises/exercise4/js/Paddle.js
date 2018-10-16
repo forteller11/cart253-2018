@@ -6,7 +6,7 @@ class Paddle{
     this.leftKey = leftKey;
     this.rightKey = rightKey;
     this.fluidKey = fluidKey; //key which shoots fluid
-
+    this.fluid = []; //stores fluid owned by this obj
 
     //rgb color values of paddle
     this.r = r; //this is also used to check whether the player is the right or left paddle
@@ -71,6 +71,17 @@ class Paddle{
     line(x2,y2,x1,y2);
     line(x1,y2,x1,y1);
   }
+  spawnFluid(){
+    if (keyIsDown(this.fluidKey) === true){
+
+        ellipse(this.x,this.y,50);
+        this.fluid.push(new Fluid(this.x,this.y,20));
+        for (let i = 0; i < this.fluid.length; i ++){
+          this.fluid[i].displayRadius();
+        }
+      }
+
+    }
 
   accelerate(){
     //check for inputs and change velocity accordingly
