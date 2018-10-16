@@ -6,6 +6,8 @@ class Paddle{
     this.leftKey = leftKey;
     this.rightKey = rightKey;
     this.fluidKey = fluidKey; //key which shoots fluid
+
+
     //rgb color values of paddle
     this.r = r; //this is also used to check whether the player is the right or left paddle
     this.g = g;

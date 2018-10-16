@@ -3,6 +3,25 @@
 Exercise 4
 Charly Yan Miller
 
+Challenge 1: method canvasCollision in Ball class deals with updating score
+or ball's position and velocity on collision with canvas
+
+Challenge 2: displayScore method in the Paddle class displays the paddles' score
+as dotted lines (in the paddle's colour) travelling down the screen (wrapping on
+overflow of the canvas)
+
+Challenge 3: the reset method in the ball Class resets the ball's position and sets
+a random xvel and yvel directed towards the paddle which most recently won.
+
+Challenge 4: embelished the game visually in a variety of ways: each paddle has its own colour
+the ball flashes white on collision b4 becoming the colour of the paddle it most recently
+collided with, it also displays a short trail... 
+
+Optional Challenges:
+added a second dimension,
+changed ball's velocity based on the relative AND objective position and velocity of the Paddle
+made the balls velocity push the paddle subtly
+
 
 Credits:
 My original introduction to metaballs was in Nathan Auckett's
