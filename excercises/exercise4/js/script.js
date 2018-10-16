@@ -3,8 +3,6 @@
 Exercise 4
 Charly Yan Miller
 
-This is a template. You must fill in the title,
-author, and this description to match your project!
 
 Credits:
 My original introduction to metaballs was in Nathan Auckett's

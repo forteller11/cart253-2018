@@ -228,16 +228,14 @@ class Paddle{
       background(this.r*this.scored,this.g*this.scored,this.b*this.scored);
       this.scored -= 0.02;
     }
-    if (this.hit > 0){
 
-      this.hit -= 0.01;
-    }
+
   }
 
   decrHit(){ //decrements this.hit var
     //this.hit is set to one on collison w/ball
     if (this.hit > 0){
-      this.hit -= 0.01;
+      this.hit -= 0.015;
     }
   }
 

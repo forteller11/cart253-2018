@@ -86,12 +86,14 @@ class Ball {
     if  (this.x+(this.radius*4) < 0){
       padR.score ++;
       padR.scored = .5;
+      padR.hit = 1; //fill the scoring paddle with colour
       this.reset(1);
     }
     //if ball goes off right then leftpaddle score increases
     if (this.x-(this.radius*4) > width){
       padL.score ++;
       padL.scored = .5;
+      padL.hit = 1; //fill the scoring paddle with colour
       this.reset(-1);
     }
     //if ball hits ceiling or floor of canvas
