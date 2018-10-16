@@ -104,6 +104,7 @@ class Ball {
     if ((this.y+this.radius > height) || (this.y-this.radius < 0)){
       this.y = constrain(this.y,0,height);
       this.velY = this.velY*-1;
+      oscAmbienceFreq += 20; //increases frequency of oscillator
     }
   }
 

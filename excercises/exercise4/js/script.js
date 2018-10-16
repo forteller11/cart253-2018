@@ -16,7 +16,7 @@ a random xvel and yvel directed towards the paddle which most recently won.
 
 Challenge 4: embelished the game visually in a variety of ways: each paddle has its own colour
 the ball flashes white on collision b4 becoming the colour of the paddle it most recently
-collided with, it also displays a short trail...
+collided with, it also displays a short trail... added sound w/osscilators
 
 Optional Challenges:
 added a second dimension,
@@ -45,7 +45,7 @@ let minStrokeWidth = 3;
 let maxStrokeWidth = 6;
 let ball;
 let oscAmbience; //sin wave oscillator
-let oscAmbienceFreq = 150; //increases frequency of oscillator on collisions and scores
+let oscAmbienceFreq = 250; //increases frequency of oscillator on collisions and scores
 
 let oscAdrenaline; //increases freq based on net speed of paddles
 let oscAdrenalineFreq = 80; //sets frequency of osilator
@@ -90,7 +90,7 @@ function setup(){
   oscAdrenaline = new p5.Oscillator();
   oscAdrenaline.setType('sawtooth');
   oscAdrenaline.freq(oscAdrenalineFreq);
-  oscAdrenaline.amp(1);
+  oscAdrenaline.amp(0);
   oscAdrenaline.start();
 
 }
@@ -122,7 +122,7 @@ function draw(){
   padL.displayPaddle();
   //changes frequency and amp based of oscillator based off net velocities of paddles
   oscAdrenalineFreq = 1.5*(abs(padL.velX) + abs(padL.velY)+ abs(padR.velX) + abs(padR.velY)+20);
-  oscAdrenalineAmp = .005*(abs(padL.velX) + abs(padL.velY)+ abs(padR.velX) + abs(padR.velY) + abs(ball.velX) + abs(ball.velY)+20);
+  oscAdrenalineAmp = .005*(abs(padL.velX) + abs(padL.velY)+ abs(padR.velX) + abs(padR.velY) + abs(ball.velX) + abs(ball.velY));
   oscAdrenaline.amp(oscAdrenalineAmp);
   oscAdrenaline.freq(oscAdrenalineFreq);
   if (oscAmbienceFreq > 75){
