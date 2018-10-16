@@ -44,13 +44,12 @@ let horzPaddleIndent = 32; //indent of paddle
 let minStrokeWidth = 3;
 let maxStrokeWidth = 6;
 let ball;
-let oscAmbience;
-let oscAmbienceFreq = 80; //sets frequency of osilator
-let oscAdrenaline; //increases freq based on net speed of ball + paddles
+let oscAmbience; //sin wave oscillator
+let oscAmbienceFreq = 150; //increases frequency of oscillator on collisions and scores
+
+let oscAdrenaline; //increases freq based on net speed of paddles
 let oscAdrenalineFreq = 80; //sets frequency of osilator
-let oscAdrenalineAmp = .1; //sets frequency of osilator
-let oscHit; //makes sound on collision event
-let oscHitFreq = 80; //sets frequency of osilator
+let oscAdrenalineAmp = 0.1; //sets frequency of osilator
 
 function setup(){
   createCanvas(800,800);
@@ -80,14 +79,14 @@ function setup(){
   }
   ball.reset(direction);
 
-  //deal with sound
+  //oscillator which increases frequency on scores and collisions
   oscAmbience = new p5.Oscillator();
   oscAmbience.setType('sin');
   oscAmbience.freq(oscAmbienceFreq);
   oscAmbience.amp(1);
   oscAmbience.start();
 
-  //deal with sound
+  //increases freq and amplitude with paddle speed
   oscAdrenaline = new p5.Oscillator();
   oscAdrenaline.setType('sawtooth');
   oscAdrenaline.freq(oscAdrenalineFreq);
@@ -121,17 +120,16 @@ function draw(){
   padL.displayFluidMeter();
   padR.displayPaddle();
   padL.displayPaddle();
-  oscAdrenalineFreq = 2*(abs(padL.velX) + abs(padL.velY)+ abs(padR.velX) + abs(padR.velY)+20);
-  oscAdrenalineAmp = .003*(abs(padL.velX) + abs(padL.velY)+ abs(padR.velX) + abs(padR.velY) + abs(ball.velX) + abs(ball.velY)+20);
-
+  //changes frequency and amp based of oscillator based off net velocities of paddles
+  oscAdrenalineFreq = 1.5*(abs(padL.velX) + abs(padL.velY)+ abs(padR.velX) + abs(padR.velY)+20);
+  oscAdrenalineAmp = .005*(abs(padL.velX) + abs(padL.velY)+ abs(padR.velX) + abs(padR.velY) + abs(ball.velX) + abs(ball.velY)+20);
   oscAdrenaline.amp(oscAdrenalineAmp);
   oscAdrenaline.freq(oscAdrenalineFreq);
-  if (oscAmbienceFreq > 80){
-    oscAmbienceFreq *= .99;
+  if (oscAmbienceFreq > 75){
+    oscAmbienceFreq *= .98;
   }
+  //changes frequency and amp of ossillator
   oscAmbience.freq(oscAmbienceFreq);
-  print("ambient" +oscAmbienceFreq);
-  print("adrenaline" +oscAdrenalineFreq);
 
   for (let i = 0; i < padL.fluid.length;i++){
     padL.fluid[i].displayRadius();
