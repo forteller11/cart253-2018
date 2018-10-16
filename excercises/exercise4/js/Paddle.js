@@ -11,7 +11,7 @@ class Paddle{
     this.g = g;
     this.b = b;
     this.score = 0; //tracks the score of each paddle
-    this.scored = 0;
+    this.scored = 0; //used to flash the screen the colour of the paddle on score
 
     this.x;
     this.y;
@@ -77,6 +77,7 @@ class Paddle{
     (keyIsDown(this.rightKey)) ||
     (keyIsDown(this.leftKey)) )
     {
+      //add acceleration according to inputs
       if (keyIsDown(this.upKey)) {
         this.velY -= this.accY;
       }
@@ -91,6 +92,7 @@ class Paddle{
       }
       //here i apply drag so that the player seems to accelerate more at lower speeds,
       //and less quickly at higher speeds --> creates for a nice ramp of acceleration which feels better
+      //because the horizontal play-space is smaller than the vertical, you can move less quickly horizontally than vertically
       this.velX = this.velX/(this.drag/1.6);
       this.velY = this.velY/(this.drag/1.4);
   }
@@ -102,7 +104,6 @@ class Paddle{
     this.velY = this.velY/this.drag;
 
   }
-
     //constrain velocities
     this.velX = constrain(this.velX,-this.maxVelX,this.maxVelX);
     this.velY = constrain(this.velY,-this.maxVelY,this.maxVelY);
@@ -120,7 +121,7 @@ class Paddle{
     if (this.r > 200){ //if right paddle
       this.x = constrain(this.x,(width/2)+w+w,width-w);
     }
-    else{
+    else {
       this.x = constrain(this.x,w,(width/2)-w-w);
     }
       this.y = constrain(this.y,h,height-h);
@@ -134,42 +135,6 @@ class Paddle{
     let y = this.y;
     let xx = ball.x;
     let yy = ball.y;
-
-    // if (this.r < 200){ //if left paddle
-    //   //if colliding...
-    //   if ((xx < x+w+r)&& (xx > x-w-r)){
-    //     if ((yy < y+h+r) && (yy > y-h-r)){
-    //       ball.r = this.r;
-    //       ball.g = this.g;
-    //       ball.b = this.b;
-    //
-    //       let ballVelXStore = ball.velX*1;
-    //       //if the ball is traveling towards the left, make it travel towards the right
-    //       if (ball.velX < 0){
-    //         ball.velX *=-1;
-    //       }
-    //       ball.velX += this.velX/10; //increase xspeed of ball based on speed of paddle
-    //       ball.velY = (ball.y - this.y)/20; //
-    //       ball.velY += this.velY/4; //increase yspeed of ball based on speed of paddle
-    //       //increase/decrease speed of ball depending on how close the paddle
-    //       //is to the center of the screen (closer = faster)
-    //       let spdInc = map(this.x,0,width/2,.6,1.5);
-    //       print(spdInc);
-    //       ball.velX = ball.velX*spdInc;
-    //
-    //       //make sure that the ball is not moving slower than the paddle (or else ball wud go through paddle)
-    //       if (ball.velX < this.velX){
-    //         ball.velX = this.velX;
-    //       }
-    //       //move the ball outside the paddle hitbox
-    //       while ( (ball.x < x+w+r)&& (ball.x > x-w-r)
-    //       && (ball.y < y+h+r) && (ball.y > y-h-r) ){
-    //         ball.x += 1;
-    //       }
-    //       this.velX = ballVelXStore; //make paddles bounce back on collsion
-    //     }
-    //   }
-    // }
 
       //if ball is colliding with paddle...
       if ((xx < x+w+r)&& (xx > x-w-r)){
@@ -223,8 +188,8 @@ class Paddle{
             }
           }
 
-          this.velX = ballVelXStore; //make paddles bounce back on collsion based on the ball's xvelocity
-          this.velY = ballVelYStore; //make paddles bounce back on collsion based on the ball's yvelocity
+          this.velX = ballVelXStore*1.5; //make paddles bounce back on collsion based on the ball's xvelocity
+          this.velY = ballVelYStore*1.5; //make paddles bounce back on collsion based on the ball's yvelocity
         }
       }
   }

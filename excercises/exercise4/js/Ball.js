@@ -88,11 +88,12 @@ class Ball {
       padL.scored = .5;
       this.reset(-1);
     }
-
+    //if ball hits ceiling or floor of canvas
     if ((this.y+this.radius > height) || (this.y-this.radius < 0)){
-      this.x = constrain(this.x,0,height);
+      this.y = constrain(this.y,0,height);
       this.velY = this.velY*-1;
     }
+
   }
 
 }
