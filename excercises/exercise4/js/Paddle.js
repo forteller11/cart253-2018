@@ -12,6 +12,7 @@ class Paddle{
     this.b = b;
     this.score = 0; //tracks the score of each paddle
     this.scored = 0; //used to flash the screen the colour of the paddle on score
+    this.hit = 0; //set to 1 if the ball has been hit, continually decrements
 
     this.x;
     this.y;
@@ -42,12 +43,11 @@ class Paddle{
     noStroke();
     // let distX = ball.x-this.x
     // let alpha = map(distX,0,width,255,0);
-    fill(this.r,this.g,this.b,alpha);
+    fill(this.r*this.hit,this.g*this.hit,this.b*this.hit);
     rect(x1,y2,x2,y1Dynamic);
   }
 
   displayPaddle(){
-
     let w = this.width/2;
     let h = this.height/2;
     let x1 = -w+this.x;
@@ -136,9 +136,11 @@ class Paddle{
     let xx = ball.x;
     let yy = ball.y;
 
+
       //if ball is colliding with paddle...
       if ((xx < x+w+r)&& (xx > x-w-r)){
         if ((yy < y+h+r) && (yy > y-h-r)){
+          this.hit = 1;
           ball.r = this.r;
           ball.g = this.g;
           ball.b = this.b;
@@ -224,6 +226,10 @@ class Paddle{
     if (this.scored > 0){
       background(this.r*this.scored,this.g*this.scored,this.b*this.scored);
       this.scored -= 0.02;
+    }
+    if (this.hit > 0){
+
+      this.hit -= 0.01;
     }
   }
 
