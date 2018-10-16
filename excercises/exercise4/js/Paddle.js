@@ -140,6 +140,7 @@ class Paddle{
       //if ball is colliding with paddle...
       if ((xx < x+w+r)&& (xx > x-w-r)){
         if ((yy < y+h+r) && (yy > y-h-r)){
+          ball.hit = 1;
           this.hit = 1;
           ball.r = this.r;
           ball.g = this.g;
@@ -229,6 +230,13 @@ class Paddle{
     }
     if (this.hit > 0){
 
+      this.hit -= 0.01;
+    }
+  }
+
+  decrHit(){ //decrements this.hit var
+    //this.hit is set to one on collison w/ball
+    if (this.hit > 0){
       this.hit -= 0.01;
     }
   }

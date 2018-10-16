@@ -70,6 +70,8 @@ function draw(){
   //display
   padR.flashOnScore(); //fashes screen red/blue on score
   padL.flashOnScore();
+  padR.decrHit(); //fashes screen red/blue on score
+  padL.decrHit();
   centerLineDisplay(); //draw dotted line down center of screen;
   padR.displayScore(); //dispalys player score
   padL.displayScore();
@@ -82,6 +84,7 @@ function draw(){
   ball.changePosition();
   ball.displayTrail();
   ball.display();
+  ball.decrHit();
 
 
 
