@@ -10,7 +10,7 @@ class Paddle{
     this.r = r; //this is also used to check whether the player is the right or left paddle
     this.g = g;
     this.b = b;
-    this.score = 0;
+    this.score = 0; //tracks the score of each paddle
     this.scored = 0;
 
     this.x;
@@ -135,77 +135,98 @@ class Paddle{
     let xx = ball.x;
     let yy = ball.y;
 
-    if (this.r < 200){ //if left paddle
-      //if colliding...
+    // if (this.r < 200){ //if left paddle
+    //   //if colliding...
+    //   if ((xx < x+w+r)&& (xx > x-w-r)){
+    //     if ((yy < y+h+r) && (yy > y-h-r)){
+    //       ball.r = this.r;
+    //       ball.g = this.g;
+    //       ball.b = this.b;
+    //
+    //       let ballVelXStore = ball.velX*1;
+    //       //if the ball is traveling towards the left, make it travel towards the right
+    //       if (ball.velX < 0){
+    //         ball.velX *=-1;
+    //       }
+    //       ball.velX += this.velX/10; //increase xspeed of ball based on speed of paddle
+    //       ball.velY = (ball.y - this.y)/20; //
+    //       ball.velY += this.velY/4; //increase yspeed of ball based on speed of paddle
+    //       //increase/decrease speed of ball depending on how close the paddle
+    //       //is to the center of the screen (closer = faster)
+    //       let spdInc = map(this.x,0,width/2,.6,1.5);
+    //       print(spdInc);
+    //       ball.velX = ball.velX*spdInc;
+    //
+    //       //make sure that the ball is not moving slower than the paddle (or else ball wud go through paddle)
+    //       if (ball.velX < this.velX){
+    //         ball.velX = this.velX;
+    //       }
+    //       //move the ball outside the paddle hitbox
+    //       while ( (ball.x < x+w+r)&& (ball.x > x-w-r)
+    //       && (ball.y < y+h+r) && (ball.y > y-h-r) ){
+    //         ball.x += 1;
+    //       }
+    //       this.velX = ballVelXStore; //make paddles bounce back on collsion
+    //     }
+    //   }
+    // }
+
+      //if ball is colliding with paddle...
       if ((xx < x+w+r)&& (xx > x-w-r)){
         if ((yy < y+h+r) && (yy > y-h-r)){
           ball.r = this.r;
           ball.g = this.g;
           ball.b = this.b;
-
-          let ballVelXStore = ball.velX*1;
-          //if the ball is traveling towards the left, make it travel towards the right
-          if (ball.velX < 0){
-            ball.velX *=-1;
-          }
-          ball.velX += this.velX/10; //increase xspeed of ball based on speed of paddle
-          ball.velY = (ball.y - this.y)/20; //
-          ball.velY += this.velY/4; //increase yspeed of ball based on speed of paddle
-          //increase/decrease speed of ball depending on how close the paddle
-          //is to the center of the screen (closer = faster)
-          let spdInc = map(this.x,0,width/2,.6,1.5);
-          print(spdInc);
-          ball.velX = ball.velX*spdInc;
-
-          //make sure that the ball is not moving slower than the paddle (or else ball wud go through paddle)
-          if (ball.velX < this.velX){
-            ball.velX = this.velX;
-          }
-          //move the ball outside the paddle hitbox
-          while ( (ball.x < x+w+r)&& (ball.x > x-w-r-r)
-          && (ball.y < y+h+r) && (ball.y > y-h-r) ){
-            ball.x += 1;
-          }
-          this.velX = ballVelXStore; //make paddles bounce back on collsion
-        }
-      }
-    }
-
-    if (this.r > 200){ //if right paddle
-      //if colliding...
-      if ((xx < x+w+r)&& (xx > x-w-r-r)){
-        if ((yy < y+h+r) && (yy > y-h-r)){
-          ball.r = this.r;
-          ball.g = this.g;
-          ball.b = this.b;
+          //save balls velocity for later calculations deaing with the effect of the ball on the paddle's velocity
           let ballVelXStore = ball.velX;
-          //if the ball is traveling towards the left, make it travel towards the right
-          if (ball.velX > 0){
+          let ballVelYStore = ball.velY;
+
+          //deal with changes to the ball's x velocity....
+          //make sure the ball is travelling towards the center of the screen (towards the oppponents court)
+          if ((ball.velX > 0) && (this.r > 200)){ //right paddle
+            ball.velX *=-1;
+          }else if ((ball.velX < 0) && (this.r < 200)){ //left paddle
             ball.velX *=-1;
           }
-          ball.velX += this.velX/10; //increase xspeed of ball based on speed of
-          ball.velY = (ball.y - this.y)/20;
-          ball.velY += this.velY/4; //increase yspeed of ball based on speed of paddle
-          //increase/decrease speed of ball depending on how close the paddle
-          //is to the center of the screen (closer = faster)
-          let spdInc = map(this.x,width/2,width,1.5,.6);
+          //increase xvelocity of ball based on xvel of paddle
+          ball.velX += this.velX/10;
+          //increase/decrease xvel of ball depending on how close the paddle
+          //is to the center of the screen (closer = faster xvel)
+          let spdInc;
+          if ((this.r > 200)){ //for the right paddle
+            spdInc = map(this.x,width/2,width,1.5,0.6);
+          } else if ((this.r < 200)){ //for the left paddle
+              spdInc = map(this.x,0,width/2,0.6,1.5);
+          }
           print(spdInc);
           ball.velX = ball.velX*spdInc;
-
-          //make sure that the ball is not moving slower than the paddle (or else ball wud go through paddle)
-          if (ball.velX > this.velX){
+          //make sure that the ball is moving at least as fast as the paddle (or else ball wud go through paddle)
+          if ((ball.velX > this.velX) && (this.r > 200)){
+            ball.velX = this.velX;
+          }else if ((ball.velX < this.velX) && (this.r < 200)){
             ball.velX = this.velX;
           }
-          //move the ball outside the paddle hitbox
-          while ( (ball.x < x+w+r)&& (ball.x > x-w-r-r)
+          //deal with changes to the ball's y velocity....
+          //change yvelocity of ball based on where the collision has occured
+          //(collision w/center of the paddle = 0 ball.yvel
+          //hits with the edges make the ball bounce away from the center
+          ball.velY = (ball.y - this.y)/20;
+          ball.velY += this.velY/4; //increase yvel of ball based on yvel of paddle
+
+          //move the ball outside the paddle hitbox (right paddle)
+          while ( (ball.x < x+w+r)&& (ball.x > x-w-r)
           && (ball.y < y+h+r) && (ball.y > y-h-r) ){
-            ball.x -= 1;
+            if (ball.r > 200){
+              ball.x --;
+            } else if (ball.r < 200){
+              ball.x ++;
+            }
           }
 
-          this.velX = ballVelXStore; //make paddles bounce back on collsion
+          this.velX = ballVelXStore; //make paddles bounce back on collsion based on the ball's xvelocity
+          this.velY = ballVelYStore; //make paddles bounce back on collsion based on the ball's yvelocity
         }
       }
-    }
   }
 
   displayScore(){
@@ -218,22 +239,23 @@ class Paddle{
       hPI = -horzPaddleIndent;
     }
 
-    let lineAmount = 40;
-    let lineH = height/lineAmount;
-    let xOffset;
-    let yOffset;
+    let lineAmount = 40; //amount of dotted lines (spaces included)
+    let lineH = height/lineAmount; //height in pixels of every line
     stroke(this.r,this.g,this.b);
     strokeWeight(minStrokeWidth);
     for (i = 0; i < this.score; i ++){
-      let yReset = floor(map(i,0,20,0,1)); //used tp wrap the lines vertically once at edge of canvas
-      let y1 = ((lineH*i)*2)+(lineH/2)-(width*yReset);
+      //used to wrap the lines vertically once at edge of canvas, will = 0 until this.score > 20
+      let yOffset = floor(map(i,0,20,0,1));
+      let y1 = ((lineH*i)*2)+(lineH/2)-(width*yOffset);
       let y2 = y1+lineH;
-      let xOffset = floor(map(i,0,20,1,2)); //once scores wraps vetically, offset horiziontally
+      let xOffset = floor(map(i,0,20,1,2)); //as the score wraps vetically, offset it horiziontally aswell
       let xx = (width/2)+(hPI*xOffset);
-      line(xx,y1,xx,y2);
+      line(xx,y1,xx,y2); //draws line
     }
   }
-  flashOnScore(){
+
+  flashOnScore(){ //fills the screen with the paddle color that fades as this.scored is decremented.
+    //this.score is set to 1 whenever the ball ball is scored in the opponents court.
     if (this.scored > 0){
       background(this.r*this.scored,this.g*this.scored,this.b*this.scored);
       this.scored -= 0.02;
