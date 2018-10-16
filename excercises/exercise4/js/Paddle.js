@@ -75,10 +75,14 @@ class Paddle{
     if (keyIsDown(this.fluidKey) === true){
 
         ellipse(this.x,this.y,50);
-        this.fluid.push(new Fluid(this.x,this.y,20));
-        for (let i = 0; i < this.fluid.length; i ++){
-          this.fluid[i].displayRadius();
-        }
+        let yy = random(-this.height/2,this.height/2);
+        this.fluid.push(new Fluid(this.x,this.y+yy,10));
+        let i = this.fluid.length;
+        print(i);
+        this.fluid[i-1].velX = this.velX + 20;
+
+
+        //this.fluid[0].x = 10;
       }
 
     }
@@ -158,6 +162,7 @@ class Paddle{
           ball.r = this.r;
           ball.g = this.g;
           ball.b = this.b;
+          oscAmbienceFreq += 50;
           //save balls velocity for later calculations deaing with the effect of the ball on the paddle's velocity
           let ballVelXStore = ball.velX;
           let ballVelYStore = ball.velY;

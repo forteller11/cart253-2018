@@ -88,6 +88,7 @@ class Ball {
       padR.scored = .5;
       padR.hit = 1; //fill the scoring paddle with colour
       this.reset(1);
+      oscAmbienceFreq += 200;
     }
     //if ball goes off right then leftpaddle score increases
     if (this.x-(this.radius*4) > width){
@@ -95,6 +96,7 @@ class Ball {
       padL.scored = .5;
       padL.hit = 1; //fill the scoring paddle with colour
       this.reset(-1);
+      oscAmbienceFreq += 200;
     }
     //if ball hits ceiling or floor of canvas
     if ((this.y+this.radius > height) || (this.y-this.radius < 0)){

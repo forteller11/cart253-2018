@@ -3,12 +3,8 @@ class Fluid{
     this.x = x;
     this.y = y;
     this.radius = r;
-    //rgb
-    this.r = 255;
-    this.g = 0;
-    this.b = 255;
 
-    this.velX = 2;
+    this.velX = random(1,2.5);
     this.velY = 0;
   }
   //largest values the closest to the fluid's x,y position, they also increase with the fluid's radius
@@ -21,24 +17,31 @@ class Fluid{
   displayRadius(){
     noStroke();
     fill(255);
-    ellipse(this.x,this.y,this.radius);
+    //ellipse(this.x,this.y,this.radius);
   }
 
   move(){
+    if (this.radius > 1){
+      this.radius -= random(0.01,0.1);
+    }
+
     this.x+=this.velX;
     this.y+=this.velY;
   }
 
   outsideCanvas(){
     //if outside canvas, return true, else return false
-    let r = this.r;
-    if ((x > width+r) || (x < 0-r) || (y > height + r) (y <0-r)){
+    let r = this.radius;
+    if ((this.x > width+(r*8)) || (this.x < -(r*8)) || (this.y > height) || (this.y < 0)){
       return true;
     }
     else {
       return false;
     }
   }
+
+
+
 
 
 }

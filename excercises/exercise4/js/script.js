@@ -2,6 +2,7 @@
 
 Exercise 4
 Charly Yan Miller
+a game of 2 dimensional pong
 
 Challenge 1: method canvasCollision in Ball class deals with updating score
 or ball's position and velocity on collision with canvas
@@ -36,13 +37,20 @@ of using thresholds to display the fluid objects
 ******************/
 let fluidPop = 20;
 let fluid = [];
-let fluidDisplayThreshold = 2;
+let fluidDisplayThreshold = 1;
 let padR; //right paddle
 let padL; //let paddle
 let horzPaddleIndent = 32; //indent of paddle
 let minStrokeWidth = 3;
 let maxStrokeWidth = 6;
 let ball;
+let oscAmbience;
+let oscAmbienceFreq = 80; //sets frequency of osilator
+let oscAdrenaline; //increases freq based on net speed of ball + paddles
+let oscAdrenalineFreq = 80; //sets frequency of osilator
+let oscAdrenalineAmp = .1; //sets frequency of osilator
+let oscHit; //makes sound on collision event
+let oscHitFreq = 80; //sets frequency of osilator
 
 function setup(){
   createCanvas(800,800);
@@ -71,6 +79,21 @@ function setup(){
     direction = -1;
   }
   ball.reset(direction);
+
+  //deal with sound
+  oscAmbience = new p5.Oscillator();
+  oscAmbience.setType('sin');
+  oscAmbience.freq(oscAmbienceFreq);
+  oscAmbience.amp(1);
+  oscAmbience.start();
+
+  //deal with sound
+  oscAdrenaline = new p5.Oscillator();
+  oscAdrenaline.setType('sawtooth');
+  oscAdrenaline.freq(oscAdrenalineFreq);
+  oscAdrenaline.amp(1);
+  oscAdrenaline.start();
+
 }
 
 function draw(){
@@ -98,9 +121,25 @@ function draw(){
   padL.displayFluidMeter();
   padR.displayPaddle();
   padL.displayPaddle();
+  oscAdrenalineFreq = 2*(abs(padL.velX) + abs(padL.velY)+ abs(padR.velX) + abs(padR.velY)+20);
+  oscAdrenalineAmp = .003*(abs(padL.velX) + abs(padL.velY)+ abs(padR.velX) + abs(padR.velY) + abs(ball.velX) + abs(ball.velY)+20);
+
+  oscAdrenaline.amp(oscAdrenalineAmp);
+  oscAdrenaline.freq(oscAdrenalineFreq);
+  if (oscAmbienceFreq > 80){
+    oscAmbienceFreq *= .99;
+  }
+  oscAmbience.freq(oscAmbienceFreq);
+  print("ambient" +oscAmbienceFreq);
+  print("adrenaline" +oscAdrenalineFreq);
 
   for (let i = 0; i < padL.fluid.length;i++){
     padL.fluid[i].displayRadius();
+    padL.fluid[i].move();
+    if (padL.fluid[i].outsideCanvas() === true){
+      padL.fluid.splice(i,1);
+      print(padL.fluid.length);
+    }
     //padL.fluid[i].displayRadius();
     //padR.fluid[i].displayRadius();
   }
@@ -123,34 +162,42 @@ function draw(){
   fluid[0].x = mouseX;
   fluid[0].y = mouseY;
 
-  // //go through every pixel in pixel array, add up all values from the metaballs
-  // //(values radiate from the x,y centers of each metaball,
-  // //draw that pixel if those values surpasses a threshold
-  //
-  loadPixels();
-  //display metaballs
-  for (let i = 0; i < width; i ++){
-    for (let j = 0; j < height; j ++){
-      let index = ( i*4 + (j*width*4) );
-      let netRadiateValue = 0;
-      for (let k = 0; k < padL.fluid.length; k++){
-        netRadiateValue += padL.fluid[k].radiateValues(i,j);
-      }
-      //if all the radiate values combined are greater than displaythreshold draw pixels
-      if (netRadiateValue > fluidDisplayThreshold)
-      {
+  if (padL.fluid.length > 0) {
+    // //go through every pixel in pixel array, add up all values from the metaballs
+    // //(values radiate from the x,y centers of each metaball,
+    // //draw that pixel if those values surpasses a threshold
+    //
+    loadPixels();
+    //display metaballs
+    for (let i = 0; i < width; i ++){
+      for (let j = 0; j < height; j ++){
+        let index = ( i*4 + (j*width*4) );
+        let netRadiateValue = 0;
+        for (let k = 0; k < padL.fluid.length; k++){
+          netRadiateValue += padL.fluid[k].radiateValues(i,j);
+        }
+        //if all the radiate values combined are greater than displaythreshold draw pixels
+        if (netRadiateValue > fluidDisplayThreshold)
+        {
 
-        //add to pixel array so that metaballs from two different paddles can combine colors
-        pixels[index+0] += 180; //r
-        pixels[index+1] += 100; //g
-        pixels[index+2] += 180; //b
-        pixels[index+3] += 255; //alpha
+          //add to pixel array so that metaballs from two different paddles can combine colors
+          pixels[index+0] += padL.r; //r
+          pixels[index+1] += padL.g; //g
+          pixels[index+2] += padL.b; //b
+          pixels[index+3] += 255; //alpha
 
+          // //add to pixel array so that metaballs from two different paddles can combine colors
+          // pixels[index+0] = 232; //r
+          // pixels[index+1] = 97; //g
+          // pixels[index+2] = 76; //b
+          // pixels[index+3] = 255; //alpha
+
+
+        }
       }
     }
+    updatePixels();
   }
-  updatePixels();
-
 }
 
 function padRReset(){
