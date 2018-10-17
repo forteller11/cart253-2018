@@ -5,8 +5,6 @@ class Paddle{
     this.downKey = downKey;
     this.leftKey = leftKey;
     this.rightKey = rightKey;
-    this.fluidKey = fluidKey; //key which shoots fluid
-    this.fluid = []; //stores fluid owned by this obj
 
     //rgb color values of paddle
     this.r = r; //this is also used to check whether the player is the right or left paddle
@@ -27,7 +25,7 @@ class Paddle{
     this.drag = 2.4;
     this.width = 16;
     this.height = 80;
-    this.fluidMeter = 1; //how much fluid can this paddle produce? (0-1)
+    this.fluidMeter = .5; //how much fluid can this paddle produce? (0-1)
     this.strokeWeight = (minStrokeWidth+maxStrokeWidth)/2;
   }
   displayFluidMeter(){
@@ -43,8 +41,10 @@ class Paddle{
 
     rectMode(CORNERS);
     noStroke();
-    // let distX = ball.x-this.x
-    // let alpha = map(distX,0,width,255,0);
+
+    fill(0);
+    rect(x1,y2,x2,y1);
+    //when ball is hit draws fill with full color, fading to black quickly
     fill(this.r*this.hit,this.g*this.hit,this.b*this.hit);
     rect(x1,y2,x2,y1Dynamic);
   }
@@ -71,21 +71,6 @@ class Paddle{
     line(x2,y2,x1,y2);
     line(x1,y2,x1,y1);
   }
-  spawnFluid(){
-    if (keyIsDown(this.fluidKey) === true){
-
-        ellipse(this.x,this.y,50);
-        let yy = random(-this.height/2,this.height/2);
-        this.fluid.push(new Fluid(this.x,this.y+yy,10));
-        let i = this.fluid.length;
-        print(i);
-        this.fluid[i-1].velX = this.velX + 20;
-
-
-        //this.fluid[0].x = 10;
-      }
-
-    }
 
   accelerate(){
     //check for inputs and change velocity accordingly
@@ -137,9 +122,13 @@ class Paddle{
     //constrain x positions based on if the paddle is left or right, constrains y pos identically
     if (this.r > 200){ //if right paddle
       this.x = constrain(this.x,(width/2)+w+w,width-w);
+      this.fluidMeter = map(this.x,width/2+w+w,width-w,1.3,0);
+      this.fluidMeter = constrain(this.fluidMeter,0,1);
     }
     else {
       this.x = constrain(this.x,w,(width/2)-w-w);
+      this.fluidMeter = map(this.x,w,(width/2)-w-w,0,1.3);
+      this.fluidMeter = constrain(this.fluidMeter,0,1);
     }
       this.y = constrain(this.y,h,height-h);
   }

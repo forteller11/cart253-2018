@@ -2,7 +2,7 @@
 
 Exercise 4
 Charly Yan Miller
-a game of 2 dimensional pong
+a game of 2 dimensional pong, with sound!
 
 Challenge 1: method canvasCollision in Ball class deals with updating score
 or ball's position and velocity on collision with canvas
@@ -25,15 +25,7 @@ made the balls velocity push the paddle subtly
 
 
 Credits:
-My original introduction to metaballs was in Nathan Auckett's
-youtube video titled "How to make Metaballs in Gamemaker Studio 1 and 2"
-
-Daniel Shiffman's "Coding Challenge #28: Metaballs" helped me
-particularly with my "radiateValues" function found in my Fluid class
-
-Daniel Shiffman's "Coding Challenge #90: Floyd-Stienberg Dithering"
-was my main introduction to the p5.js pixel array and gave me the idea
-of using thresholds to display the fluid objects
+used p5.js references to setup the oscillator p5.sound objects
 ******************/
 let fluidPop = 20;
 let fluid = [];
@@ -53,10 +45,6 @@ let oscAdrenalineAmp = 0.1; //sets frequency of osilator
 
 function setup(){
   createCanvas(800,800);
-  pixelDensity(1); //so pixel array behaves uniformly between dispalys w/natively dissimilar pixel densities
-  for (let i = 0; i < fluidPop; i ++){
-    fluid[i] = new Fluid(random(width),random(height),random(2,6));
-  }
   //intiialize right paddle with appropriate key codes and r,g,b values
   padR = new Paddle(38,40,37,39,77,232,97,76);
   //set appropriate position, give paddle a full fluid-meter and set velocity to 0
@@ -114,8 +102,6 @@ function draw(){
   centerLineDisplay(); //draw dotted line down center of screen;
   padR.displayScore(); //dispalys player score
   padL.displayScore();
-  padR.spawnFluid(); //dispalys player score
-  padL.spawnFluid();
   padR.displayFluidMeter();
   padL.displayFluidMeter();
   padR.displayPaddle();
@@ -131,71 +117,12 @@ function draw(){
   //changes frequency and amp of ossillator
   oscAmbience.freq(oscAmbienceFreq);
 
-  for (let i = 0; i < padL.fluid.length;i++){
-    padL.fluid[i].displayRadius();
-    padL.fluid[i].move();
-    if (padL.fluid[i].outsideCanvas() === true){
-      padL.fluid.splice(i,1);
-      print(padL.fluid.length);
-    }
-    //padL.fluid[i].displayRadius();
-    //padR.fluid[i].displayRadius();
-  }
-
   //deal with Ball
   ball.changePosition();
   ball.displayTrail();
   ball.display();
   ball.decrHit();
 
-
-
-
-
-
-  for (let i = 0; i < fluidPop; i ++){
-    //fluid[i].displayRadius();
-    fluid[i].move();
-  }
-  fluid[0].x = mouseX;
-  fluid[0].y = mouseY;
-
-  if (padL.fluid.length > 0) {
-    // //go through every pixel in pixel array, add up all values from the metaballs
-    // //(values radiate from the x,y centers of each metaball,
-    // //draw that pixel if those values surpasses a threshold
-    //
-    loadPixels();
-    //display metaballs
-    for (let i = 0; i < width; i ++){
-      for (let j = 0; j < height; j ++){
-        let index = ( i*4 + (j*width*4) );
-        let netRadiateValue = 0;
-        for (let k = 0; k < padL.fluid.length; k++){
-          netRadiateValue += padL.fluid[k].radiateValues(i,j);
-        }
-        //if all the radiate values combined are greater than displaythreshold draw pixels
-        if (netRadiateValue > fluidDisplayThreshold)
-        {
-
-          //add to pixel array so that metaballs from two different paddles can combine colors
-          pixels[index+0] += padL.r; //r
-          pixels[index+1] += padL.g; //g
-          pixels[index+2] += padL.b; //b
-          pixels[index+3] += 255; //alpha
-
-          // //add to pixel array so that metaballs from two different paddles can combine colors
-          // pixels[index+0] = 232; //r
-          // pixels[index+1] = 97; //g
-          // pixels[index+2] = 76; //b
-          // pixels[index+3] = 255; //alpha
-
-
-        }
-      }
-    }
-    updatePixels();
-  }
 }
 
 function padRReset(){
@@ -203,7 +130,6 @@ function padRReset(){
   padR.y = height/2;
   padR.velX = 0;
   padR.velY = 0;
-  padR.fluidMeter = 1;
 }
 
 function padLReset(){
@@ -211,7 +137,6 @@ function padLReset(){
   padL.y = height/2;
   padL.velX = 0;
   padL.velY = 0;
-  padL.fluidMeter = 1;
 }
 
 function centerLineDisplay(){

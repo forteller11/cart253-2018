@@ -1,3 +1,3 @@
 # cart253-2018 S
 
-//This is a test
+//This repository is for CART 253 class projects and exercises
