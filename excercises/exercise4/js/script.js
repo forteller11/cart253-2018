@@ -43,15 +43,15 @@ let oscAdrenaline; //increases freq based on net speed of paddles
 let oscAdrenalineFreq = 80; //sets frequency of osilator
 let oscAdrenalineAmp = 0.1; //sets frequency of osilator
 
-function setup(){
-  createCanvas(800,800);
+function setup() {
+  createCanvas(800, 800);
   //intiialize right paddle with appropriate key codes and r,g,b values
-  padR = new Paddle(38,40,37,39,77,232,97,76);
+  padR = new Paddle(38, 40, 37, 39, 77, 232, 97, 76);
   //set appropriate position, give paddle a full fluid-meter and set velocity to 0
   padRReset();
 
   //intiialize left paddle with corresponding key codes and rgb color values
-  padL= new Paddle(87,83,65,68,69,80,164,229);
+  padL = new Paddle(87, 83, 65, 68, 69, 80, 164, 229);
   //set appropriate position, give paddle a full fluid-meter and set velocity to 0
   padLReset();
 
@@ -61,8 +61,7 @@ function setup(){
   let direction;
   if (random(1) > .5) {
     direction = 1;
-  }
-  else {
+  } else {
     direction = -1;
   }
   ball.reset(direction);
@@ -83,7 +82,7 @@ function setup(){
 
 }
 
-function draw(){
+function draw() {
   background(0);
 
   //for paddles...
@@ -102,16 +101,16 @@ function draw(){
   centerLineDisplay(); //draw dotted line down center of screen;
   padR.displayScore(); //dispalys player score
   padL.displayScore();
-  padR.displayFluidMeter();
-  padL.displayFluidMeter();
+  padR.displayfillMeter();
+  padL.displayfillMeter();
   padR.displayPaddle();
   padL.displayPaddle();
   //changes frequency and amp based of oscillator based off net velocities of paddles
-  oscAdrenalineFreq = 1.5*(abs(padL.velX) + abs(padL.velY)+ abs(padR.velX) + abs(padR.velY)+20);
-  oscAdrenalineAmp = .005*(abs(padL.velX) + abs(padL.velY)+ abs(padR.velX) + abs(padR.velY) + abs(ball.velX) + abs(ball.velY));
+  oscAdrenalineFreq = 1.5 * (abs(padL.velX) + abs(padL.velY) + abs(padR.velX) + abs(padR.velY) + 20);
+  oscAdrenalineAmp = .005 * (abs(padL.velX) + abs(padL.velY) + abs(padR.velX) + abs(padR.velY) + abs(ball.velX) + abs(ball.velY));
   oscAdrenaline.amp(oscAdrenalineAmp);
   oscAdrenaline.freq(oscAdrenalineFreq);
-  if (oscAmbienceFreq > 75){
+  if (oscAmbienceFreq > 75) {
     oscAmbienceFreq *= .98;
   }
   //changes frequency and amp of ossillator
@@ -125,30 +124,30 @@ function draw(){
 
 }
 
-function padRReset(){
+function padRReset() {
   padR.x = width - horzPaddleIndent;
-  padR.y = height/2;
+  padR.y = height / 2;
   padR.velX = 0;
   padR.velY = 0;
 }
 
-function padLReset(){
+function padLReset() {
   padL.x = horzPaddleIndent;
-  padL.y = height/2;
+  padL.y = height / 2;
   padL.velX = 0;
   padL.velY = 0;
 }
 
-function centerLineDisplay(){
+function centerLineDisplay() {
   //draws dotted line down center of screen
-  let xx = width/2;
+  let xx = width / 2;
   let lineAmount = 40;
-  let lineH = height/lineAmount;
+  let lineH = height / lineAmount;
   stroke(100);
   strokeWeight(2);
-  for (i = 0; i < (lineAmount/2); i ++){
-    let y1 = ((lineH*i)*2)+(lineH/2); //
-    let y2 = y1+lineH;
-    line(xx,y1,xx,y2);
+  for (i = 0; i < (lineAmount / 2); i++) {
+    let y1 = ((lineH * i) * 2) + (lineH / 2); //
+    let y2 = y1 + lineH;
+    line(xx, y1, xx, y2);
   }
 }
