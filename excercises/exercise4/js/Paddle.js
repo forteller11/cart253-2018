@@ -151,12 +151,13 @@ class Paddle {
         //save balls velocity for later calculations deaing with the effect of the ball on the paddle's velocity
         let ballVelXStore = ball.velX;
         let ballVelYStore = ball.velY;
+        let thisVelXStore = this.velX;
 
         //deal with changes to the ball's x velocity....
         //make sure the ball is travelling towards the center of the screen (towards the oppponents court)
-        if ((ball.velX > 0) && (this.r > 200)) { //right paddle
+        if ((ball.velX > 0) && (ballVelXStore > thisVelXStore)) { //right paddle
           ball.velX *= -1;
-        } else if ((ball.velX < 0) && (this.r < 200)) { //left paddle
+        } else if ((ball.velX < 0) && (ballVelXStore < thisVelXStore)) { //left paddle
           ball.velX *= -1;
         }
         //increase xvelocity of ball based on xvel of paddle
@@ -164,17 +165,17 @@ class Paddle {
         //increase/decrease xvel of ball depending on how close the paddle
         //is to the center of the screen (closer = faster xvel)
         let spdInc;
-        if ((this.r > 200)) { //for the right paddle
+        if (this.r > 200) { //for the right paddle
           spdInc = map(this.x, width / 2, width, 1.5, 0.6);
-        } else if ((this.r < 200)) { //for the left paddle
+        } else if (this.r < 200) { //for the left paddle
           spdInc = map(this.x, 0, width / 2, 0.6, 1.5);
         }
         print(spdInc);
         ball.velX = ball.velX * spdInc;
         //make sure that the ball is moving at least as fast as the paddle (or else ball wud go through paddle)
-        if ((ball.velX > this.velX) && (this.r > 200)) {
+        if ((ball.velX > this.velX) && (ballVelXStore > thisVelXStore)) {
           ball.velX = this.velX;
-        } else if ((ball.velX < this.velX) && (this.r < 200)) {
+        } else if ((ball.velX < this.velX) && (ballVelXStore< thisVelXStore)) {
           ball.velX = this.velX;
         }
         //deal with changes to the ball's y velocity....
@@ -187,9 +188,9 @@ class Paddle {
         //move the ball outside the paddle hitbox (right paddle)
         while ((ball.x < x + w + r) && (ball.x > x - w - r) &&
           (ball.y < y + h + r) && (ball.y > y - h - r)) {
-          if (ball.r > 200) {
+          if (ballVelXStore > thisVelXStore) {
             ball.x--;
-          } else if (ball.r < 200) {
+          } else if (ballVelXStore < thisVelXStore) {
             ball.x++;
           }
         }
