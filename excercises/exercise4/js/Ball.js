@@ -4,7 +4,7 @@ class Ball {
     this.y;
     this.xHist = []; //history of x positions
     this.yHist = []; //history of y positions
-    this.trailLength = 20;
+    this.trailLength = 12;
     this.maxVelX = 19;
     this.velX = 0;
     this.velY = 0;

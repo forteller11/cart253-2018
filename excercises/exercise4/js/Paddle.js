@@ -155,7 +155,7 @@ class Paddle {
 
         //deal with changes to the ball's x velocity....
         //make sure the ball is travelling towards the center of the screen (towards the oppponents court)
-        if ((ball.velX > 0) && (ballVelXStore > thisVelXStore)) { //right paddle
+        if ((ball.velX > 0) && (ballVelXStore >= thisVelXStore)) { //right paddle
           ball.velX *= -1;
         } else if ((ball.velX < 0) && (ballVelXStore < thisVelXStore)) { //left paddle
           ball.velX *= -1;
@@ -165,7 +165,7 @@ class Paddle {
         //increase/decrease xvel of ball depending on how close the paddle
         //is to the center of the screen (closer = faster xvel)
         let spdInc;
-        if (this.r > 200) { //for the right paddle
+        if (this.r >= 200) { //for the right paddle
           spdInc = map(this.x, width / 2, width, 1.5, 0.6);
         } else if (this.r < 200) { //for the left paddle
           spdInc = map(this.x, 0, width / 2, 0.6, 1.5);
@@ -173,7 +173,7 @@ class Paddle {
         print(spdInc);
         ball.velX = ball.velX * spdInc;
         //make sure that the ball is moving at least as fast as the paddle (or else ball wud go through paddle)
-        if ((ball.velX > this.velX) && (ballVelXStore > thisVelXStore)) {
+        if ((ball.velX >= this.velX) && (ballVelXStore >= thisVelXStore)) {
           ball.velX = this.velX;
         } else if ((ball.velX < this.velX) && (ballVelXStore< thisVelXStore)) {
           ball.velX = this.velX;
@@ -188,10 +188,14 @@ class Paddle {
         //move the ball outside the paddle hitbox (right paddle)
         while ((ball.x < x + w + r) && (ball.x > x - w - r) &&
           (ball.y < y + h + r) && (ball.y > y - h - r)) {
-          if (ballVelXStore > thisVelXStore) {
-            ball.x--;
+          if (ballVelXStore >= thisVelXStore) {
+            //ball.x -= ball.velX/ball.velX; OORRR
+            ball.x --;
+            ball.y -=(ball.velY)/ball.velX;
           } else if (ballVelXStore < thisVelXStore) {
-            ball.x++;
+            //ball.x += ball.velX/ball.velX; ORRR 
+            ball.x ++;
+            ball.y +=(ball.velY)/ball.velX;
           }
         }
 
@@ -205,7 +209,7 @@ class Paddle {
     //for everypoint each paddle draws a dotted line near the middle of the map in thier own color
     // once the dotted line reaches the edge of the canvas the dotted line is wrapped around the screen
     let hPI;
-    if (this.r > 200) { //if right offset score by positive
+    if (this.r >= 200) { //if right offset score by positive
       hPI = horzPaddleIndent;
     } else { //if left offset by negative
       hPI = -horzPaddleIndent;
