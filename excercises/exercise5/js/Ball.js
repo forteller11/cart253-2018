@@ -64,7 +64,6 @@ Ball.prototype.display = function() {
   fill(this.r, this.g, this.b);
   //dynamicRadius can change and enlarge if the ball was recently hit
   let dynamicRadius = this.radius*this.sizeFlash;
-  print("this.hit:"+this.hit);
   rect(this.x, this.y, dynamicRadius,dynamicRadius);
   //draw a white ball which obscures the undlying colored one depending on this.hit
   fill(255, 255, 255, (this.whiteFlash*1) * 255);
@@ -75,14 +74,21 @@ Ball.prototype.display = function() {
 Ball.prototype.displayTrail = function() { //draw trail of ball's histories
   rectMode(RADIUS);
   noStroke();
+  beginShape();
   for (let i = 0; i < this.xHist.length; i++) {
     //trail increases alpha based on balls speed,
     //alpha is greatest near the current position of the ball, then it fades to 0
-    fill(this.r, this.g, this.b, i * (abs((ball.velX + ball.velY) * 15) / this.trailLength));
+    velocityMagnitude = sqrt(sq(this.velX) + sq(this.velY));
+    //increase alpha of trail if it is closer in history to the current ball pos,
+    //and if the ball is currently travleing faster
+    let trailAlpha = (i/this.trailLength)*10*velocityMagnitude;
+    fill(this.r, this.g, this.b, trailAlpha);
     let rad = (this.radius * i) / this.xHist.length; //fades radius to 0 at the end of the for Loop
     let rad2 = map(rad, 0, this.radius, this.radius * 0.6, this.radius); //setting min radius of trail to 60%
     rect(this.xHist[i], this.yHist[i], rad2, rad2);
   }
+
+  endShape();
   //ellipse(this.x,this.y,this.radius,this.radius);
 }
 

@@ -163,13 +163,13 @@ Paddle.prototype.checkBallCollision = function() {
       ball.velX += this.velX / 10;
       //increase/decrease xvel of ball depending on how close the paddle
       //is to the center of the screen (closer = faster xvel)
-      let spdInc;
+      
+      let spdInc; //a multiplier from .6-1.5 based on how close the paddle is to the middle of the screen
       if (this.r >= 200) { //for the right paddle
         spdInc = map(this.x, width / 2, width, 1.5, 0.6);
       } else if (this.r < 200) { //for the left paddle
         spdInc = map(this.x, 0, width / 2, 0.6, 1.5);
       }
-      print(spdInc);
       ball.velX = ball.velX * spdInc;
       //if ball hits paddle from left and still has a greater xvelocity then paddle
       //then make the balls xvel = paddle's x vel so it doesnt collide again with the paddle next frame
@@ -210,7 +210,7 @@ Paddle.prototype.checkBallCollision = function() {
       let xMagnitude = abs(ball.velX);
       //change sound and animations/graphics based upon x speed of ball
       ball.whiteFlash = map(xMagnitude,0,ball.maxVelX,0,3); //makes ball flash white
-      ball.sizeFlash = map(xMagnitude,0,ball.maxVelX,1,2); //makes ball briefly enlarge
+      ball.sizeFlash = map(xMagnitude,0,ball.maxVelX,1,1.8); //makes ball briefly enlarge
       //this.hit = map(xMagnitude,0,ball.maxVelX,0,1); //
       this.fillMeter = map(xMagnitude,0,ball.maxVelX,0,1);
       //increase frequency of oscillator
