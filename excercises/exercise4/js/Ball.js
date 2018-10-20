@@ -4,7 +4,7 @@ class Ball {
     this.y;
     this.xHist = []; //history of x positions
     this.yHist = []; //history of y positions
-    this.trailLength = 12;
+    this.trailLength = 8;
     this.maxVelX = 19;
     this.velX = 0;
     this.velY = 0;
@@ -76,9 +76,7 @@ class Ball {
       //trail increases alpha based on balls speed,
       //alpha is greatest near the current position of the ball, then it fades to 0
       fill(this.r, this.g, this.b, i * (abs((ball.velX + ball.velY) * 15) / this.trailLength));
-      let rad = (this.radius*i)/this.xHist.length; //fades radius to 0 at the end of the for Loop
-      let rad2 = map(rad,0,this.radius,this.radius*0.6,this.radius); //setting min radius of trail to 60%
-      rect(this.xHist[i], this.yHist[i], rad2, rad2);
+      rect(this.xHist[i], this.yHist[i], this.radius, this.radius);
     }
     //ellipse(this.x,this.y,this.radius,this.radius);
   }

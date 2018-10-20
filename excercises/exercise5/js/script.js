@@ -1,6 +1,6 @@
 /*****************
 
-Exercise 4
+Exercise 5
 Charly Yan Miller
 a game of 2 dimensional pong, with sound!
 
