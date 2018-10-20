@@ -112,12 +112,14 @@ Ball.prototype.canvasCollision = function() {
     oscAmbienceFreq += 70;
 
   }
+
   //if ball hits ceiling or floor of canvas
   if ((this.y + this.radius > height) || (this.y - this.radius < 0)) {
     this.y = constrain(this.y, this.radius, height - this.radius);
     this.velY = this.velY * -1;
     let changeInOscFreq = abs(ball.velY) * 10; //more change if the ball is traveling faster vertically
     oscAmbienceFreq += changeInOscFreq; //increases frequency of oscillator
+    this.sizeFlash -= .3; //shrink the ball graphics on collison w/canvas ceiling/floor
   }
 }
 
