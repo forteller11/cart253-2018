@@ -1,5 +1,4 @@
-class Paddle {
-  constructor(upKey, downKey, leftKey, rightKey, fluidKey, r, g, b) {
+function Paddle(upKey, downKey, leftKey, rightKey, fluidKey, r, g, b) {
     //stores key codes to move and shoot fluid from the paddle
     this.upKey = upKey;
     this.downKey = downKey;
@@ -28,7 +27,8 @@ class Paddle {
     this.fillMeter = .5; //what % of the paddle will be filled on collision w/ball?
     this.strokeWeight = (minStrokeWidth + maxStrokeWidth) / 2;
   }
-  displayfillMeter() {
+
+  Paddle.prototype.displayfillMeter = function() {
     //fills in the paddle repsenting how close to the center of the screen the paddle is
     let w = this.width / 2;
     let h = this.height / 2;
@@ -49,7 +49,7 @@ class Paddle {
     rect(x1, y2, x2, y1Dynamic);
   }
 
-  displayPaddle() {
+  Paddle.prototype.displayPaddle = function() {
     let w = this.width / 2;
     let h = this.height / 2;
     let x1 = -w + this.x;
@@ -71,7 +71,7 @@ class Paddle {
     line(x1, y2, x1, y1);
   }
 
-  accelerate() {
+  Paddle.prototype.accelerate = function() {
     //check for inputs and change velocity accordingly
     if ((keyIsDown(this.upKey)) ||
       (keyIsDown(this.downKey)) ||
@@ -109,7 +109,7 @@ class Paddle {
     this.velY = constrain(this.velY, -this.maxVelY, this.maxVelY);
   }
 
-  changePos() { //changes position based on velocity
+  Paddle.prototype.changePos = function() { //changes position based on velocity
     //adds velocity to position
     this.x += this.velX;
     this.y += this.velY;
@@ -130,7 +130,7 @@ class Paddle {
     this.y = constrain(this.y, h, height - h);
   }
 
-  checkBallCollision() {
+  Paddle.prototype.checkBallCollision = function() {
     let w = this.width / 2;
     let h = this.height / 2;
     let r = ball.radius;
@@ -218,7 +218,7 @@ class Paddle {
     }
   }
 
-  displayScore() {
+  Paddle.prototype.displayScore = function() {
     //for everypoint each paddle draws a dotted line near the middle of the map in thier own color
     // once the dotted line reaches the edge of the canvas the dotted line is wrapped around the screen
     let hPI;
@@ -243,7 +243,7 @@ class Paddle {
     }
   }
 
-  flashOnScore() { //fills the screen with the paddle color that fades as this.scored is decremented.
+  Paddle.prototype.flashOnScore = function() { //fills the screen with the paddle color that fades as this.scored is decremented.
     //this.score is set to 1 whenever the ball ball is scored in the opponents court.
     if (this.scored > 0) {
       background(this.r * this.scored, this.g * this.scored, this.b * this.scored);
@@ -251,14 +251,9 @@ class Paddle {
     }
   }
 
-  decrHit() { //decrements this.hit var
+  Paddle.prototype.decrHit = function() { //decrements this.hit var
     //this.hit is set to one on collison w/ball
     if (this.hit > 0) {
       this.hit -= 0.015;
     }
   }
-
-
-
-
-}
