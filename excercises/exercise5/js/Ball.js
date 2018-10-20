@@ -14,9 +14,9 @@ function Ball() {
   this.b = 255;
   this.timer = 0;
   this.hit = 0;
+}
 
-
-  this.changePosition = function() {
+  Ball.prototype.changePosition = function() {
     this.x += this.velX;
     this.y += this.velY;
     this.canvasCollision(); //has the ball collided with the canvas?
@@ -26,7 +26,7 @@ function Ball() {
 
   }
 
-  this.addToHistory = function(x, y) { //remove oldest ball postion history, add newest ball position history
+  Ball.prototype.addToHistory = function(x, y) { //remove oldest ball postion history, add newest ball position history
     this.xHist.splice(0, 1);
     this.yHist.splice(0, 1);
 
@@ -34,7 +34,7 @@ function Ball() {
     this.yHist.push(this.y);
   }
 
-  this.reset = function(xDirection) {
+  Ball.prototype.reset = function(xDirection) {
     //resets pos, color and velocity of ball
     this.r = 255;
     this.g = 255;
@@ -55,7 +55,7 @@ function Ball() {
     }
   }
 
-  this.display = function() {
+  Ball.prototype.display = function() {
     rectMode(RADIUS);
     noStroke();
 
@@ -68,7 +68,7 @@ function Ball() {
     //ellipse(this.x,this.y,this.radius,this.radius);
   }
 
-  this.displayTrail = function() { //draw trail of ball's histories
+  Ball.prototype.displayTrail = function() { //draw trail of ball's histories
     rectMode(RADIUS);
     noStroke();
     for (let i = 0; i < this.xHist.length; i++) {
@@ -82,7 +82,7 @@ function Ball() {
     //ellipse(this.x,this.y,this.radius,this.radius);
   }
 
-  this.canvasCollision = function() {
+  Ball.prototype.canvasCollision = function() {
     //if ball goes off left then rightpaddle score increases
     if (this.x + (this.radius * 4) < 0) {
       padR.score++;
@@ -110,11 +110,9 @@ function Ball() {
     }
   }
 
-  this.decrHit = function() { //decrements this.hit var
+  Ball.prototype.decrHit = function() { //decrements this.hit var
     //this.hit is set to one on collison w/ball
     if (this.hit > 0) {
       this.hit -= 0.15;
     }
   }
-
-}
