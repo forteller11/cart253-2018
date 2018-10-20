@@ -120,7 +120,7 @@ function draw() {
   ball.changePosition();
   ball.displayTrail();
   ball.display();
-  ball.decrHit();
+  ball.decrementFlashVars();
 
 }
 

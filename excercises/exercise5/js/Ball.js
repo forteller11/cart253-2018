@@ -13,7 +13,8 @@ function Ball() {
   this.g = 255;
   this.b = 255;
   this.timer = 0;
-  this.hit = 0;
+  this.whiteFlash = 0;
+  this.sizeFlash = 1;
 }
 
 Ball.prototype.changePosition = function() {
@@ -61,10 +62,13 @@ Ball.prototype.display = function() {
 
   //draw coloured ball
   fill(this.r, this.g, this.b);
-  rect(this.x, this.y, this.radius, this.radius);
+  //dynamicRadius can change and enlarge if the ball was recently hit
+  let dynamicRadius = this.radius*this.sizeFlash;
+  print("this.hit:"+this.hit);
+  rect(this.x, this.y, dynamicRadius,dynamicRadius);
   //draw a white ball which obscures the undlying colored one depending on this.hit
-  fill(255, 255, 255, this.hit * 255);
-  rect(this.x, this.y, this.radius, this.radius);
+  fill(255, 255, 255, (this.whiteFlash*1) * 255);
+  rect(this.x, this.y, dynamicRadius,dynamicRadius);
   //ellipse(this.x,this.y,this.radius,this.radius);
 }
 
@@ -110,9 +114,12 @@ Ball.prototype.canvasCollision = function() {
   }
 }
 
-Ball.prototype.decrHit = function() { //decrements this.hit var
+Ball.prototype.decrementFlashVars = function() { //decrements this.hit var
   //this.hit is set to one on collison w/ball
-  if (this.hit > 0) {
-    this.hit -= 0.15;
+  if (this.whiteFlash > 0) {
+    this.whiteFlash -= 0.15;
+  }
+  if (this.sizeFlash > 1) {
+    this.sizeFlash *= 0.96;
   }
 }

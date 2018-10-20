@@ -207,15 +207,14 @@ Paddle.prototype.checkBallCollision = function() {
       this.velX = ballVelXStore * 1.5; //make paddles bounce back on collsion based on the ball's xvelocity
       this.velY = ballVelYStore * 1.5; //make paddles bounce back on collsion based on the ball's yvelocity
 
-      let xSpd = abs(ball.velX);
-      print(xSpd);
-      ball.hit = map(xSpd,0,ball.maxVelX,0,4);
-      this.hit = map(xSpd,0,ball.maxVelX,0,4);
-      this.fillMeter = map(xSpd,0,ball.maxVelX,0,1);
-      //comapares the differences in velocity between the ball and paddle to determine the change in osscillator frequency.
-      let magnitudeOfDeltaVelocity = sqrt(sq(ball.velX - this.velX) + sq(ball.velY - this.velY));
+      let xMagnitude = abs(ball.velX);
+      //change sound and animations/graphics based upon x speed of ball
+      ball.whiteFlash = map(xMagnitude,0,ball.maxVelX,0,3); //makes ball flash white
+      ball.sizeFlash = map(xMagnitude,0,ball.maxVelX,1,2); //makes ball briefly enlarge
+      //this.hit = map(xMagnitude,0,ball.maxVelX,0,1); //
+      this.fillMeter = map(xMagnitude,0,ball.maxVelX,0,1);
       //increase frequency of oscillator
-      oscAmbienceFreq += map(xSpd,0,ball.maxVelX,0,40)+10;
+      oscAmbienceFreq += map(xMagnitude,0,ball.maxVelX,0,40)+10;
     }
   }
 }
