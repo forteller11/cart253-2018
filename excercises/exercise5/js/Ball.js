@@ -40,6 +40,7 @@ Ball.prototype.reset = function(xDirection) {
   this.r = 255;
   this.g = 255;
   this.b = 255;
+  this.sizeFlash = .1;
   this.x = width / 2;
   this.y = height / 2 + (random(-width / 3, width / 3));
   //x direction is either 1 or -1 depending on which paddle won
@@ -84,7 +85,7 @@ Ball.prototype.displayTrail = function() { //draw trail of ball's histories
     let trailAlpha = (i/this.trailLength)*10*velocityMagnitude;
     fill(this.r, this.g, this.b, trailAlpha);
     let rad = (this.radius * i) / this.xHist.length; //fades radius to 0 at the end of the for Loop
-    let rad2 = map(rad, 0, this.radius, this.radius * 0.6, this.radius); //setting min radius of trail to 60%
+    let rad2 = map(rad, 0, this.radius, this.radius * 0.6, this.radius)*this.sizeFlash; //setting min radius of trail to 60%
     rect(this.xHist[i], this.yHist[i], rad2, rad2);
   }
 
@@ -125,7 +126,10 @@ Ball.prototype.decrementFlashVars = function() { //decrements this.hit var
   if (this.whiteFlash > 0) {
     this.whiteFlash -= 0.15;
   }
-  if (this.sizeFlash > 1) {
+  if (this.sizeFlash > 1.1) {
     this.sizeFlash *= 0.96;
+  }
+  if (this.sizeFlash < .99) {
+    this.sizeFlash *= 1.2;
   }
 }
