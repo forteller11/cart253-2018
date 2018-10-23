@@ -80,6 +80,6 @@ Ball.prototype.handleCollision = function(paddle) { //NEW removed extra brackets
 Ball.prototype.reset = function () { //NEW properly named reset function
   this.x = width/2;
   this.y = height/2;
-  // this.vx = random(-5,5);
-  // this.vy = random(-2,2);
+  this.vx = random(-1,1);
+  this.vy = random(-1,1);
 }
