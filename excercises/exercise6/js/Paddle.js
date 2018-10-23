@@ -42,6 +42,6 @@ Paddle.prototype.update = function() {
 // display()
 //
 // Draw the paddle as a rectangle on the screen
-Paddle.prototype.disploy = function() { //NEW removed extra brackets
+Paddle.prototype.display = function() { //NEW removed extra brackets, NEW spelled display correctly
   rectangle(this.x,this.y,this.w,this.h);
 }
