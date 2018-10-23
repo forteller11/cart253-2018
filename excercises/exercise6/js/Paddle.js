@@ -5,7 +5,7 @@
 
 Paddle constructor
 
-Sets the properties with the provided arguments or defaults
+//Sets the properties with the provided arguments or defaults //////NEW commented out this comment
 function Pladdle(x,y,w,h,speed,downKey,upKey) {
   this.x = x;
   this.y = y;
