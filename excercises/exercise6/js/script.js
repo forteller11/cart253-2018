@@ -23,7 +23,8 @@ function setup() {
   // Create a ball
   ball = new Ball(width/2,height/2,50,50,10,50);
   // Create the right paddle with UP and DOWN as controls
-  rightPaddle = new Paddle(width-10,height/2,10,60,10,UP_ARROW,DOWN_ARROW); //NEW set a more reasonable this.w value
+  //NEW set a more reasonable this.w value, reversed upKey/downKey paramters
+  rightPaddle = new Paddle(width-10,height/2,10,60,10,DOWN_ARROW,UP_ARROW); 
   // Create the left paddle with W and S as controls
   // Keycodes 83 and 87 are W and S respectively
   //////////New brackets were left open on constructor function, closed brackets
