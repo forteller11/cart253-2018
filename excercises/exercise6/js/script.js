@@ -42,7 +42,7 @@ function draw() {
   leftPaddle.handleInput();
   rightPaddle.handleInput();
 
-
+  ball.update();
   leftPaddle.update();
   rightPaddle.update();
 
