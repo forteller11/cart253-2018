@@ -13,8 +13,8 @@ function Ball() {
   this.g = 255;
   this.b = 255;
   this.timer = 0;
-  this.whiteFlash = 0;
-  this.sizeFlash = 1;
+  this.whiteFlash = 0; //determines whether the ball is white due to recent collision (0-1), 1 = 100% white
+  this.sizeFlash = 1; //determines % graphical size of ellipse based relative to its radius (1 = 100%)
 }
 
 Ball.prototype.changePosition = function() {
@@ -57,10 +57,10 @@ Ball.prototype.reset = function(xDirection) {
   }
 }
 
+////////////NEW (now ball increases/decrease size on collsion)
 Ball.prototype.display = function() {
   rectMode(RADIUS);
   noStroke();
-
   //draw coloured ball
   fill(this.r, this.g, this.b);
   //dynamicRadius can change and enlarge if the ball was recently hit
@@ -72,10 +72,11 @@ Ball.prototype.display = function() {
   //ellipse(this.x,this.y,this.radius,this.radius);
 }
 
+//////NEW (now ball trail is tapered)
 Ball.prototype.displayTrail = function() { //draw trail of ball's histories
   rectMode(RADIUS);
   noStroke();
-  beginShape();
+
   for (let i = 0; i < this.xHist.length; i++) {
     //trail increases alpha based on balls speed,
     //alpha is greatest near the current position of the ball, then it fades to 0
@@ -86,11 +87,9 @@ Ball.prototype.displayTrail = function() { //draw trail of ball's histories
     fill(this.r, this.g, this.b, trailAlpha);
     let rad = (this.radius * i) / this.xHist.length; //fades radius to 0 at the end of the for Loop
     let rad2 = map(rad, 0, this.radius, this.radius * 0.6, this.radius)*this.sizeFlash; //setting min radius of trail to 60%
-    rect(this.xHist[i], this.yHist[i], rad2, rad2);
+    rect(this.xHist[i], this.yHist[i], rad2, rad2); //drawing trail
   }
 
-  endShape();
-  //ellipse(this.x,this.y,this.radius,this.radius);
 }
 
 Ball.prototype.canvasCollision = function() {
@@ -113,6 +112,7 @@ Ball.prototype.canvasCollision = function() {
 
   }
 
+  /////////NEWWW now ball makes dynamic change to oscillator on collison w/ceiling/floor, and shrinks
   //if ball hits ceiling or floor of canvas
   if ((this.y + this.radius > height) || (this.y - this.radius < 0)) {
     this.y = constrain(this.y, this.radius, height - this.radius);
@@ -123,6 +123,7 @@ Ball.prototype.canvasCollision = function() {
   }
 }
 
+//////NEW return various graphic-related vars to given numbers
 Ball.prototype.decrementFlashVars = function() { //decrements this.hit var
   //this.hit is set to one on collison w/ball
   if (this.whiteFlash > 0) {

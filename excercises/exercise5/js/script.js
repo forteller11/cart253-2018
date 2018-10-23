@@ -2,26 +2,28 @@
 
 Exercise 5
 Charly Yan Miller
-a game of 2 dimensional pong, with sound!
+a game of 2 dimensional pong, with extra visual flourish and pre ES6 obj-oriented programming.
 
-Challenge 1: method canvasCollision in Ball class deals with updating score
-or ball's position and velocity on collision with canvas
+Objects:
+I used pre ES6 object-oriented paradigms/syntax
 
-Challenge 2: displayScore method in the Paddle class displays the paddles' score
-as dotted lines (in the paddle's colour) travelling down the screen (wrapping on
-overflow of the canvas)
+Collsiion changes:
+made collsions more robust --> now collisions are independant of paddle-side (left or right),
+now paddles know from which direction a collision happened and can push balls into their
+own court with the back of thier paddle (before collisions with back of the paddle did not behave realistically)
+now balls MORE realistically collide with the tops and bottoms of paddles
 
-Challenge 3: the reset method in the ball Class resets the ball's position and sets
-a random xvel and yvel directed towards the paddle which most recently won.
+Visual Changes:
+- gave the fill of paddles a new animation (now it's size continually decreases instead of the opacity slowly fading out)
+now the fill of paddles actually reflects the force o collision with a ball.
+On collision w/ball the stroke of the paddle increases based on the force of collision
 
-Challenge 4: embelished the game visually in a variety of ways: each paddle has its own colour
-the ball flashes white on collision b4 becoming the colour of the paddle it most recently
-collided with, it also displays a short trail... added sound w/osscilators
+- new ball animations: breifly increase the size of ball on collision w/paddle
+ decreases size of ball on collison w/ceiling/floor
+ball trails now taper slighly
 
-Optional Challenges:
-added a second dimension,
-changed ball's velocity based on the relative AND objective position and velocity of the Paddle
-made the balls velocity push the paddle subtly
+- now the pitch that is added to the ambientOsccilator on collisions changes
+ with the force of said collison
 
 
 Credits:
@@ -96,8 +98,6 @@ function draw() {
   //display
   padR.flashOnScore(); //fashes screen red/blue on score
   padL.flashOnScore();
-  padR.decrHit(); //fashes screen red/blue on score
-  padL.decrHit();
   centerLineDisplay(); //draw dotted line down center of screen;
   padR.displayScore(); //dispalys player score
   padL.displayScore();
@@ -110,9 +110,9 @@ function draw() {
   oscAdrenalineAmp = .005 * (abs(padL.velX) + abs(padL.velY) + abs(padR.velX) + abs(padR.velY) + abs(ball.velX) + abs(ball.velY));
   oscAdrenaline.amp(oscAdrenalineAmp);
   oscAdrenaline.freq(oscAdrenalineFreq);
-  if (oscAmbienceFreq > 75) {
-    oscAmbienceFreq *= .98;
-  }
+
+  oscAmbienceFreq *= .98;
+  oscAmbienceFreq = constrain(oscAmbienceFreq, 75, 200);
   //changes frequency and amp of ossillator
   oscAmbience.freq(oscAmbienceFreq);
 

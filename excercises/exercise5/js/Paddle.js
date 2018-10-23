@@ -25,8 +25,7 @@ function Paddle(upKey, downKey, leftKey, rightKey, fluidKey, r, g, b) {
   this.width = 16;
   this.height = 80;
   this.fillMeter = 0; //what % of the paddle will be filled on collision w/ball?
-  this.sizeFlash = 1; //what % of the paddle will coloured on collision w/ball?
-  this.strokeWeight = (minStrokeWidth + maxStrokeWidth) / 2;
+  this.sWeight = 1; //used to interpolate between min and max stroke widths (1 = min, 2 = max)
 }
 
 Paddle.prototype.displayfillMeter = function() {
@@ -38,9 +37,10 @@ Paddle.prototype.displayfillMeter = function() {
   let y1 = -h + this.y; //top of paddle
   let y2 = h + this.y; //bottom of paddle
   //map the 0-1 value of the fillMeter to the bottom and top of the paddle;
+  this.fillMeter = constrain(this.fillMeter, 0, 1); //constrain to 0-1 so meter doesnt bleed over strokes of paddle
   let y1Dynamic = map(this.fillMeter, 0, 1, y2, y1);
   this.fillMeter *= 0.97; //shrink the meter every frame
-    this.fillMeter = constrain(this.fillMeter,0,1);
+
 
   rectMode(CORNERS);
   noStroke();
@@ -60,15 +60,14 @@ Paddle.prototype.displayPaddle = function() {
   let y1 = -h + this.y;
   let y2 = h + this.y;
 
-  print(this.sizeFlash);
-  this.sizeFlash *= .9;
-  constrain(this.sizeFlash,0,1);
+  this.sWeight *= .9;
+  constrain(this.sWeight, 0, 1);
   stroke(this.r, this.g, this.b);
   //draw paddle with width and color, increase stroke weight as paddle is closer to center of screen
 
-    this.strokeWeight = map(this.sizeFlash, 0, 1, minStrokeWidth, maxStrokeWidth);
+  let strokeW = map(this.sWeight, 0, 1, minStrokeWidth, maxStrokeWidth);
 
-  strokeWeight(this.strokeWeight);
+  strokeWeight(strokeW);
   line(x1, y1, x2, y1);
   line(x2, y1, x2, y2);
   line(x2, y2, x1, y2);
@@ -118,8 +117,8 @@ Paddle.prototype.changePos = function() { //changes position based on velocity
   this.x += this.velX;
   this.y += this.velY;
 
-  let w = (this.width / 2) + this.strokeWeight / 2;
-  let h = (this.height / 2) + this.strokeWeight / 2;
+  let w = (this.width / 2) + minStrokeWidth / 2;
+  let h = (this.height / 2) + minStrokeWidth / 2;
 
   //constrain x positions based on if the paddle is left or right, constrains y pos identically
   if (this.r > 200) { //if right paddle
@@ -139,6 +138,7 @@ Paddle.prototype.checkBallCollision = function() {
   let xx = ball.x;
   let yy = ball.y;
 
+  //////////////NEW (increased robust-ness of collision relative to exercise4)
   //if ball is colliding with paddle...
   if ((xx < x + w + r) && (xx > x - w - r)) {
     if ((yy < y + h + r) && (yy > y - h - r)) {
@@ -211,13 +211,13 @@ Paddle.prototype.checkBallCollision = function() {
 
       let xMagnitude = abs(ball.velX);
       //change sound and animations/graphics based upon x speed of ball
-      ball.whiteFlash = map(xMagnitude,0,ball.maxVelX,0,3); //makes ball flash white
-      ball.sizeFlash = map(xMagnitude,0,ball.maxVelX,1,1.8); //makes ball briefly enlarge
+      ball.whiteFlash = map(xMagnitude, 0, ball.maxVelX, 0, 3); //makes ball flash white
+      ball.sizeFlash = map(xMagnitude, 0, ball.maxVelX, 1, 1.8); //makes ball briefly enlarge
       //this.hit = map(xMagnitude,0,ball.maxVelX,0,1); //
-      this.fillMeter = map(xMagnitude,0,ball.maxVelX,0,1);
-      this.sizeFlash = map(xMagnitude,0,ball.maxVelX,1,2); //makes ball briefly enlarge
+      this.fillMeter = map(xMagnitude, 0, ball.maxVelX, 0, 1);
+      this.sWeight = map(xMagnitude, 0, ball.maxVelX, 1, 2); //makes ball briefly enlarge
       //increase frequency of oscillator
-      oscAmbienceFreq += map(xMagnitude,0,ball.maxVelX,0,40)+10;
+      oscAmbienceFreq += map(xMagnitude, 0, ball.maxVelX, 0, 40) + 10;
     }
   }
 }
@@ -252,12 +252,5 @@ Paddle.prototype.flashOnScore = function() { //fills the screen with the paddle 
   if (this.scored > 0) {
     background(this.r * this.scored, this.g * this.scored, this.b * this.scored);
     this.scored -= 0.02;
-  }
-}
-
-Paddle.prototype.decrHit = function() { //decrements this.hit var
-  //this.hit is set to one on collison w/ball
-  if (this.hit > 0) {
-    this.hit -= 0.015;
   }
 }
