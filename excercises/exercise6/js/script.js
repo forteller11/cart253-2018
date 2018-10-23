@@ -45,7 +45,7 @@ function draw() {
   leftPaddle.update();
   rightPaddle.update();
 
-  if (ball.isOffTheScreen()){ //NEW closed curly brackets on if statement
+  if (ball.isOffScreen()){ //NEW closed curly brackets on if statement, spelled function name correctly
     reset();
   }
 
