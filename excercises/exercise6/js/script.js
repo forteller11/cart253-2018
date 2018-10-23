@@ -45,7 +45,7 @@ function draw() {
   leftPaddle.update();
   rightPaddle.update();
 
-  if (ball.isOffTheScreen())
+  if (ball.isOffTheScreen()){ //NEW closed curly brackets on if statement
     reset();
   }
 
