@@ -53,7 +53,7 @@ Ball.prototype.isOffScreen = function () {
 //
 // Draw the ball as a rectangle on the screen
 Ball.prototype.display = function () {
-  rect(this.x this.y,this.size/2,this.size/2); //NEW added the appropriate number of arguments in the rect function
+  rect(50,50,50,50); //NEW temporarily giving the rect hard coded values so it works for now
 }
 
 // handleCollision(paddle)
