@@ -9,8 +9,8 @@
 function Paddle(x,y,w,h,speed,downKey,upKey) { ///////NEW spelt "Paddle" correctly
   this.x = x;
   this.y = y;
-  this.xv = 0;
-  this.yv = 0;
+  this.xv  = 0;
+  this.vy = 0; //NEW correctly spelt vy
   this.w = w;
   this.h = h;
   this.speed = speed; //NEW spelt speed correctly
