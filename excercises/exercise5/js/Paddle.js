@@ -11,7 +11,7 @@ function Paddle(upKey, downKey, leftKey, rightKey, fluidKey, r, g, b) {
   this.b = b;
   this.score = 0; //tracks the score of each paddle
   this.scored = 0; //used to flash the screen the colour of the paddle on score
-  this.hit = 0; //set to 1 if the ball has been hit, continually decrements
+
 
   this.x;
   this.y;
@@ -25,6 +25,7 @@ function Paddle(upKey, downKey, leftKey, rightKey, fluidKey, r, g, b) {
   this.width = 16;
   this.height = 80;
   this.fillMeter = 0; //what % of the paddle will be filled on collision w/ball?
+  this.sizeFlash = 1; //what % of the paddle will coloured on collision w/ball?
   this.strokeWeight = (minStrokeWidth + maxStrokeWidth) / 2;
 }
 
@@ -37,9 +38,9 @@ Paddle.prototype.displayfillMeter = function() {
   let y1 = -h + this.y; //top of paddle
   let y2 = h + this.y; //bottom of paddle
   //map the 0-1 value of the fillMeter to the bottom and top of the paddle;
-  this.fillMeter = constrain(this.fillMeter,0,1);
   let y1Dynamic = map(this.fillMeter, 0, 1, y2, y1);
   this.fillMeter *= 0.97; //shrink the meter every frame
+    this.fillMeter = constrain(this.fillMeter,0,1);
 
   rectMode(CORNERS);
   noStroke();
@@ -58,14 +59,15 @@ Paddle.prototype.displayPaddle = function() {
   let x2 = w + this.x;
   let y1 = -h + this.y;
   let y2 = h + this.y;
-  stroke(255);
+
+  print(this.sizeFlash);
+  this.sizeFlash *= .9;
+  constrain(this.sizeFlash,0,1);
   stroke(this.r, this.g, this.b);
   //draw paddle with width and color, increase stroke weight as paddle is closer to center of screen
-  if (this.r > 200) {
-    this.strokeWeight = map(this.x, width, width / 2, minStrokeWidth, maxStrokeWidth);
-  } else {
-    this.strokeWeight = map(this.x, 0, width / 2, minStrokeWidth, maxStrokeWidth);
-  }
+
+    this.strokeWeight = map(this.sizeFlash, 0, 1, minStrokeWidth, maxStrokeWidth);
+
   strokeWeight(this.strokeWeight);
   line(x1, y1, x2, y1);
   line(x2, y1, x2, y2);
@@ -163,7 +165,7 @@ Paddle.prototype.checkBallCollision = function() {
       ball.velX += this.velX / 10;
       //increase/decrease xvel of ball depending on how close the paddle
       //is to the center of the screen (closer = faster xvel)
-      
+
       let spdInc; //a multiplier from .6-1.5 based on how close the paddle is to the middle of the screen
       if (this.r >= 200) { //for the right paddle
         spdInc = map(this.x, width / 2, width, 1.5, 0.6);
@@ -213,6 +215,7 @@ Paddle.prototype.checkBallCollision = function() {
       ball.sizeFlash = map(xMagnitude,0,ball.maxVelX,1,1.8); //makes ball briefly enlarge
       //this.hit = map(xMagnitude,0,ball.maxVelX,0,1); //
       this.fillMeter = map(xMagnitude,0,ball.maxVelX,0,1);
+      this.sizeFlash = map(xMagnitude,0,ball.maxVelX,1,2); //makes ball briefly enlarge
       //increase frequency of oscillator
       oscAmbienceFreq += map(xMagnitude,0,ball.maxVelX,0,40)+10;
     }
