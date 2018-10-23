@@ -21,7 +21,7 @@ function Ball(x,y,vx,vy,size,speed) {
 // Moves according to velocity, constrains y to be on screen,
 // checks for bouncing on upper or lower edgs, checks for going
 // off left or right side.
-Ball.prototype.updated = function () { //NEW spelled "function" correctly
+Ball.prototype.update = function () { //NEW spelled "function" and update correctly
   // Update position with velocity
   this.x += this.vx; //New made velocity add to position
   this.y += this.vy;
@@ -80,4 +80,6 @@ Ball.prototype.handleCollision = function(paddle) { //NEW removed extra brackets
 Ball.prototype.reset = function () { //NEW properly named reset function
   this.x = width/2;
   this.y = height/2;
+  // this.vx = random(-5,5);
+  // this.vy = random(-2,2);
 }
