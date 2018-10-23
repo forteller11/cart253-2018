@@ -23,7 +23,7 @@ function Ball(x,y,vx,vy,size,speed) {
 // off left or right side.
 Ball.prototype.updated = function () { //NEW spelled "function" correctly
   // Update position with velocity
-  this.x = this.vx;
+  this.x += this.vx; //New made velocity add to position
   this.y += this.vy;
 
   // Constrain y position to be on screen
