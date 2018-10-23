@@ -7,13 +7,14 @@
 // Ball constructor
 //
 // Sets the properties with the provided arguments
-function Ball(x,y,vx,vy,size,speed) {
-  this.x = x;
-  this.y = y;
-  this.vx = vx;
-  this.vy = vy;
+function Ball(size,speed) {
+  this.x;
+  this.y;
+  this.vx;
+  this.vy;
   this.size = size;
   this.speed = speed;
+  this.reset();
 }
 
 // update()
@@ -80,6 +81,6 @@ Ball.prototype.handleCollision = function(paddle) { //NEW removed extra brackets
 Ball.prototype.reset = function () { //NEW properly named reset function
   this.x = width/2;
   this.y = height/2;
-  this.vx = random(-1,1);
-  this.vy = random(-1,1);
+  this.vx = random(-this.speed,this.speed);
+  this.vy = random(-this.speed,this.speed);
 }

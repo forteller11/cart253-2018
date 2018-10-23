@@ -21,7 +21,7 @@ function setup() {
   createCanvas(640,480); //NEW fixed so that createCanvas function is called
   noStroke();
   // Create a ball
-  ball = new Ball(width/2,height/2,50,50,10,50);
+  ball = new Ball(10,5);
   // Create the right paddle with UP and DOWN as controls
   //NEW set a more reasonable this.w value, reversed upKey/downKey paramters
   rightPaddle = new Paddle(width-10,height/2,10,60,10,DOWN_ARROW,UP_ARROW);
