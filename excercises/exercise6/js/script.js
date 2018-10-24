@@ -1,13 +1,11 @@
-// Broken Basic OO Pong
-// by Pippin Barr
-//
-// A broken primitive implementation of Pong with no scoring system
-// just the ability to play the game with the keyboard.
-//
-// Arrow keys control the right hand paddle, W and S control
-// the left hand paddle.
-//
-// Written with JavaScript OOP.
+/*
+
+Exercise 6
+Charly Yan Miller
+fixed(ish?) PONG
+
+
+*/
 
 // Variable to contain the objects representing our ball and paddles
 var bal;
