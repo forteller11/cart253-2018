@@ -31,7 +31,7 @@ Ball.prototype.update = function () { //NEW spelled "function" and update correc
   this.y = constrain(this.y,0,height-this.size);
 
   // Check for touching upper or lower edge and reverse velocity if so
-  if (this.y = 0 || this.y + this.size === height) {
+  if (this.y === 0 || this.y + this.size === height) { //NEW replaced "=" with "==="
     this.vy = -this.vy;
   }
 }
@@ -81,6 +81,7 @@ Ball.prototype.handleCollision = function(paddle) { //NEW removed extra brackets
 Ball.prototype.reset = function () { //NEW properly named reset function
   this.x = width/2;
   this.y = height/2;
-  this.vx = random(-this.speed,this.speed);
+  this.vx = random(1,this.speed);
+
   this.vy = random(-this.speed,this.speed);
 }
