@@ -14,7 +14,7 @@ function Ball(size,speed) {
   this.vy;
   this.size = size;
   this.speed = speed;
-  this.reset();
+  this.reset(0); //random xvec towards random side
 }
 
 // update()
@@ -42,11 +42,10 @@ Ball.prototype.update = function () { //NEW spelled "function" and update correc
 // Otherwise it returns false.
 Ball.prototype.isOffScreen = function () {
   // Check for going off screen and reset if so
-  if (this.x + this.size < 0 || this.x > width) { //NEW spelled "if" statement correctly, changed && to ||
-    return true;
-  }
-  else {
-    return false;
+  if (this.x + this.size < 0) { //NEW spelled "if" statement correctly, changed && to ||
+    this.reset(1);
+  } else if (this.x > width) {
+    this.reset(-1);
   }
 }
 
@@ -78,10 +77,18 @@ Ball.prototype.handleCollision = function(paddle) { //NEW removed extra brackets
 // reset()
 //
 // Set position back to the middle of the screen
-Ball.prototype.reset = function () { //NEW properly named reset function
+Ball.prototype.reset = function (dir) { //NEW properly named reset function
   this.x = width/2;
   this.y = height/2;
-  this.vx = random(1,this.speed);
-
+  if (dir > 0) { //if dir is pos then travel towards travel
+      this.vx = random(2,this.speed);
+  } else if (dir<0) { //if dir is neg then travel towards left
+    this.vx = random(-this.speed,-2);
+  } else { //if dir === 0 then xvel goes towards random side
+    this.vx = random(2,this.speed);
+    if (random(1) > .5){
+      this.vx *= -1;
+    }
+  }
   this.vy = random(-this.speed,this.speed);
 }

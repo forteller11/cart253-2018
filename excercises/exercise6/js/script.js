@@ -46,9 +46,7 @@ function draw() {
   leftPaddle.update();
   rightPaddle.update();
 
-  if (ball.isOffScreen()){ //NEW closed curly brackets on if statement, spelled function name correctly
-    ball.reset();
-  }
+  ball.isOffScreen();
 
   ball.handleCollision(leftPaddle);
   ball.handleCollision(rightPaddle);
