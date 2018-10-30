@@ -1,19 +1,20 @@
 class Shape {
-  constructor(x, y, vertNumber) {
+  constructor(x, y, angle, vertNumber) {
     this.x = x;
     this.y = y;
+    this.a = angle;
     this.vertNumber = vertNumber;
-    this.vertXOff = [];
-    this.vertYOff = [];
+    this.vertAOff = []; //angle offset
+    this.vertR = []; //radius
     this.vertX = [];
     this.vertY = [];
     this.lines = []; //line obj
-    //create vertexes
-    for (let i = 0; i < this.vertNumber; i++) {
-      this.vertXOff[i] = 0;
-      this.vertYOff[i] = 0;
-    }
-    this.updateVert();
+    // //create vertexes
+    // for (let i = 0; i < this.vertNumber; i++) {
+    //   this.vertXOff[i] = 0;
+    //   this.vertYOff[i] = 0;
+    // }
+    // this.updateVert();
     //create Lines
     for (let i = 0; i < this.vertNumber; i++) {
       this.lines[i] = new Line();
@@ -24,14 +25,16 @@ class Shape {
     this.x = mouseX;
     this.y = mouseY;
 
-    this.updateVert();
+    this.updateVertCartesian();
     this.updateLines();
   }
 
-  updateVert() { //updates pos of verts based on pos of shape
+  updateVertCartesian() { //updates x,y of verts based on angle and r offsets
     for (let i = 0; i < this.vertNumber; i++) {
-      this.vertX[i] = this.vertXOff[i] + this.x;
-      this.vertY[i] = this.vertYOff[i] + this.y;
+      this.vertX[i] = (cos(this.vertAOff[i]) * this.vertR[i]) + this.x;
+      // print(this.vertAOff[i]);
+      // print(this.vertAOff);
+      this.vertY[i] = (sin(this.vertAOff[i]) * this.vertR[i]) + this.y;
     }
   }
 

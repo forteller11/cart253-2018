@@ -19,20 +19,13 @@ let shape = [];
 function setup() {
   createCanvas(1000, 1000);
   background(0, 0, 0);
-  shape[0] = new Shape(width / 2, height / 2, 4);
+  shape[0] = new Shape(width / 2, height / 2, 0, 4);
   for (let i = 0; i < shape[0].vertNumber; i++) { //set pos of vertexes
-    shape[0].vertXOff[i] = i * 50;
-    shape[0].vertYOff[i] = i * 20;
+    shape[0].vertR[i] = 20;
+    shape[0].vertAOff[i] = (PI/2*i) + PI/4;
   }
-  let r = 25;
-  shape[0].vertXOff[0] = r;
-  shape[0].vertYOff[0] = r;
-  shape[0].vertXOff[1] = -r;
-  shape[0].vertYOff[1] = r;
-  shape[0].vertXOff[2] = -r;
-  shape[0].vertYOff[2] = -r;
-  shape[0].vertXOff[3] = r;
-  shape[0].vertYOff[3] = -r;
+
+
 
 }
 
