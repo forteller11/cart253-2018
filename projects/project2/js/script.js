@@ -16,6 +16,8 @@ https://www.youtube.com/watch?v=qksmRZNaqJY
 */
 let shape = [];
 let shapePop = 5;
+let ray = [];
+let rayPop = 1;
 function setup() {
   createCanvas(1000, 1000);
   background(0, 0, 0);
@@ -26,6 +28,11 @@ function setup() {
       shape[i].vertR[j] = 20;
       shape[i].vertAOff[j] = ((2*PI)/shape[0].vertNumber)*j + PI/4;
     }
+
+    for (let i = 0; i < rayPop; i ++){
+      ray[i] = new Ray();
+    }
+
   }
 
 
@@ -37,6 +44,10 @@ function draw() {
   for (let i = 0; i < shape.length; i++) { //set pos of vertexes
     shape[i].update();
     shape[i].display();
+  }
+  for (let i = 0; i < ray.length; i++) { //set pos of vertexes
+    ray[i].update();
+    ray[i].display();
   }
 
 }
