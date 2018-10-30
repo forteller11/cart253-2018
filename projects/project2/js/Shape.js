@@ -61,7 +61,7 @@ class Shape {
     for (let i = 0; i < this.vertNumber; i ++){
       noFill();
       stroke(255);
-      ellipse(this.vertX[i],this.vertY[i],30);
+      ellipse(this.vertX[i],this.vertY[i],10);
     }
   }
 }
