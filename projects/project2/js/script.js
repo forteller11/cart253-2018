@@ -14,10 +14,20 @@ https://www.khanacademy.org/math/linear-algebra/vectors-and-spaces/vectors/v/lin
 https://www.khanacademy.org/math/ap-calculus-bc/bc-advanced-functions-new/bc-9-1/v/parametric-equations-1
 https://www.youtube.com/watch?v=qksmRZNaqJY
 */
-function setup(){
-  createCanvas(800,800);
+let shape = [];
+
+function setup() {
+  createCanvas(1000, 1000);
+  background(0, 0, 0);
+  shape[0] = new Shape(width / 2, height / 2, 4);
+  for (let i = 0; i < shape[0].vertexNumber; i++) { //set pos of vertexes
+    shape[0].vertX[i] = i * 50;
+    shape[0].vertX[i] = i * 20;
+  }
+
 }
 
-function draw(){
-  background(50,50);
+function draw() {
+
+
 }
