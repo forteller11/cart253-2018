@@ -5,4 +5,9 @@ class Line{
   this.x2 = 0;
   this.y2 = 0;
   }
+
+  display(){
+    stroke(200);
+    line(this.x1,this.y1,this.x2,this.y2);
+  }
 }

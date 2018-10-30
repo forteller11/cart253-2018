@@ -1,8 +1,8 @@
 class Shape {
-  constructor(x, y, vertexNumber) {
+  constructor(x, y, vertNumber) {
     this.x = x;
     this.y = y;
-    this.vertNumber = vertexNumber;
+    this.vertNumber = vertNumber;
     this.vertXOff = [];
     this.vertYOff = [];
     this.vertX = [];
@@ -37,14 +37,31 @@ class Shape {
 
   updateLines() {
     //recalc x1 and y1 of shape based on position of shape and vertexes.
-    this.lines[i].x1 = this.vertX[i];
-    this.lines[i].y1 = this.vertY[i];
-    if (i + 1 >= vertNumber) {
-      this.lines[i].x2 = this.vertX[0];
-      this.lines[i].y2 = this.vertY[0];
-    } else {
-      this.lines[i].x2 = this.vertX[i + 1];
-      this.lines[i].y2 = this.vertY[i + 1];
+    for (let i = 0; i < this.vertNumber; i ++) {
+      this.lines[i].x1 = this.vertX[i];
+      this.lines[i].y1 = this.vertY[i];
+      if (i + 1 >= this.vertNumber) {
+        this.lines[i].x2 = this.vertX[0];
+        this.lines[i].y2 = this.vertY[0];
+      } else {
+        this.lines[i].x2 = this.vertX[i + 1];
+        this.lines[i].y2 = this.vertY[i + 1];
+      }
+    }
+  }
+
+  display(){
+    this.displayVerts();
+    for (let i = 0; i < this.vertNumber; i ++){
+      this.lines[i].display();
+    }
+  }
+
+  displayVerts(){
+    for (let i = 0; i < this.vertNumber; i ++){
+      noFill();
+      stroke(255);
+      ellipse(this.vertX[i],this.vertY[i],30);
     }
   }
 }

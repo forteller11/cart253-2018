@@ -20,7 +20,7 @@ function setup() {
   createCanvas(1000, 1000);
   background(0, 0, 0);
   shape[0] = new Shape(width / 2, height / 2, 4);
-  for (let i = 0; i < shape[0].vertexNumber; i++) { //set pos of vertexes
+  for (let i = 0; i < shape[0].vertNumber; i++) { //set pos of vertexes
     shape[0].vertX[i] = i * 50;
     shape[0].vertX[i] = i * 20;
   }
@@ -28,6 +28,8 @@ function setup() {
 }
 
 function draw() {
-
+  background(51);
+  shape[0].update();
+  shape[0].display();
 
 }
