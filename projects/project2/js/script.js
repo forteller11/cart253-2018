@@ -15,14 +15,17 @@ https://www.khanacademy.org/math/ap-calculus-bc/bc-advanced-functions-new/bc-9-1
 https://www.youtube.com/watch?v=qksmRZNaqJY
 */
 let shape = [];
-
+let shapePop = 5;
 function setup() {
   createCanvas(1000, 1000);
   background(0, 0, 0);
-  shape[0] = new Shape(width / 2, height / 2, 0, 4);
-  for (let i = 0; i < shape[0].vertNumber; i++) { //set pos of vertexes
-    shape[0].vertR[i] = 20;
-    shape[0].vertAOff[i] = (PI/2*i) + PI/4;
+
+  for (let i = 0; i < shapePop; i++) { //set pos of vertexes
+    shape[i] = new Shape((width / 2) + (100 * i), (height / 2) + (20 * i), 0, 4);
+    for (let j = 0; j < shape[0].vertNumber; j++) { //set pos of vertexes
+      shape[i].vertR[j] = 20;
+      shape[i].vertAOff[j] = ((2*PI)/shape[0].vertNumber)*j + PI/4;
+    }
   }
 
 
@@ -31,7 +34,9 @@ function setup() {
 
 function draw() {
   background(51);
-  shape[0].update();
-  shape[0].display();
+  for (let i = 0; i < shape.length; i++) { //set pos of vertexes
+    shape[i].update();
+    shape[i].display();
+  }
 
 }

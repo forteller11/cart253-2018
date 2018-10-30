@@ -22,8 +22,6 @@ class Shape {
   }
 
   update() {
-    this.x = mouseX;
-    this.y = mouseY;
 
     this.updateVertCartesian();
     this.updateLines();
@@ -64,7 +62,7 @@ class Shape {
     for (let i = 0; i < this.vertNumber; i ++){
       noFill();
       stroke(255);
-      ellipse(this.vertX[i],this.vertY[i],10);
+      // ellipse(this.vertX[i],this.vertY[i],3);
     }
   }
 }
