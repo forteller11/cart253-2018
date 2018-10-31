@@ -56,14 +56,15 @@ class Ray{
         //make sure only recognizes intersections which happen in the direction of the ray
         if (((this.targetX-this.x<= 0) && (intersectionX < this.x)) || ((this.targetX-this.x > 0) && (intersectionX > this.x))){
           //check to see if collsion happened within confines of line (and not infinite funciton)
-          if (line.x1 <= line.x2) {
-            if ( (intersectionX >= line.x1) && (intersectionX <= line.x2) ){
+          let c = 0.0000000001; //creates a buffer so the intersection doesn't have to happen exactly on the line to be recognized
+          if (line.x1 < line.x2) {
+            if ( (intersectionX+c >= line.x1) && (intersectionX-c <= line.x2) ){
               // ellipse(intersectionX,intersectionY,10);
               //change collidedX,Y to the intersection's X,Y's are closer to the ray origin
               this.makeCollidedShortestIntersection(intersectionX,intersectionY);
             }
           } else if (line.x1 > line.x2) {
-            if ( (intersectionX <= line.x1) && (intersectionX >= line.x2) ){
+            if ( (intersectionX-c <= line.x1) && (intersectionX+c >= line.x2) ){
               ellipse(intersectionX,intersectionY,10);
               //change collidedX,Y to the intersection's X,Y's are closer to the ray origin
               this.makeCollidedShortestIntersection(intersectionX,intersectionY);
