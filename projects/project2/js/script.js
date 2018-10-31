@@ -35,12 +35,13 @@ function setup() {
     for (let i = 0; i < rayPop; i ++){
       ray[i] = new Ray();
     }
-    // for (let i = 0; i < shape.length; i ++){
+    let k = 0;
+     for (let i = 0; i < shape.length; i ++){
       for (let j = 0; j < shape[0].vertNumber; j ++){
-        print(shape[0].vertX[j]);
-        ray[j] = new Ray(shape[0].vertX[j],shape[0].vertY[j]);
+        k++;
+        ray[k] = new Ray(shape[i].vertX[j],shape[i].vertY[j]);
       }
-    // }
+     }
 
   }
 
