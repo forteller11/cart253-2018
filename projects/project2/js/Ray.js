@@ -5,9 +5,11 @@ class Ray{
     // this.angle = angle;
     // this.vecX = (cos(this.angle) * this.r);
     // this.vecY = (sin(this.angle) * this.r);
-    this.vecX;
-    this.vecY;
-    this.vexX;
+
+    this.targetX; //where the line is pointed (xvec)
+    this.targetY; //where the line is pointed (yvec)
+    this.collidedX; //closest point of x intersection
+    this.collidedY; //closest point of y intersection
     // this.vecR = sqrt(sq(this.vecX)+sq(this.vecY));
     /*
     x unit vector,
@@ -35,7 +37,8 @@ class Ray{
 
     //convert point form to y = mx+b
     //find slope
-
+    this.collidedX = Infinity;
+    this.collidedY = Infinity;
     let raySlope = (this.targetY - this.y)/(this.targetX - this.x);
 
     print(raySlope);
@@ -60,19 +63,18 @@ class Ray{
         if (line.x1 <= line.x2) {
           if ( (intersectionX >= line.x1) && (intersectionX <= line.x2) ){
             ellipse(intersectionX,intersectionY,10);
+            //change collidedX,Y to the intersection's X,Y's are closer to the ray origin
+            this.makeCollidedShortestIntersection(intersectionX,intersectionY);
           }
         } else if (line.x1 > line.x2) {
           if ( (intersectionX <= line.x1) && (intersectionX >= line.x2) ){
             ellipse(intersectionX,intersectionY,10);
+            //change collidedX,Y to the intersection's X,Y's are closer to the ray origin
+            this.makeCollidedShortestIntersection(intersectionX,intersectionY);
           }
         }
-        // if (line.x2 < line.x1) {
-        //   if (line.x1 > intersectionX > line.x2){
-        //     ellipse(intersectionX,intersectionY,10);
-        //   }
-        // }
 
-        // ellipse(intersectionX,intersectionY,10);
+
 
         // //draw linear functions (for debugging)
         // for (let i = 0; i < width; i ++){
@@ -86,9 +88,19 @@ class Ray{
 
       }
     }
-
+    ellipse(this.collidedX,this.collidedY,40);
   }
 
+  makeCollidedShortestIntersection(intersectionX,intersectionY){
+    //compares the dist between the ray origin and the two vectors,
+    //and if intersection is shorter then it makes collidedX,y the intersection's x,y
+    let collidedR = sqrt(sq(this.collidedX-this.x)+sq(this.collidedY-this.y));
+    let intersectionR = sqrt(sq(intersectionX-this.x)+sq(intersectionY-this.y));
+    if (intersectionR < collidedR){
+      this.collidedX = intersectionX;
+      this.collidedY = intersectionY;
+    }
+  }
   display(){
     strokeWeight(2);
     stroke(255,100,0);

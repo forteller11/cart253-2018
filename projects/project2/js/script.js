@@ -26,7 +26,7 @@ function setup() {
   for (let i = 0; i < shapePop; i++) { //set pos of vertexes
     shape[i] = new Shape((width / 2) + (100 * i), (height / 2) + (20 * i), 0, 4);
     for (let j = 0; j < shape[0].vertNumber; j++) { //set pos of vertexes
-      shape[i].vertR[j] = 20;
+      shape[i].vertR[j] = 40;
       shape[i].vertAOff[j] = ((2*PI)/shape[0].vertNumber)*j + PI/4+angle;
     }
 
