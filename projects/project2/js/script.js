@@ -15,7 +15,7 @@ https://www.khanacademy.org/math/ap-calculus-bc/bc-advanced-functions-new/bc-9-1
 https://www.youtube.com/watch?v=qksmRZNaqJY
 */
 let shape = [];
-let shapePop = 3;
+let shapePop = 2;
 let ray = [];
 let rayPop = 1;
 let angle = .1;
@@ -47,12 +47,14 @@ function setup() {
     let k = 0;
      for (let i = 0; i < shape.length; i ++){
       for (let j = 0; j < shape[0].vertNumber; j ++){
-        k++;
+        k+=3;
         ray[k] = new Ray(shape[i].vertX[j],shape[i].vertY[j]);
+        ray[k+1] = new Ray(shape[i].vertX[j]+1,shape[i].vertY[j]+1);
+        ray[k+2] = new Ray(shape[i].vertX[j]-1,shape[i].vertY[j]-1);
       }
      }
-
   }
+
 
 
 
@@ -66,8 +68,8 @@ function draw() {
     shape[i].display();
     for (let j = 0; j < shape[0].vertNumber; j++) { //set pos of vertexes
       if (i > 0 ){
-        shape[i].vertAOff[j] += random(-.01,.01);
-        shape[i].vertR[j] += random(-1,1);
+        // shape[i].vertAOff[j] += random(-.01,.01);
+        // shape[i].vertR[j] += random(-1,1);
       }
     }
   }
@@ -76,12 +78,34 @@ function draw() {
   let k = 0;
    for (let i = 0; i < shape.length; i ++){
     for (let j = 0; j < shape[0].vertNumber; j ++){
-      k++;
+      k+=3;
       ray[k].targetX = shape[i].vertX[j];
-      ray[k].targetY = shape[i].vertY[j]
+      ray[k].targetY = shape[i].vertY[j];
       ray[k].update();
       ray[k].display();
+      ray[k+1].targetX = shape[i].vertX[j]+1;
+      ray[k+1].targetY = shape[i].vertY[j]+1;
+      ray[k+1].update();
+      ray[k+1].display();
+      ray[k+2].targetX = shape[i].vertX[j]-1;
+      ray[k+2].targetY = shape[i].vertY[j]-1;
+      ray[k+2].update();
+      ray[k+2].display();
     }
    }
 
+fill(255,255,255,50);
+   beginShape();
+     k = 0;
+      for (let i = 0; i < shape.length; i ++){
+       for (let j = 0; j < shape[0].vertNumber; j ++){
+         k+=3;
+         vertex(ray[k+1].collidedX,ray[k+1].collidedY);
+         vertex(ray[k].collidedX,ray[k].collidedY);
+         vertex(ray[k+2].collidedX,ray[k+2].collidedY);
+         // ray[k+1] = new Ray(shape[i].vertX[j]+1,shape[i].vertY[j]+1);
+         // ray[k+2] = new Ray(shape[i].vertX[j]-1,shape[i].vertY[j]-1);
+       }
+      }
+  endShape(CLOSE);
 }
