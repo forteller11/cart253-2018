@@ -15,7 +15,7 @@ https://www.khanacademy.org/math/ap-calculus-bc/bc-advanced-functions-new/bc-9-1
 https://www.youtube.com/watch?v=qksmRZNaqJY
 */
 let shape = [];
-let shapePop = 5;
+let shapePop = 3;
 let ray = [];
 let rayPop = 1;
 let angle = .1;
