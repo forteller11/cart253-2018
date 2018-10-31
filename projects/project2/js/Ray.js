@@ -19,10 +19,11 @@ class Ray{
     this.x = mouseX;
     this.y = mouseY;
     //set target
-    this.vecX = shape[0].vertX[0] - this.x;
-    this.vecY = shape[0].vertY[0] - this.y;
-    this.vecX = 20;
-    this.vecY = 30;
+
+    this.vecX = shape[0].vertX[0];
+    this.vecY = shape[0].vertY[0];
+    // this.vecX = this.x+20;
+    // this.vecY = this.y+30;
 
     this.checkIntersection();
     // print(this.x);
@@ -34,7 +35,10 @@ class Ray{
 
     //convert point form to y = mx+b
     //find slope
+
     let raySlope = (this.vecY - this.y)/(this.vecX - this.x);
+
+    print(raySlope);
     //find y intercept
     let rayB = this.y-(raySlope*this.x);
 
@@ -47,19 +51,22 @@ class Ray{
         let lineSlope = (line.y2-line.y1)/(line.x2 - line.x1);
         let lineB = line.y1-(lineSlope*line.x1);
 
-        // lineSlope = 1/2;
-        // lineB = 2;
-        // raySlope = 2;
-        // rayB = 1;
-
         //check to where ray and line intersect
         let simplifyB = lineB - rayB;
         let simplifySlope = raySlope - lineSlope;
         let intersectionX = simplifyB/simplifySlope; //the x location where lines intersects
         let intersectionY = (raySlope*intersectionX)+rayB; //y where lines interesct
-        // print(solve3);
+        ellipse(intersectionX,intersectionY,10);
 
-        ellipse(intersectionX,intersectionY,20);
+        //draw linear functions (for debugging)
+        for (let i = 0; i < width; i ++){
+          stroke(255);
+          strokeWeight(1);
+          point(i,(lineSlope*i)+lineB);
+          stroke(255,255,0);
+          point(i,(raySlope*i)+rayB);
+        }
+
 
     //   }
     // }
@@ -69,8 +76,8 @@ class Ray{
   display(){
     strokeWeight(2);
     stroke(255,100,0);
-    line(this.x,this.y,(this.vecX)+this.x,(this.vecY)+this.y);
-    ellipse(mouseX,mouseY,20);
+    line(this.x,this.y,(this.vecX),(this.vecY));
+    ellipse(this.x,this.y,20);
   }
 
 }
