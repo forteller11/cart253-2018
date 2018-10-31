@@ -21,43 +21,54 @@ class Ray{
     //set target
     this.vecX = shape[0].vertX[0] - this.x;
     this.vecY = shape[0].vertY[0] - this.y;
+    this.vecX = 20;
+    this.vecY = 30;
 
-    this.checkCollision();
+    this.checkIntersection();
     // print(this.x);
     // print(this.vecX)
   }
 
-  checkCollision(){
+  checkIntersection(){
+    //check if not infinit, parrellel, 0
+
     //convert point form to y = mx+b
+    //find slope
     let raySlope = (this.vecY - this.y)/(this.vecX - this.x);
-    let rayB = this.y;
+    //find y intercept
+    let rayB = this.y-(raySlope*this.x);
 
-    for (let i = 0; i < shape.length; i ++){
-      for (let j = 0; j < shape[i].lines.length; j++){
-        let line = shape[i].lines[j];
+    // for (let i = 0; i < shape.length; i ++){
+    //   for (let j = 0; j < shape[i].lines.length; j++){
+
+        // let line = shape[i].lines[j];
+        let line = shape[0].lines[0];
+        line.displayHighlight();
         let lineSlope = (line.y2-line.y1)/(line.x2 - line.x1);
-        let lineB = line.y1;
+        let lineB = line.y1-(lineSlope*line.x1);
 
-        //deal with exceptions
-        // if ((lineSlope && raySlope) === -0){
-        //   print("-ZER000");
-        // }
-        // if (lineSlope || raySlope === Infinity){
-        //   print("INFINITY");
-        // }
-        // if ((lineSlope || raySlope) === -Infinity){
-        //   print("-INFINITY");
-        // }
+        // lineSlope = 1/2;
+        // lineB = 2;
+        // raySlope = 2;
+        // rayB = 1;
 
-        le
+        //check to where ray and line intersect
+        let simplifyB = lineB - rayB;
+        let simplifySlope = raySlope - lineSlope;
+        let intersectionX = simplifyB/simplifySlope; //the x location where lines intersects
+        let intersectionY = (raySlope*intersectionX)+rayB; //y where lines interesct
+        // print(solve3);
 
-        print(lineSlope);
-      }
-    }
+        ellipse(intersectionX,intersectionY,20);
+
+    //   }
+    // }
 
   }
 
   display(){
+    strokeWeight(2);
+    stroke(255,100,0);
     line(this.x,this.y,(this.vecX)+this.x,(this.vecY)+this.y);
     ellipse(mouseX,mouseY,20);
   }
