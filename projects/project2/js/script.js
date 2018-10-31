@@ -19,40 +19,39 @@ let shapePop = 2;
 let ray = [];
 let rayPop = 1;
 let angle = .1;
+
 function setup() {
   createCanvas(1000, 1000);
   background(0, 0, 0);
 
   for (let i = 0; i < shapePop; i++) { //set pos of vertexes
-    if (i === 0){ //make one shape the same size as the canvas
-      shape[i] = new Shape(width/2, height/2, 0, 4);
+    if (i === 0) { //make one shape the same size as the canvas
+      shape[i] = new Shape(width / 2, height / 2, 0, 4);
     } else {
-      shape[i] = new Shape(width/2 + (i*40), (height/3)*(i+.5), 0, 4);
+      shape[i] = new Shape(width / 2 + (i * 40), (height / 3) * (i + .5), 0, 4);
     }
-      for (let j = 0; j < shape[0].vertNumber; j++) { //set pos of vertexes
-        shape[i].vertR[j] = 100;
-        shape[i].vertAOff[j] = ((2*PI)/shape[0].vertNumber)*j + PI/4+angle;
-        if (i === 0){ //make one shape the same size as the canvas
-          shape[i].vertR[j] = sqrt(sq(width/2)+sq(height/2));
-          shape[i].vertAOff[j] = ((PI/2)*j)+PI/4;
-        }
+    for (let j = 0; j < shape[0].vertNumber; j++) { //set pos of vertexes
+      shape[i].vertR[j] = 100;
+      shape[i].vertAOff[j] = ((2 * PI) / shape[0].vertNumber) * j + PI / 4 + angle;
+      if (i === 0) { //make one shape the same size as the canvas
+        shape[i].vertR[j] = sqrt(sq(width / 2) + sq(height / 2));
+        shape[i].vertAOff[j] = ((PI / 2) * j) + PI / 4;
+      }
 
-        shape[i].update();
-        shape[i].display();
+      shape[i].update();
+      shape[i].display();
 
 
     }
 
 
     let k = 0;
-     for (let i = 0; i < shape.length; i ++){
-      for (let j = 0; j < shape[0].vertNumber; j ++){
-        k+=3;
-        ray[k] = new Ray(shape[i].vertX[j],shape[i].vertY[j]);
-        ray[k+1] = new Ray(shape[i].vertX[j]+1,shape[i].vertY[j]+1);
-        ray[k+2] = new Ray(shape[i].vertX[j]-1,shape[i].vertY[j]-1);
+    for (let i = 0; i < shape.length; i++) {
+      for (let j = 0; j < shape[0].vertNumber; j++) {
+        k++;
+        ray[k] = new Ray(shape[i].vertX[j], shape[i].vertY[j]);
       }
-     }
+    }
   }
 
 
@@ -67,7 +66,7 @@ function draw() {
     shape[i].update();
     shape[i].display();
     for (let j = 0; j < shape[0].vertNumber; j++) { //set pos of vertexes
-      if (i > 0 ){
+      if (i > 0) {
         // shape[i].vertAOff[j] += random(-.01,.01);
         // shape[i].vertR[j] += random(-1,1);
       }
@@ -76,36 +75,26 @@ function draw() {
 
 
   let k = 0;
-   for (let i = 0; i < shape.length; i ++){
-    for (let j = 0; j < shape[0].vertNumber; j ++){
-      k+=3;
+  for (let i = 0; i < shape.length; i++) {
+    for (let j = 0; j < shape[0].vertNumber; j++) {
+      k++;
       ray[k].targetX = shape[i].vertX[j];
       ray[k].targetY = shape[i].vertY[j];
       ray[k].update();
       ray[k].display();
-      ray[k+1].targetX = shape[i].vertX[j]+1;
-      ray[k+1].targetY = shape[i].vertY[j]+1;
-      ray[k+1].update();
-      ray[k+1].display();
-      ray[k+2].targetX = shape[i].vertX[j]-1;
-      ray[k+2].targetY = shape[i].vertY[j]-1;
-      ray[k+2].update();
-      ray[k+2].display();
-    }
-   }
 
-fill(255,255,255,50);
-   beginShape();
-     k = 0;
-      for (let i = 0; i < shape.length; i ++){
-       for (let j = 0; j < shape[0].vertNumber; j ++){
-         k+=3;
-         vertex(ray[k+1].collidedX,ray[k+1].collidedY);
-         vertex(ray[k].collidedX,ray[k].collidedY);
-         vertex(ray[k+2].collidedX,ray[k+2].collidedY);
-         // ray[k+1] = new Ray(shape[i].vertX[j]+1,shape[i].vertY[j]+1);
-         // ray[k+2] = new Ray(shape[i].vertX[j]-1,shape[i].vertY[j]-1);
-       }
-      }
+    }
+  }
+
+  fill(255, 255, 255, 50);
+  beginShape();
+  k = 0;
+  for (let i = 0; i < shape.length; i++) {
+    for (let j = 0; j < shape[0].vertNumber; j++) {
+      k++
+      vertex(ray[k].collidedX, ray[k].collidedY);
+
+    }
+  }
   endShape(CLOSE);
 }

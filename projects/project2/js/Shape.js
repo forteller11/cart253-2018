@@ -38,7 +38,7 @@ class Shape {
 
   updateLines() {
     //recalc x1 and y1 of shape based on position of shape and vertexes.
-    for (let i = 0; i < this.vertNumber; i ++) {
+    for (let i = 0; i < this.vertNumber; i++) {
       this.lines[i].x1 = this.vertX[i];
       this.lines[i].y1 = this.vertY[i];
       if (i + 1 >= this.vertNumber) {
@@ -51,18 +51,18 @@ class Shape {
     }
   }
 
-  display(){
+  display() {
     this.displayVerts();
-    for (let i = 0; i < this.vertNumber; i ++){
+    for (let i = 0; i < this.vertNumber; i++) {
       this.lines[i].display();
     }
   }
 
-  displayVerts(){
-    for (let i = 0; i < this.vertNumber; i ++){
+  displayVerts() {
+    for (let i = 0; i < this.vertNumber; i++) {
       noFill();
       stroke(255);
-      ellipse(this.vertX[i],this.vertY[i],3);
+      ellipse(this.vertX[i], this.vertY[i], 3);
     }
   }
 }
