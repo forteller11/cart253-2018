@@ -6,13 +6,13 @@ class Ray{
     // this.vecX = (cos(this.angle) * this.r);
     // this.vecY = (sin(this.angle) * this.r);
 
-    this.targetX = 0; //where the line is pointed (xvec)
-    this.targetY = 0; //where the line is pointed (yvec)
+    this.targetX = width/2; //where the line is pointed (xvec)
+    this.targetY = height/2; //where the line is pointed (yvec)
     this.collidedX; //closest point of x intersection
     this.collidedY; //closest point of y intersection
     // this.vecR = sqrt(sq(this.vecX)+sq(this.vecY));
     /*
-    x unit vector,
+    x unit vector,sssss
     y unit vectors
     */
   }
@@ -53,7 +53,7 @@ class Ray{
         let intersectionY = (raySlope*intersectionX)+rayB; //y where lines interesct
 
         //make sure only recognizes intersections which happen in the direction of the ray
-        if (((raySlope >= 0) && (intersectionX < this.x)) || ((raySlope < 0) && (intersectionX > this.x))){
+        if (((this.targetX-this.x<= 0) && (intersectionX < this.x)) || ((this.targetX-this.x > 0) && (intersectionX > this.x))){
           //check to see if collsion happened within confines of line (and not infinite funciton)
           if (line.x1 <= line.x2) {
             if ( (intersectionX >= line.x1) && (intersectionX <= line.x2) ){
@@ -99,6 +99,7 @@ class Ray{
     stroke(255,100,0);
     line(this.x,this.y,(this.collidedX),(this.collidedY));
     ellipse(this.x,this.y,20);
+    ellipse(this.targetX,this.targetY,3);
   }
 
 }
