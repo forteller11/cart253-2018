@@ -18,6 +18,7 @@ let shape = [];
 let shapePop = 5;
 let ray = [];
 let rayPop = 1;
+let angle = .1;
 function setup() {
   createCanvas(1000, 1000);
   background(0, 0, 0);
@@ -26,7 +27,7 @@ function setup() {
     shape[i] = new Shape((width / 2) + (100 * i), (height / 2) + (20 * i), 0, 4);
     for (let j = 0; j < shape[0].vertNumber; j++) { //set pos of vertexes
       shape[i].vertR[j] = 20;
-      shape[i].vertAOff[j] = ((2*PI)/shape[0].vertNumber)*j + PI/4;
+      shape[i].vertAOff[j] = ((2*PI)/shape[0].vertNumber)*j + PI/4+angle;
     }
 
     for (let i = 0; i < rayPop; i ++){
@@ -40,10 +41,15 @@ function setup() {
 }
 
 function draw() {
+  angle += 0.001;
   background(51);
   for (let i = 0; i < shape.length; i++) { //set pos of vertexes
     shape[i].update();
     shape[i].display();
+    for (let j = 0; j < shape[0].vertNumber; j++) { //set pos of vertexes
+      shape[i].vertAOff[j] += random(-.01,.01);
+      shape[i].vertR[j] += random(-1,1);
+    }
   }
   for (let i = 0; i < ray.length; i++) { //set pos of vertexes
     ray[i].update();
