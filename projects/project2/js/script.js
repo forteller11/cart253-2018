@@ -24,7 +24,7 @@ function setup() {
   background(0, 0, 0);
 
   for (let i = 0; i < shapePop; i++) { //set pos of vertexes
-    shape[i] = new Shape((width / 2) + (100 * i), (height / 2) + (20 * i), 0, 4);
+    shape[i] = new Shape(random(width/2)+width/4, random(height/2)+height/4, 0, 4);
     for (let j = 0; j < shape[0].vertNumber; j++) { //set pos of vertexes
       shape[i].vertR[j] = 40;
       shape[i].vertAOff[j] = ((2*PI)/shape[0].vertNumber)*j + PI/4+angle;
@@ -33,6 +33,14 @@ function setup() {
     for (let i = 0; i < rayPop; i ++){
       ray[i] = new Ray();
     }
+    // for (let i = 0; i < shape.length; i ++){
+      for (let j = 0; j < shape[i].vertX.length; j ++){
+        ray[j] = new Ray();
+        ray[j].targetX = shape[0].vertX[j];
+        ray[j].targetY = shape[0].vertY[j];
+
+      }
+    // }
 
   }
 
