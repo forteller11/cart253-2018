@@ -24,17 +24,15 @@ function setup() {
   background(0, 0, 0);
 
   for (let i = 0; i < shapePop; i++) { //set pos of vertexes
-    shape[i] = new Shape(width/2 + (i*40), (height/3)*(i+.5), 0, 10);
+    shape[i] = new Shape(width/2 + (i*40), (height/3)*(i+.5), 0, 4);
     for (let j = 0; j < shape[0].vertNumber; j++) { //set pos of vertexes
-      shape[i].vertR[j] = 80;
+      shape[i].vertR[j] = 100;
       shape[i].vertAOff[j] = ((2*PI)/shape[0].vertNumber)*j + PI/4+angle;
       shape[i].update();
       shape[i].display();
     }
 
-    for (let i = 0; i < rayPop; i ++){
-      ray[i] = new Ray();
-    }
+
     let k = 0;
      for (let i = 0; i < shape.length; i ++){
       for (let j = 0; j < shape[0].vertNumber; j ++){
@@ -56,13 +54,21 @@ function draw() {
     shape[i].update();
     shape[i].display();
     for (let j = 0; j < shape[0].vertNumber; j++) { //set pos of vertexes
-      // shape[i].vertAOff[j] += random(-.01,.01);
-      // shape[i].vertR[j] += random(-1,1);
+      shape[i].vertAOff[j] += random(-.01,.01);
+      shape[i].vertR[j] += random(-1,1);
     }
   }
-  for (let i = 0; i < ray.length; i++) { //set pos of vertexes
-    ray[i].update();
-    ray[i].display();
-  }
+
+
+  let k = 0;
+   for (let i = 0; i < shape.length; i ++){
+    for (let j = 0; j < shape[0].vertNumber; j ++){
+      k++;
+      ray[k].targetX = shape[i].vertX[j];
+      ray[k].targetY = shape[i].vertY[j]
+      ray[k].update();
+      ray[k].display();
+    }
+   }
 
 }

@@ -101,7 +101,7 @@ class Ray{
     stroke(255,100,0);
     line(this.x,this.y,(this.collidedX),(this.collidedY));
     ellipse(this.x,this.y,20);
-    ellipse(this.targetX,this.targetY,3);
+    ellipse(this.targetX,this.targetY,10);
   }
 
 }
