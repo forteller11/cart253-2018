@@ -15,7 +15,7 @@ https://www.khanacademy.org/math/ap-calculus-bc/bc-advanced-functions-new/bc-9-1
 https://www.youtube.com/watch?v=qksmRZNaqJY
 */
 let shape = [];
-let shapePop = 2;
+let shapePop = 1;
 let ray = [];
 let rayPop = 1;
 let angle = .1;
@@ -25,18 +25,18 @@ function setup() {
   background(0, 0, 0);
 
   for (let i = 0; i < shapePop; i++) { //set pos of vertexes
-    if (i === 0) { //make one shape the same size as the canvas
-      shape[i] = new Shape(width / 2, height / 2, 0, 4);
-    } else {
+    // if (i === 0) { //make one shape the same size as the canvas
+    //   shape[i] = new Shape(width / 2, height / 2, 0, 4);
+    // } else {
       shape[i] = new Shape(width / 2 + (i * 40), (height / 3) * (i + .5), 0, 4);
-    }
+    // }
     for (let j = 0; j < shape[0].vertNumber; j++) { //set pos of vertexes
       shape[i].vertR[j] = 100;
       shape[i].vertAOff[j] = ((2 * PI) / shape[0].vertNumber) * j + PI / 4 + angle;
-      if (i === 0) { //make one shape the same size as the canvas
-        shape[i].vertR[j] = sqrt(sq(width / 2) + sq(height / 2));
-        shape[i].vertAOff[j] = ((PI / 2) * j) + PI / 4;
-      }
+      // if (i === 0) { //make one shape the same size as the canvas
+      //   shape[i].vertR[j] = sqrt(sq(width / 2) + sq(height / 2));
+      //   shape[i].vertAOff[j] = ((PI / 2) * j) + PI / 4;
+      // }
 
       shape[i].update();
       shape[i].display();
@@ -86,15 +86,15 @@ function draw() {
     }
   }
 
-  fill(255, 255, 255, 50);
-  beginShape();
-  k = 0;
-  for (let i = 0; i < shape.length; i++) {
-    for (let j = 0; j < shape[0].vertNumber; j++) {
-      k++
-      vertex(ray[k].collidedX, ray[k].collidedY);
-
-    }
-  }
-  endShape(CLOSE);
+  // fill(255, 255, 255, 50);
+  // beginShape();
+  // k = 0;
+  // for (let i = 0; i < shape.length; i++) {
+  //   for (let j = 0; j < shape[0].vertNumber; j++) {
+  //     k++
+  //     vertex(ray[k].collidedX, ray[k].collidedY);
+  //
+  //   }
+  // }
+  // endShape(CLOSE);
 }
