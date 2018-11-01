@@ -15,7 +15,7 @@ https://www.khanacademy.org/math/ap-calculus-bc/bc-advanced-functions-new/bc-9-1
 https://www.youtube.com/watch?v=qksmRZNaqJY
 */
 let shape = [];
-let shapePop = 1;
+let shapePop = 2;
 let ray = [];
 let rayPop = 1;
 let angle = .1;
@@ -31,7 +31,7 @@ function setup() {
     shape[i] = new Shape(width / 2 + (i * 40), (height / 3) * (i + .5), 0, 4);
     // }
     for (let j = 0; j < shape[0].vertNumber; j++) { //set pos of vertexes
-      shape[i].vertR[j] = 100;
+      shape[i].vertR[j] = 150;
       shape[i].vertAOff[j] = ((2 * PI) / shape[0].vertNumber) * j + PI / 4 + angle;
       // if (i === 0) { //make one shape the same size as the canvas
       //   shape[i].vertR[j] = sqrt(sq(width / 2) + sq(height / 2));
@@ -87,15 +87,14 @@ function draw() {
   selectionSortRayAngles();
 
 
-  // fill(255, 255, 255, 50);
-  // stroke(255);
-  // beginShape();
-  // vertex(ray[0].x,ray[0].y);
-  // for (let i = 0; i < ray.length; i ++){
-  //   vertex(ray[0].x,ray[0].y);
-  //   vertex(ray[i].collidedX,ray[i].collidedY);
-  // }
-  // endShape(CLOSE);
+  fill(255, 255, 255, 50);
+  stroke(255);
+  beginShape();
+  vertex(ray[0].x,ray[0].y);
+  for (let i = 0; i < ray.length; i ++){
+    vertex(ray[i].collidedX,ray[i].collidedY);
+  }
+  endShape();
 
   let l1 = ray[0];
   stroke(100,100,255);
@@ -120,7 +119,7 @@ function selectionSortRayAngles() {
       //once at end of the array, swap ray index i with smallest ray...
       if (j === ray.length - 1) {
         rayStore = ray[i];
-        ray[i] = ray[smallestValueIndex]; //
+        ray[i] = ray[smallestValueIndex];
         ray[smallestValueIndex] = rayStore;
       }
       //then increment i and repeat until array is sorted...

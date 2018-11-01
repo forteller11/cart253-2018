@@ -102,7 +102,10 @@ class Ray {
     let yMag = this.targetY-this.y;
     let xMag = this.targetX-this.x;
     this.angle = atan2(yMag,xMag);
-    print(this.angle);
+    // print(this.angle);
+    noStroke();
+    fill(180);
+    text(round(this.angle*1000)/1000,this.collidedX,this.collidedY);
   }
 
   display() {

@@ -5,7 +5,7 @@ let smallestValueIndex;
 let sum = 0;
 
 function setup() {
-  createCanvas(1000, 100);
+  createCanvas(100, 100);
   for (let i = 0; i < width; i++) {
     ray[i] = random(height);
   }
