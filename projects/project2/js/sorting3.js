@@ -18,24 +18,24 @@ function setup() {
 function draw() {
   background(0);
 
-  // //selection sort algoritihim
-  // for (let i = 0; i < test.length; i++) {
-  //   smallestValue = Infinity;
-  //   for (let j = i; j < test.length; j++) {
-  //     //cycle through artest, find smallest value
-  //     if (test[j].angle < smallestValue) {
-  //       smallestValueIndex = j;
-  //       smallestValue = test[j].angle;
-  //     }
-  //     //once at end of the artest, swap test index i with smallest test...
-  //     if (j === test.length - 1) {
-  //       testStore = test[i];
-  //       test[i] = smallestValue;
-  //       test[smallestValueIndex] = testStore;
-  //     }
-  //     //then increment i and repeat until artest is sorted...
-  //   }
-  // }
+  //selection sort algoritihim
+  for (let i = 0; i < test.length; i++) {
+    smallestValue = Infinity;
+    for (let j = i; j < test.length; j++) {
+      //cycle through artest, find smallest value
+      if (test[j].angle < smallestValue) {
+        smallestValueIndex = j;
+        smallestValue = test[j].angle;
+      }
+      //once at end of the artest, swap test index i with smallest test...
+      if (j === test.length - 1) {
+        testStore = test[i];
+        test[i] = smallestValue;
+        test[smallestValueIndex] = testStore;
+      }
+      //then increment i and repeat until artest is sorted...
+    }
+  }
 
 
 

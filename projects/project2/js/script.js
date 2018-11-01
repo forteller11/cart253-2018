@@ -86,23 +86,32 @@ function draw() {
   }
   selectionSortRayAngles();
 
-
-  fill(255, 255, 255, 50);
-  stroke(255);
-  beginShape();
-  vertex(ray[0].x,ray[0].y);
   for (let i = 0; i < ray.length; i ++){
-    vertex(ray[i].collidedX,ray[i].collidedY);
+    let mapColor = map(i,0,ray.length-1,0,255);
+    noStroke();
+    fill(mapColor,255-mapColor,155);
+    text(ray[i].angle,40,40*i);
+    let l1 = ray[i];
+    stroke(mapColor,255-mapColor,155);
+    line(l1.x,l1.y,l1.collidedX,l1.collidedY);
   }
-  endShape();
 
-  let l1 = ray[0];
-  stroke(100,100,255);
-  line(l1.x,l1.y,l1.collidedX,l1.collidedY);
+  // fill(255, 255, 255, 50);
+  // stroke(255);
+  // beginShape();
+  // vertex(ray[0].x,ray[0].y);
+  // for (let i = 0; i < ray.length; i ++){
+  //   vertex(ray[i].collidedX,ray[i].collidedY);
+  // }
+  // endShape();
 
-  let l2 = ray[ray.length-1];
-  stroke(0,255,0);
-  line(l2.x,l2.y,l2.collidedX,l2.collidedY);
+  // let l1 = ray[0];
+  // stroke(100,100,255);
+  // line(l1.x,l1.y,l1.collidedX,l1.collidedY);
+  //
+  // let l2 = ray[ray.length-1];
+  // stroke(0,255,0);
+  // line(l2.x,l2.y,l2.collidedX,l2.collidedY);
 
 }
 
