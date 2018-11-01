@@ -10,7 +10,7 @@ class Ray {
     this.targetY = targetY; //where the line is pointed (yvec)
     this.collidedX; //closest point of x intersection
     this.collidedY; //closest point of y intersection
-    this.a; //angle
+    this.angle; //angle
     // this.vecR = sqrt(sq(this.vecX)+sq(this.vecY));
     /*
     x unit vector,sssss
@@ -100,7 +100,7 @@ class Ray {
   calculateAngle() {
     let radius = sqrt(sq(this.targetX - this.x) + sq(this.targetY - this.y));
     this.angle = asin((this.targetY - this.y) / radius);
-    print(this.angle);
+    // print(this.angle);
   }
 
   display() {

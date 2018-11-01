@@ -14,19 +14,23 @@ function setup() {
 
 function draw() {
   background(0);
+
+  //selection sort algoritihim
   for (let i = 0; i < ray.length; i++) {
     smallestValue = Infinity;
     for (let j = i; j < ray.length; j++) {
+      //cycle through array, find smallest value
       if (ray[j] < smallestValue) {
         smallestValueIndex = j;
         smallestValue = ray[j];
       }
+      //once at end of the array, swap ray index i with smallest ray...
       if (j === ray.length - 1) {
-        // at end of array, swap smallest item in list with first item
         rayStore = ray[i];
         ray[i] = smallestValue;
         ray[smallestValueIndex] = rayStore;
       }
+      //then increment i and repeat until array is sorted...
     }
   }
 

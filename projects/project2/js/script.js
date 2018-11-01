@@ -28,7 +28,7 @@ function setup() {
     // if (i === 0) { //make one shape the same size as the canvas
     //   shape[i] = new Shape(width / 2, height / 2, 0, 4);
     // } else {
-      shape[i] = new Shape(width / 2 + (i * 40), (height / 3) * (i + .5), 0, 4);
+    shape[i] = new Shape(width / 2 + (i * 40), (height / 3) * (i + .5), 0, 4);
     // }
     for (let j = 0; j < shape[0].vertNumber; j++) { //set pos of vertexes
       shape[i].vertR[j] = 100;
@@ -48,8 +48,8 @@ function setup() {
     let k = 0;
     for (let i = 0; i < shape.length; i++) {
       for (let j = 0; j < shape[0].vertNumber; j++) {
-        k++;
         ray[k] = new Ray(shape[i].vertX[j], shape[i].vertY[j]);
+        k++;
       }
     }
   }
@@ -77,14 +77,15 @@ function draw() {
   let k = 0;
   for (let i = 0; i < shape.length; i++) {
     for (let j = 0; j < shape[0].vertNumber; j++) {
-      k++;
       ray[k].targetX = shape[i].vertX[j];
       ray[k].targetY = shape[i].vertY[j];
       ray[k].update();
       ray[k].display();
-
+      k++;
     }
   }
+
+  selectionSortRayAngles();
 
 
   // fill(255, 255, 255, 50);
@@ -100,17 +101,23 @@ function draw() {
   // endShape(CLOSE);
 }
 
-  function sortRaysOnAngle{
-    for (let i = 0; i < ray.length; i ++){
-      for (let j = 0; j < ray.length; j ++){
-        let smallestAngle;
-        if (j === 0){
-          largestAngle = ray[j];
-        }
-        if (ray[j].angle > largestAngle.angle){
-          largestAngle.angle = ray[j].angle;
-        }
-        
+//selection sort algoritihim
+function selectionSortRayAngles() {
+  for (let i = 0; i < ray.length; i++) {
+    smallestValue = Infinity;
+    for (let j = i; j < ray.length; j++) {
+      //cycle through array, find smallest value
+      if (ray[j].angle < smallestValue) {
+        smallestValueIndex = j;
+        smallestValue = ray[j].angle;
       }
+      //once at end of the array, swap ray index i with smallest ray...
+      if (j === ray.length - 1) {
+        rayStore = ray[i];
+        ray[i].angle = smallestValue;
+        ray[smallestValueIndex] = rayStore;
+      }
+      //then increment i and repeat until array is sorted...
     }
   }
+}
