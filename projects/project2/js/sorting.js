@@ -15,6 +15,7 @@ function setup() {
 function draw() {
   background(0);
 
+  
   if (j < ray.length) {
     // print(ray[j] + "vs" + smallestValue);
     if(ray[j] < smallestValue){
