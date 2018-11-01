@@ -98,14 +98,17 @@ class Ray {
   }
 
   calculateAngle() {
-    let radius = sqrt(sq(this.targetX - this.x) + sq(this.targetY - this.y));
+    let radius = sqrt(sq( this.x-this.targetX) + sq(this.y-this.targetY));
     let yMag = this.targetY-this.y;
     let xMag = this.targetX-this.x;
     this.angle = atan2(yMag,xMag);
+    if (this.angle < 0){
+      this.angle += PI*2;
+    }
     // print(this.angle);
     noStroke();
     fill(180);
-    text(round(this.angle*1000)/1000,this.collidedX,this.collidedY);
+    text(round(this.angle*1000)/1000,this.collidedX+20,this.collidedY);
   }
 
   display() {

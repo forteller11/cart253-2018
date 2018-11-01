@@ -96,22 +96,22 @@ function draw() {
     line(l1.x,l1.y,l1.collidedX,l1.collidedY);
   }
 
-  // fill(255, 255, 255, 50);
-  // stroke(255);
-  // beginShape();
-  // vertex(ray[0].x,ray[0].y);
-  // for (let i = 0; i < ray.length; i ++){
-  //   vertex(ray[i].collidedX,ray[i].collidedY);
-  // }
-  // endShape();
+  fill(255, 255, 255, 50);
+  stroke(255);
+  beginShape();
+  vertex(ray[0].x,ray[0].y);
+  for (let i = 0; i < ray.length; i ++){
+    vertex(ray[i].collidedX,ray[i].collidedY);
+  }
+  endShape();
 
-  // let l1 = ray[0];
-  // stroke(100,100,255);
-  // line(l1.x,l1.y,l1.collidedX,l1.collidedY);
-  //
-  // let l2 = ray[ray.length-1];
-  // stroke(0,255,0);
-  // line(l2.x,l2.y,l2.collidedX,l2.collidedY);
+  let l1 = ray[0];
+  stroke(100,100,255);
+  line(l1.x,l1.y,l1.collidedX,l1.collidedY);
+
+  let l2 = ray[ray.length-1];
+  stroke(0,255,0);
+  line(l2.x,l2.y,l2.collidedX,l2.collidedY);
 
 }
 
