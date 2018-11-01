@@ -84,7 +84,7 @@ function draw() {
       k++;
     }
   }
-  selectionSortRayAngles();
+  // selectionSortRayAngles();
 
 
   // fill(255, 255, 255, 50);

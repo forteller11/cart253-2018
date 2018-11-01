@@ -99,8 +99,12 @@ class Ray {
 
   calculateAngle() {
     let radius = sqrt(sq(this.targetX - this.x) + sq(this.targetY - this.y));
-    this.angle = asin((this.targetY - this.y) / radius);
+    // this.angle = asin((this.targetY - this.y) / radius);
     // print(this.angle);
+    let yMag = this.targetY-this.y;
+    let xMag = this.targetX-this.x;
+    this.angle = atan2(yMag,xMag);
+    print(this.angle);
   }
 
   display() {
