@@ -84,21 +84,27 @@ function draw() {
       k++;
     }
   }
-
   selectionSortRayAngles();
 
 
   // fill(255, 255, 255, 50);
+  // stroke(255);
   // beginShape();
-  // k = 0;
-  // for (let i = 0; i < shape.length; i++) {
-  //   for (let j = 0; j < shape[0].vertNumber; j++) {
-  //     k++
-  //     vertex(ray[k].collidedX, ray[k].collidedY);
-  //
-  //   }
+  // vertex(ray[0].x,ray[0].y);
+  // for (let i = 0; i < ray.length; i ++){
+  //   vertex(ray[0].x,ray[0].y);
+  //   vertex(ray[i].collidedX,ray[i].collidedY);
   // }
   // endShape(CLOSE);
+
+  let l1 = ray[0];
+  stroke(100,100,255);
+  line(l1.x,l1.y,l1.collidedX,l1.collidedY);
+
+  let l2 = ray[ray.length-1];
+  stroke(0,255,0);
+  line(l2.x,l2.y,l2.collidedX,l2.collidedY);
+
 }
 
 //selection sort algoritihim
