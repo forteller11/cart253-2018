@@ -86,6 +86,7 @@ function draw() {
     }
   }
 
+
   // fill(255, 255, 255, 50);
   // beginShape();
   // k = 0;
@@ -98,3 +99,18 @@ function draw() {
   // }
   // endShape(CLOSE);
 }
+
+  function sortRaysOnAngle{
+    for (let i = 0; i < ray.length; i ++){
+      for (let j = 0; j < ray.length; j ++){
+        let smallestAngle;
+        if (j === 0){
+          largestAngle = ray[j];
+        }
+        if (ray[j].angle > largestAngle.angle){
+          largestAngle.angle = ray[j].angle;
+        }
+        
+      }
+    }
+  }
