@@ -1,5 +1,6 @@
 let ray = [];
 let i = 0;
+let j = 0;
 
 function setup() {
   createCanvas(100, 100);
@@ -11,21 +12,16 @@ function setup() {
 
 function draw() {
   background(0);
-  if (i < ray.length) {
-    i++
-  }
-  for (let j = 0; j < ray.length; j++) {
 
-    if (j < ray.length - 1) {
-      if (ray[j] < ray[j + 1]) {
-        rayStore = ray[j];
-        ray[j] = ray[j + 1];
-        ray[j + 1] = rayStore;
-      }
-    }
+  if (j < ray.length){
+    j++;
+
+
+  } else if (i < ray.length){
+      i++;
+      j=0;
 
   }
-
 
 
 
@@ -33,4 +29,11 @@ function draw() {
     stroke(200);
     line(i, height, i, ray[i]);
   }
-}
+
+
+  stroke(255,0,0);
+  line(j, height, j, ray[j]);
+  stroke(100,100,255);
+  line(i, height, i, 0);
+
+  }
