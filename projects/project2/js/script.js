@@ -84,7 +84,7 @@ function draw() {
       k++;
     }
   }
-  // selectionSortRayAngles();
+  selectionSortRayAngles();
 
 
   // fill(255, 255, 255, 50);
@@ -120,7 +120,7 @@ function selectionSortRayAngles() {
       //once at end of the array, swap ray index i with smallest ray...
       if (j === ray.length - 1) {
         rayStore = ray[i];
-        ray[i].angle = smallestValue;
+        ray[i] = ray[smallestValueIndex]; //
         ray[smallestValueIndex] = rayStore;
       }
       //then increment i and repeat until array is sorted...
