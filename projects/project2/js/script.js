@@ -108,6 +108,7 @@ function draw() {
   for (let i = 0; i < ray.length; i ++){
     vertex(ray[i].collidedX,ray[i].collidedY);
   }
+  vertex(ray[0].collidedX,ray[0].collidedY);
   endShape();
 
   strokeWeight(5);
