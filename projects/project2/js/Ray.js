@@ -101,10 +101,15 @@ class Ray {
     let radius = sqrt(sq( this.x-this.targetX) + sq(this.y-this.targetY));
     let yMag = this.targetY-this.y;
     let xMag = this.targetX-this.x;
-    this.angle = atan2(yMag,xMag);
-    if (this.angle < 0){
-      this.angle += PI*2;
-    }
+    let newAngle = atan2(yMag,xMag);
+    newAngle = map(newAngle,-PI,PI,0,PI*2);
+    this.angle = newAngle;
+
+
+
+
+
+
     // print(this.angle);
     noStroke();
     fill(180);
