@@ -27,11 +27,13 @@ class Ray {
   update() {
     if (this.hasChildren === true) { //if you have children (and are therefore not a child)
       this.setOrigin();
-      // this.targetX = 0;
       // this.angle += random(.1);
-      // this.calculateTargetBasedOnAngle();
+
       this.checkIntersection();
       this.calculateAngle();
+      this.angle+= 0.1;
+      this.calculateTargetBasedOnAngle();
+      // this.calculateTargetBasedOnAngle();
 
       // this.updateChildren();
     }
@@ -90,7 +92,7 @@ class Ray {
         //make sure only recognizes intersections which happen in the direction of the ray
         if (((this.targetX - this.x <= 0) && (intersectionX < this.x)) || ((this.targetX - this.x > 0) && (intersectionX > this.x))) {
           //check to see if collsion happened within confines of line (and not infinite funciton)
-          let c = 0.0000000001; //creates a buffer so the intersection doesn't have to happen exactly on the line to be recognized
+          let c = 0.00000001; //creates a buffer so the intersection doesn't have to happen exactly on the line to be recognized
           if (line.x1 < line.x2) {
             if ((intersectionX + c >= line.x1) && (intersectionX - c <= line.x2)) {
               // ellipse(intersectionX,intersectionY,10);
@@ -148,8 +150,11 @@ class Ray {
     let radius = sqrt(sq(this.targetX - this.x) + sq(this.targetY - this.y));
     // let vecX = this.targetX - this.x;
     // let vecY = this.targetY - this.y;
-    this.targetX = (cos(this.angle)*radius)+width/2;
-    this.targetY = (sin(this.angle)*radius)+height/2;
+    this.targetX = (-cos(this.angle)*radius)+this.x;
+    this.targetY = (-sin(this.angle)*radius)+this.y;
+    strokeWeight(30);
+    stroke(0);
+    line(this.x,this.y,this.targetX,this.targetY);
     // angleMode(DEGREES);
 
 
