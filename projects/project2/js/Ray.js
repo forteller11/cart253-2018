@@ -35,7 +35,7 @@ class Ray {
   updateChildren() {
       for (let i = 0; i < this.children.length; i++) {
         //offsets angle slightly each direction
-        let angleOffset = .01
+        let angleOffset = .00001
         if (i === 0) {
           angleOffset *= -1;
         }
@@ -86,7 +86,7 @@ class Ray {
         //make sure only recognizes intersections which happen in the direction of the ray
         if (((this.targetX - this.x <= 0) && (intersectionX < this.x)) || ((this.targetX - this.x > 0) && (intersectionX > this.x))) {
           //check to see if collsion happened within confines of line (and not infinite funciton)
-          let c = 0.00000001; //creates a buffer so the intersection doesn't have to happen exactly on the line to be recognized
+          let c = 0.0000000001; //creates a buffer so the intersection doesn't have to happen exactly on the line to be recognized
           if (line.x1 < line.x2) {
             if ((intersectionX + c >= line.x1) && (intersectionX - c <= line.x2)) {
               // ellipse(intersectionX,intersectionY,10);
