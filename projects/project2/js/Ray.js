@@ -28,10 +28,10 @@ class Ray {
     if (this.hasChildren === true) { //if you have children (and are therefore not a child)
       this.setOrigin();
       // this.targetX = 0;
-      this.calculateAngle();
       // this.angle += random(.1);
       // this.calculateTargetBasedOnAngle();
       this.checkIntersection();
+      this.calculateAngle();
 
       // this.updateChildren();
     }
@@ -141,7 +141,7 @@ class Ray {
     this.angle = newAngle;
     noStroke();
     fill(180);
-    text(round(this.angle * 1000) / 1000, this.collidedX + 20, this.collidedY);
+    text((this.angle * 100) / 100, this.collidedX + 20, this.collidedY);
   }
 
   calculateTargetBasedOnAngle() {

@@ -78,13 +78,16 @@ function draw() {
         ray[k].targetX = shape[i].vertX[j];
         ray[k].targetY = shape[i].vertY[j];
         ray[k].update();
+        // ray[k].calculateAngle();
         // ray[k].updateChildren();
       ray[k].display();
       k++;
     }
   }
-  // print(ray.length);
+
   selectionSortRayAngles();
+
+
 
   for (let i = 0; i < ray.length; i ++){
     strokeWeight(2);
