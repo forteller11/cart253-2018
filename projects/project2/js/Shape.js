@@ -22,7 +22,6 @@ class Shape {
   }
 
   update() {
-
     this.updateVertCartesian();
     this.updateLines();
   }

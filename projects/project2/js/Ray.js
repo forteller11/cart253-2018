@@ -1,5 +1,5 @@
 class Ray {
-  constructor(targetX, targetY) {
+  constructor(targetX, targetY, createChildren) {
     this.x;
     this.y;
     // this.angle = angle;
@@ -11,6 +11,18 @@ class Ray {
     this.collidedX; //closest point of x intersection
     this.collidedY; //closest point of y intersection
     this.angle; //angle
+    this.children = [];
+    this.hasChildren; //true or false, does this ray have children?
+
+    if (createChildren === true) {
+      this.hasChildren = true;
+
+      for (let i = 0; i < 2; i++) {
+        this.children[i] = new Ray(targetX, targetY, false);
+      }
+    } else {
+      this.hasChildren = false;
+    }
     // this.vecR = sqrt(sq(this.vecX)+sq(this.vecY));
     /*
     x unit vector,sssss
@@ -18,12 +30,32 @@ class Ray {
     */
   }
   update() {
-    //set origin
-    this.x = mouseX;
-    this.y = mouseY;
-    // this.targetX = 0;
-    this.checkIntersection();
-    this.calculateAngle();
+    if (this.hasChildren === true) { //if you have children (and are therefore not a child)
+      //set origin
+      this.x = mouseX;
+      this.y = mouseY;
+      // this.targetX = 0;
+      this.checkIntersection();
+      this.calculateAngle();
+
+      if (this.hasChildren === true) { //update children (as they don't update themselves)
+        let angleOffset = 0.0001;
+        this.children[0].targetX = this.targetX;
+        this.children[0].targetY = this.targetY;
+        this.children[1].targetX = this.targetX;
+        this.children[1].targetY = this.targetY;
+
+        this.children[0].angle = this.angle - angleOffset;
+        this.children[1].angle = this.angle + angleOffset;
+
+        this.children[0].calculateTargetBasedOnAngle();
+        this.children[1].calculateTargetBasedOnAngle();
+
+        this.children[0].checkIntersection();
+        this.children[1].checkIntersection();
+
+      }
+    }
   }
 
   checkIntersection() {
@@ -98,22 +130,22 @@ class Ray {
   }
 
   calculateAngle() {
-    let radius = sqrt(sq( this.x-this.targetX) + sq(this.y-this.targetY));
-    let yMag = this.targetY-this.y;
-    let xMag = this.targetX-this.x;
-    let newAngle = atan2(yMag,xMag);
-    newAngle = map(newAngle,-PI,PI,0,PI*2);
+    //calculates the angle of the ray from origin to target
+    let radius = sqrt(sq(this.x - this.targetX) + sq(this.y - this.targetY));
+    let yMag = this.targetY - this.y;
+    let xMag = this.targetX - this.x;
+    let newAngle = atan2(yMag, xMag);
+    newAngle = map(newAngle, -PI, PI, 0, PI * 2);
     this.angle = newAngle;
 
 
-
-
-
-
-    // print(this.angle);
     noStroke();
     fill(180);
-    text(round(this.angle*1000)/1000,this.collidedX+20,this.collidedY);
+    text(round(this.angle * 1000) / 1000, this.collidedX + 20, this.collidedY);
+  }
+
+  calculateTargetBasedOnAngle() {
+
   }
 
   display() {
