@@ -75,13 +75,15 @@ function draw() {
   let k = 0;
   for (let i = 0; i < shape.length; i++) {
     for (let j = 0; j < shape[0].vertNumber; j++) {
-      ray[k].targetX = shape[i].vertX[j];
-      ray[k].targetY = shape[i].vertY[j];
-      ray[k].update();
+        ray[k].targetX = shape[i].vertX[j];
+        ray[k].targetY = shape[i].vertY[j];
+        ray[k].update();
+        // ray[k].updateChildren();
       ray[k].display();
       k++;
     }
   }
+  // print(ray.length);
   selectionSortRayAngles();
 
   for (let i = 0; i < ray.length; i ++){
@@ -95,6 +97,7 @@ function draw() {
     line(l1.x,l1.y,l1.collidedX,l1.collidedY);
   }
 
+  //draw fill
   fill(255, 255, 255, 50);
   stroke(255);
   beginShape();
