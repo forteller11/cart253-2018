@@ -78,8 +78,6 @@ function draw() {
         ray[k].targetX = shape[i].vertX[j];
         ray[k].targetY = shape[i].vertY[j];
         ray[k].update();
-        // ray[k].calculateAngle();
-        // ray[k].updateChildren();
       ray[k].display();
       k++;
     }

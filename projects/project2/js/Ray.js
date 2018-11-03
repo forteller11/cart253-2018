@@ -14,48 +14,41 @@ class Ray {
     this.children = [];
     this.hasChildren; //true or false, does this ray have children?
 
-    // if (createChildren === true) {
-    //   this.hasChildren = true;
-    //   this.children[0] = new Ray(targetX, targetY, false);
-    //   this.children[1] = new Ray(targetX, targetY, false);
-    //
-    // } else {
+    if (createChildren === true) {
       this.hasChildren = true;
-    // }
+      this.children[0] = new Ray(targetX, targetY, false);
+      this.children[1] = new Ray(targetX, targetY, false);
+
+    } else {
+      this.hasChildren = false;
+    }
 
   }
   update() {
     if (this.hasChildren === true) { //if you have children (and are therefore not a child)
       this.setOrigin();
-      // this.angle += random(.1);
-
       this.checkIntersection();
       this.calculateAngle();
-      this.angle+= 0.1;
-      this.calculateTargetBasedOnAngle();
-      // this.calculateTargetBasedOnAngle();
-
       // this.updateChildren();
     }
   }
   updateChildren() {
-    if (this.hasChildren === false) {
       for (let i = 0; i < children.length; i++) {
-        this.children[i].x = this.x;
-        this.children[i].y = this.y;
-
-        this.children[i].targetX = this.targetX;
-        this.children[i].targetY = this.targetY;
         //offsets angle slightly each direction
-        let angleOffset = 1
+        let angleOffset = .01
         if (i === 0) {
           angleOffset *= -1;
         }
-        this.children[i].angle = this.angle + angleOffset;
-        this.children[i].calculateTargetBasedOnAngle();
+        this.calculateTargetBasedOnAngle(this.angle+angleOffset);
+        this.children[i].targetX = this.targetX;
+        this.children[i].targetY = this.targetY;
+
+        this.children[i].x = this.x;
+        this.children[i].y = this.y;
+
         this.children[i].checkIntersection();
       }
-    }
+
   }
 
   setOrigin() {
@@ -146,12 +139,12 @@ class Ray {
     text((this.angle * 100) / 100, this.collidedX + 20, this.collidedY);
   }
 
-  calculateTargetBasedOnAngle() {
+  calculateTargetBasedOnAngle(angle) {
     let radius = sqrt(sq(this.targetX - this.x) + sq(this.targetY - this.y));
     // let vecX = this.targetX - this.x;
     // let vecY = this.targetY - this.y;
-    this.targetX = (-cos(this.angle)*radius)+this.x;
-    this.targetY = (-sin(this.angle)*radius)+this.y;
+    this.targetX = (-cos(angle)*radius)+this.x;
+    this.targetY = (-sin(angle)*radius)+this.y;
     strokeWeight(30);
     stroke(0);
     line(this.x,this.y,this.targetX,this.targetY);
