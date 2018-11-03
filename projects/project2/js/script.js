@@ -97,7 +97,7 @@ function draw() {
     vertex(parentRay[i].collidedX,parentRay[i].collidedY);
     vertex(parentRay[i].children[1].collidedX,parentRay[i].children[1].collidedY);
   }
-  vertex(parentRay[0].collidedX,parentRay[0].collidedY);
+  vertex(parentRay[0].children[0].collidedX,parentRay[0].children[0].collidedY);
   endShape();
 
 
