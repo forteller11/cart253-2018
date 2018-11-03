@@ -43,7 +43,7 @@ function setup() {
 
     }
 
-
+    //create one ray for every vertex in the scene
     let k = 0;
     for (let i = 0; i < shape.length; i++) {
       for (let j = 0; j < shape[0].vertNumber; j++) {
@@ -60,6 +60,7 @@ function setup() {
 
 function draw() {
   background(51);
+  //update position and display of shapes/vertexes/lines
   for (let i = 0; i < shape.length; i++) { //set pos of vertexes
     shape[i].update();
     shape[i].display();
@@ -71,7 +72,7 @@ function draw() {
     }
   }
 
-
+  //set target of every ray to a unique vertex in the scene
   let k = 0;
   for (let i = 0; i < shape.length; i++) {
     for (let j = 0; j < shape[0].vertNumber; j++) {
@@ -86,7 +87,7 @@ function draw() {
   selectionSortRayAngles();
 
 
-
+  //draw angles of all rays in the order of the array
   for (let i = 0; i < ray.length; i ++){
     strokeWeight(2);
     let mapColor = map(i,0,ray.length-1,0,255);
@@ -98,7 +99,7 @@ function draw() {
     line(l1.x,l1.y,l1.collidedX,l1.collidedY);
   }
 
-  //draw fill
+  //draw fill light
   fill(255, 255, 255, 50);
   stroke(255);
   beginShape();
@@ -109,13 +110,14 @@ function draw() {
   vertex(ray[0].collidedX,ray[0].collidedY);
   endShape();
 
+  //highlight rays with smallest and largest angle
   strokeWeight(5);
   let l1 = ray[0];
-  stroke(100,100,255);
+  stroke(0,255,0);
   line(l1.x,l1.y,l1.collidedX,l1.collidedY);
 
   let l2 = ray[ray.length-1];
-  stroke(0,255,0);
+  stroke(255,100,100);
   line(l2.x,l2.y,l2.collidedX,l2.collidedY);
 
 }

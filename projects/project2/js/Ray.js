@@ -29,11 +29,11 @@ class Ray {
       this.setOrigin();
       this.checkIntersection();
       this.calculateAngle();
-      // this.updateChildren();
+      this.updateChildren();
     }
   }
   updateChildren() {
-      for (let i = 0; i < children.length; i++) {
+      for (let i = 0; i < this.children.length; i++) {
         //offsets angle slightly each direction
         let angleOffset = .01
         if (i === 0) {
@@ -47,6 +47,7 @@ class Ray {
         this.children[i].y = this.y;
 
         this.children[i].checkIntersection();
+        this.children[i].display();
       }
 
   }
@@ -136,7 +137,7 @@ class Ray {
     this.angle = newAngle;
     noStroke();
     fill(180);
-    text((this.angle * 100) / 100, this.collidedX + 20, this.collidedY);
+    text(round(this.angle * 10000) / 10000, this.collidedX + 20, this.collidedY);
   }
 
   calculateTargetBasedOnAngle(angle) {
@@ -145,9 +146,9 @@ class Ray {
     // let vecY = this.targetY - this.y;
     this.targetX = (-cos(angle)*radius)+this.x;
     this.targetY = (-sin(angle)*radius)+this.y;
-    strokeWeight(30);
-    stroke(0);
-    line(this.x,this.y,this.targetX,this.targetY);
+    // strokeWeight(30);
+    // stroke(0);
+    // line(this.x,this.y,this.targetX,this.targetY);
     // angleMode(DEGREES);
 
 
