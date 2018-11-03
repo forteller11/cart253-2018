@@ -17,47 +17,51 @@ class Ray {
     if (createChildren === true) {
       this.hasChildren = true;
 
-      for (let i = 0; i < 2; i++) {
-        this.children[i] = new Ray(targetX, targetY, false);
-      }
+
+      this.children[0] = new Ray(targetX, targetY, false);
+      this.children[1] = new Ray(targetX, targetY, false);
+      ray.push(this.children[0]);
+      ray.push(this.children[1]);
+
     } else {
       this.hasChildren = false;
     }
-    // this.vecR = sqrt(sq(this.vecX)+sq(this.vecY));
-    /*
-    x unit vector,sssss
-    y unit vectors
-    */
+
   }
   update() {
     if (this.hasChildren === true) { //if you have children (and are therefore not a child)
-      //set origin
-      this.x = mouseX;
-      this.y = mouseY;
+      this.setOrigin();
       // this.targetX = 0;
       this.checkIntersection();
       this.calculateAngle();
 
-      if (this.hasChildren === true) { //update children (as they don't update themselves)
-        let angleOffset = 0.0001;
-        this.children[0].targetX = this.targetX;
-        this.children[0].targetY = this.targetY;
-        this.children[1].targetX = this.targetX;
-        this.children[1].targetY = this.targetY;
+      //update children (as they don't update themselves)
+      this.children[0].setOrigin();
+      this.children[1].setOrigin();
+      //sets children target to this target
+      this.children[0].targetX = this.targetX;
+      this.children[0].targetY = this.targetY;
+      this.children[1].targetX = this.targetX;
+      this.children[1].targetY = this.targetY;
+      //offsets angle slightly each direction
+      let angleOffset = 0.0000;
+      this.children[0].angle = this.angle - angleOffset;
+      this.children[1].angle = this.angle + angleOffset;
+      //recalculates target based on new offset angles
+      this.children[0].calculateTargetBasedOnAngle();
+      this.children[1].calculateTargetBasedOnAngle();
+      //checks intersections
+      this.children[0].checkIntersection();
+      this.children[1].checkIntersection();
 
-        this.children[0].angle = this.angle - angleOffset;
-        this.children[1].angle = this.angle + angleOffset;
 
-        this.children[0].calculateTargetBasedOnAngle();
-        this.children[1].calculateTargetBasedOnAngle();
-
-        this.children[0].checkIntersection();
-        this.children[1].checkIntersection();
-
-      }
     }
   }
 
+  setOrigin() {
+    this.x = mouseX;
+    this.y = mouseY;
+  }
   checkIntersection() {
     //check if not infinit, parrellel, 0
 
@@ -145,6 +149,12 @@ class Ray {
   }
 
   calculateTargetBasedOnAngle() {
+    let radius = sqrt(sq(this.targetX - this.x) + sq(this.targetY - this.y));
+    // let vecX = this.targetX - this.x;
+    // let vecY = this.targetY - this.y;
+    this.targetX = cos(this.angle) * radius;
+    this.targetY = sin(this.angle) * radius;
+    // print(this.targetX);
 
   }
 

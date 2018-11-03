@@ -36,10 +36,6 @@ function setup() {
       shape[0].y = height/2;
       shape[0].vertR[j] = sqrt(sq(width/2)+sq(height/2));
       shape[0].vertAOff[j] = (PI/2*j) + (PI/4);
-      // if (i === 0) { //make one shape the same size as the canvas
-      //   shape[i].vertR[j] = sqrt(sq(width / 2) + sq(height / 2));
-      //   shape[i].vertAOff[j] = ((PI / 2) * j) + PI / 4;
-      // }
 
       shape[i].update();
       shape[i].display();
