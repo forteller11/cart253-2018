@@ -11,9 +11,4 @@ class Line {
     stroke(200);
     line(this.x1,this.y1,this.x2,this.y2);
   }
-  displayHighlight(){
-    strokeWeight(4);
-    stroke(255);
-    line(this.x1,this.y1,this.x2,this.y2);
-  }
 }

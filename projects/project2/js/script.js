@@ -77,19 +77,18 @@ function draw() {
   let k = 0;
   for (let i = 0; i < shape.length; i++) {
     for (let j = 0; j < shape[0].vertNumber; j++) {
-        parentRay[k].targetX = shape[i].vertX[j];
-        parentRay[k].targetY = shape[i].vertY[j];
-        parentRay[k].update();
-      parentRay[k].display();
+      parentRay[k].targetX = shape[i].vertX[j];
+      parentRay[k].targetY = shape[i].vertY[j];
+      parentRay[k].update();
+      // parentRay[k].display();
       k++;
     }
   }
 
   selectionSortparentRayAngles();
-
   //draw fill light
   fill(255, 255, 255, 50);
-  stroke(255);
+  stroke(255,255,255,0);
   beginShape();
   vertex(parentRay[0].x,parentRay[0].y); //origin
   for (let i = 0; i < parentRay.length; i ++){
@@ -101,28 +100,6 @@ function draw() {
   endShape();
 
 
-  //draw angles of all parentRays in the order of the arparentRay
-  for (let i = 0; i < parentRay.length; i ++){
-    strokeWeight(2);
-    let mapColor = map(i,0,parentRay.length-1,0,255);
-    noStroke();
-    fill(mapColor,255-mapColor,155);
-    text(parentRay[i].angle,40,40*i);
-    let l1 = parentRay[i];
-    stroke(mapColor,255-mapColor,155);
-    line(l1.x,l1.y,l1.collidedX,l1.collidedY);
-  }
-
-
-  //highlight parentRays with smallest and largest angle
-  strokeWeight(5);
-  let l1 = parentRay[0];
-  stroke(0,255,0);
-  line(l1.x,l1.y,l1.collidedX,l1.collidedY);
-
-  let l2 = parentRay[parentRay.length-1];
-  stroke(255,100,100);
-  line(l2.x,l2.y,l2.collidedX,l2.collidedY);
 
 }
 

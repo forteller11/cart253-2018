@@ -13,7 +13,7 @@ class Ray {
     this.angle; //angle
     this.children = [];
     this.hasChildren; //true or false, does this ray have children?
-
+    this.debug = false;
     if (createChildren === true) {
       this.hasChildren = true;
       this.children[0] = new Ray(targetX, targetY, false);
@@ -47,7 +47,6 @@ class Ray {
         this.children[i].y = this.y;
 
         this.children[i].checkIntersection();
-        this.children[i].display();
       }
 
   }
@@ -95,7 +94,9 @@ class Ray {
             }
           } else if (line.x1 > line.x2) {
             if ((intersectionX - c <= line.x1) && (intersectionX + c >= line.x2)) {
-              ellipse(intersectionX, intersectionY, 10);
+              if (this.debug === true) {
+                ellipse(intersectionX, intersectionY, 10);
+              }
               //change collidedX,Y to the intersection's X,Y's are closer to the ray origin
               this.makeCollidedShortestIntersection(intersectionX, intersectionY);
             }
@@ -115,7 +116,6 @@ class Ray {
       }
     }
   }
-
   makeCollidedShortestIntersection(intersectionX, intersectionY) {
     //compares the dist between the ray origin and the two vectors,
     //and if intersection is shorter then it makes collidedX,y the intersection's x,y
@@ -126,7 +126,6 @@ class Ray {
       this.collidedY = intersectionY;
     }
   }
-
   calculateAngle() {
     //calculates the angle of the ray from origin to target
     let radius = sqrt(sq( this.targetX-this.x) + sq(this.targetY-this.y));
@@ -137,9 +136,10 @@ class Ray {
     this.angle = newAngle;
     noStroke();
     fill(180);
-    text(round(this.angle * 10000) / 10000, this.collidedX + 20, this.collidedY);
+    if (this.debug === true){
+      text(round(this.angle * 10000) / 10000, this.collidedX + 20, this.collidedY);
+    }
   }
-
   calculateTargetBasedOnAngle(angle) {
     let radius = sqrt(sq(this.targetX - this.x) + sq(this.targetY - this.y));
     // let vecX = this.targetX - this.x;
@@ -156,10 +156,21 @@ class Ray {
 
   display() {
     strokeWeight(2);
-    stroke(255, 100, 0);
+    let mapColor = map(this.angle,0,TWO_PI,0,255);
+    noStroke();
+    fill(mapColor,255-mapColor,155);
+    text(this.angle,40,(100*this.angle)+50);
+    stroke(mapColor,255-mapColor,155);
     line(this.x, this.y, (this.collidedX), (this.collidedY));
+
+    stroke(255,100,0);
     ellipse(this.x, this.y, 20);
     ellipse(this.targetX, this.targetY, 10);
+
+    //display children
+    for (let i = 0; i < this.children.length; i++) {
+      this.children[i].display();
+    }
   }
 
 }
