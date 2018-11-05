@@ -40,7 +40,7 @@ let oscAmbience; //sin wave oscillator
 let oscAmbienceFreq = 250; //increases frequency of oscillator on collisions and scores
 let shape = [];
 let bulb = [];
-let debugDisplay = true;
+let debugDisplay = false;
 // let canvasShape;
 
 function setup() {
@@ -87,7 +87,7 @@ function setup() {
 
   //light
   for (let i = 0; i < 1; i ++){
-    bulb[i] = new Bulb(255,255,0,1,15);
+    bulb[i] = new Bulb(255,255,0,255,10,15);
   }
 }
 

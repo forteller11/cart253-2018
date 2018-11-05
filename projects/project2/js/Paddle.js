@@ -45,7 +45,7 @@ class Paddle {
     this.shape.vertR[3] = sqrt(sq(this.height/2)+sq(-this.width/2));
 
     this.shape.update();
-    this.shape.display();
+    // this.shape.display();
 
     //oscillator
     this.oscAdrenaline = new p5.Oscillator();
@@ -62,12 +62,12 @@ class Paddle {
     this.checkBallCollision();
     //display
     this.displayScore(); //paddles score
-    this.displayFillMeter(); //meter in paddle
-    this.displayPaddle(); //outline of paddle
+    // this.displayFillMeter(); //meter in paddle
+    // this.displayPaddle(); //outline of paddle
     this.shape.x = this.x;
     this.shape.y = this.y;
     this.shape.update();
-    this.shape.display();
+    // this.shape.display();
   }
 
   updateOscillator(){

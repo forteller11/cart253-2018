@@ -1,10 +1,10 @@
 class Bulb{
-  constructor(r,g,b,lightPop,radius){
+  constructor(r,g,b,alpha,lightPop,radius){
     this.x;
     this.y;
     this.light = [];
     this.radius = radius;
-    this.alpha = 255;
+    this.alpha = alpha;
     this.r = r;
     this.b = b;
     this.g = g;

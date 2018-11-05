@@ -52,13 +52,13 @@ class Ball {
 update(){
   this.changePosition();
   // this.updateOscillator();
-  this.displayTrail();
-  this.display();
+  // this.displayTrail();
+  // this.display();
   this.decrementFlashVars();
   this.shape.x = this.x;
   this.shape.y = this.y;
   this.shape.update();
-  this.shape.display();
+  // this.shape.display();
 
   this.canvasShape.x = width/2;
   this.canvasShape.y = height/2;
