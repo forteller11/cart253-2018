@@ -20,8 +20,7 @@ let shapePop = 2;
 let parentRay = [];
 let parentRayPop = 1;
 let graphicRays = [];
-let light = [];
-
+let light;
 function setup() {
   createCanvas(1000, 1000);
   background(0, 0, 0);
@@ -30,7 +29,7 @@ function setup() {
     // if (i === 0) { //make one shape the same size as the canvas
     //   shape[i] = new Shape(width / 2, height / 2, 0, 4);
     // } else {
-    shape[i] = new Shape(width/2, (i+.5)*height/2, 3, 4);
+    shape[i] = new Shape(width/2, (i)*height/2, 3, 4);
     // }
     for (let j = 0; j < shape[0].vertNumber; j++) { //set pos of vertexes
       shape[i].vertR[j] = random(40,140);
@@ -45,8 +44,15 @@ function setup() {
 
 
     }
-    for (let i = 0; i < 1; i ++){
-      light[i] = new Light;
+    light = new Light();
+
+    //create one parentRay for every vertex in the scene
+    let k = 0;
+    for (let i = 0; i < shape.length; i++) {
+      for (let j = 0; j < shape[0].vertNumber; j++) {
+        light.parentRay[k] = new Ray(shape[i].vertX[j], shape[i].vertY[j],true);
+        k++;
+      }
     }
   }
 
@@ -68,10 +74,60 @@ function draw() {
       }
     }
   }
-  for (let i = 0; i < light.length; i ++){
-    light[i].x = mouseX+(20*i);
-    light[i].y = mouseY+(20*i);
-    light[i].update();
-  }
 
+  //set target of every light.parentRay to a unique vertex in the scene
+  let k = 0;
+  for (let i = 0; i < shape.length; i++) {
+    for (let j = 0; j < shape[0].vertNumber; j++) {
+      light.parentRay[k].targetX = shape[i].vertX[j];
+      light.parentRay[k].targetY = shape[i].vertY[j];
+      light.parentRay[k].update();
+      light.parentRay[k].display();
+      k++;
+    }
+  }
+  // light.update();
+  // // GRADIANT TEST
+  // for (let i = width; i > 0; i --){
+  //   noStroke();
+  //   let colorRamp = map(i,0,width,255,0);
+  //   fill(colorRamp);
+  //   ellipse(mouseX,mouseY,i);
+  // }
+  selectionSortparentRayAngles();
+  //draw fill light
+  fill(255, 255, 255, 100);
+  stroke(255,255,255,255);
+  beginShape();
+  vertex(light.parentRay[0].x,light.parentRay[0].y); //origin
+  for (let i = 0; i < light.parentRay.length; i ++){
+    vertex(light.parentRay[i].children[0].collidedX,light.parentRay[i].children[0].collidedY);
+    vertex(light.parentRay[i].collidedX,light.parentRay[i].collidedY);
+    vertex(light.parentRay[i].children[1].collidedX,light.parentRay[i].children[1].collidedY);
+  }
+  vertex(light.parentRay[0].children[0].collidedX,light.parentRay[0].children[0].collidedY);
+  endShape();
+
+}
+
+//selection sort algoritihim
+function selectionSortparentRayAngles() {
+  for (let i = 0; i < light.parentRay.length; i++) {
+    let smallestValue = Infinity;
+    let smallestValueIndex;
+    for (let j = i; j < light.parentRay.length; j++) {
+      //cycle through arlight.parentRay, find smallest value
+      if (light.parentRay[j].angle < smallestValue) {
+        smallestValueIndex = j;
+        smallestValue = light.parentRay[j].angle;
+      }
+      //once at end of the arlight.parentRay, swap light.parentRay index i with smallest light.parentRay...
+      if (j === light.parentRay.length - 1) {
+        let parentRayStore = light.parentRay[i];
+        light.parentRay[i] = light.parentRay[smallestValueIndex];
+        light.parentRay[smallestValueIndex] = parentRayStore;
+      }
+      //then increment i and repeat until arparentRay is sorted...
+    }
+  }
 }

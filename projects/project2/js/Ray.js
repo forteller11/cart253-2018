@@ -25,6 +25,8 @@ class Ray {
 
   }
   update() {
+    this.x = mouseX;
+    this.y = mouseY;
     if (this.hasChildren === true) { //if you have children (and are therefore not a child)
       this.checkIntersection();
       this.calculateAngle();
@@ -34,7 +36,7 @@ class Ray {
   updateChildren() {
       for (let i = 0; i < this.children.length; i++) {
         //offsets angle slightly each direction
-        let angleOffset = .0001
+        let angleOffset = .00001
         if (i === 0) {
           angleOffset = -angleOffset;
         }
