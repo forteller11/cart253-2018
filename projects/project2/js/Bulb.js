@@ -21,8 +21,8 @@ class Bulb{
   }
   update(){
 
-    this.x = mouseX;
-    this.y = mouseY;
+    // this.x = mouseX;
+    // this.y = mouseY;
     this.noiseIndex += this.noiseIndexIncrement;
     let noiseValue = map(noise(this.noiseIndex),0,1,.7,1)
     // this.g = map(noise(this.noiseIndex),0,1,230,255)

@@ -16,12 +16,10 @@ https://www.khanacademy.org/math/ap-calculus-bc/bc-advanced-functions-new/bc-9-1
 https://www.youtube.com/watch?v=qksmRZNaqJY
 */
 let shape = [];
-let shapePop = 2;
-let parentRay = [];
-let parentRayPop = 1;
+let shapePop = 5;
 let graphicRays = [];
-let light = [];
 let bulb;
+let bulb2;
 let debugDisplay = false;
 
 let imgRadial;
@@ -36,7 +34,7 @@ function setup() {
     // if (i === 0) { //make one shape the same size as the canvas
     //   shape[i] = new Shape(width / 2, height / 2, 0, 4);
     // } else {
-    shape[i] = new Shape(width/2, (i)*height/2, 3, 4);
+    shape[i] = new Shape(width/2, (i)*height/shapePop, 3, 4);
     // }
     for (let j = 0; j < shape[0].vertNumber; j++) { //set pos of vertexes
       shape[i].vertR[j] = random(40,140);
@@ -52,6 +50,7 @@ function setup() {
   }
 
   bulb = new Bulb(255,255,0,10,15);
+    bulb2 = new Bulb(255,0,255,10,15);
 
 
 
@@ -72,9 +71,12 @@ function draw() {
       }
     }
   }
-
+  bulb.x = mouseX;
+  bulb.y = mouseY;
+  bulb2.x = mouseX+600;
+  bulb2.y = mouseY;
   bulb.update();
-
+  bulb2.update();
   // image(imgRadial,mouseX-imgRadial.width/2,mouseY-imgRadial.height/2);
 
 
