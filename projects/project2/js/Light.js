@@ -5,7 +5,7 @@ class Light {
     this.r = 255;
     this.g = 255;
     this.b = 0;
-    this.alpha = 90;
+    this.alpha = 20;
 
     this.parentRay = [];
     //create one parentRay for every vertex in the scene
@@ -73,7 +73,10 @@ class Light {
     }
   }
   displayFill(){
-    fill(this.r, this.g, this.b, this.alpha);
+    this.mask = createImage(width,height);
+    this.mask.loadPixels();
+    background(0);
+    fill(255,255,255, this.alpha);
     stroke(255,255,255,0);
     beginShape();
     vertex(this.parentRay[0].x,this.parentRay[0].y); //origin
@@ -84,5 +87,7 @@ class Light {
     }
     vertex(this.parentRay[0].children[0].collidedX,this.parentRay[0].children[0].collidedY);
     endShape();
+    this.mask.updatePixels();
+    image(this.mask,0,0);
   }
 }
