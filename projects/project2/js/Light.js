@@ -17,7 +17,7 @@ class Light {
     }
   }
   update() {
-    this.setOrigin();
+    // this.setOrigin();
     //set target of every this.parentRay to a unique vertex in the scene
     let k = 0;
     for (let i = 0; i < shape.length; i++) {

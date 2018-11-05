@@ -155,13 +155,18 @@ class Ray {
     strokeWeight(2);
     let mapColor = map(this.angle,0,TWO_PI*2,0,255);
     noStroke();
-        stroke(mapColor,(255-mapColor)/2,150);
+    fill(mapColor,(255-mapColor),255);
     text(this.angle,40,(100*this.angle)+50);
-    stroke(mapColor,(255-mapColor)/2,150);
-    if (this.hasChildren === false){
-      print(this.angle);
+    if (this.hasChildren == true){
+      strokeWeight(3);
+      stroke(mapColor,(255-mapColor),200);
+    } else {
+      strokeWeight(1);
+      stroke(mapColor,(255-mapColor),200,100);
     }
+
     line(this.x, this.y, (this.collidedX), (this.collidedY));
+
 
     stroke(255,100,0);
     ellipse(this.x, this.y, 20);

@@ -20,7 +20,7 @@ let shapePop = 2;
 let parentRay = [];
 let parentRayPop = 1;
 let graphicRays = [];
-let light;
+let light = [];
 
 function setup() {
   createCanvas(1000, 1000);
@@ -45,8 +45,9 @@ function setup() {
 
 
     }
-
-    light = new Light;
+    for (let i = 0; i < 2; i ++){
+      light[i] = new Light;
+    }
   }
 
 
@@ -67,6 +68,10 @@ function draw() {
       }
     }
   }
+  for (let i = 0; i < light.length; i ++){
+    light[i].x = mouseX+(20*i);
+    light[i].y = mouseY+(20*i);
+    light[i].update();
+  }
 
-light.update();
 }
