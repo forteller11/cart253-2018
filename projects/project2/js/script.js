@@ -87,22 +87,10 @@ function draw() {
 
   //for paddles...
   //move and deal with inputs
-  padR.checkBallCollision();
-  padL.checkBallCollision();
-  padR.accelerate();
-  padL.accelerate();
-  padR.changePos();
-  padL.changePos();
-  //display
-  padR.flashOnScore(); //fashes screen red/blue on score
-  padL.flashOnScore();
   centerLineDisplay(); //draw dotted line down center of screen;
-  padR.displayScore(); //dispalys player score
-  padL.displayScore();
-  padR.displayfillMeter();
-  padL.displayfillMeter();
-  padR.displayPaddle();
-  padL.displayPaddle();
+  padR.update();
+  padL.update();
+
   //changes frequency and amp based of oscillator based off net velocities of paddles
   oscAdrenalineFreq = 1.5 * (abs(padL.velX) + abs(padL.velY) + abs(padR.velX) + abs(padR.velY) + 20);
   oscAdrenalineAmp = .005 * (abs(padL.velX) + abs(padL.velY) + abs(padR.velX) + abs(padR.velY) + abs(ball.velX) + abs(ball.velY));
