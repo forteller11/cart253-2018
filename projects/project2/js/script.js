@@ -38,7 +38,7 @@ let maxStrokeWidth = 6;
 let ball;
 let oscAmbience; //sin wave oscillator
 let oscAmbienceFreq = 250; //increases frequency of oscillator on collisions and scores
-
+let shapes = [];
 
 function setup() {
   createCanvas(800, 800);
@@ -69,6 +69,7 @@ function setup() {
   oscAmbience.freq(oscAmbienceFreq);
   oscAmbience.amp(1);
   oscAmbience.start();
+  print(shapes);
 
 }
 

@@ -28,6 +28,25 @@ class Paddle {
     this.fillMeter = 0; //what % of the paddle will be filled on collision w/ball?
     this.sWeight = 1; //used to interpolate between min and max stroke widths (1 = min, 2 = max)
 
+    //shape
+    this.shape = new Shape(this.x, this.y, 0, 4);
+    shapes.push(this.shape);
+    //bottom right
+    this.shape.vertAOff[0] = atan2(this.height/2,this.width/2);
+    this.shape.vertR[0] = sqrt(sq(this.height/2)+sq(this.width/2));
+    //bottom left
+    this.shape.vertAOff[1] = atan2(-this.height/2,this.width/2);
+    this.shape.vertR[1] = sqrt(sq(-this.height/2)+sq(this.width/2));
+    //upper left
+    this.shape.vertAOff[2] = atan2(-this.height/2,-this.width/2);
+    this.shape.vertR[2] = sqrt(sq(-this.height/2)+sq(-this.width/2));
+    //upper right
+    this.shape.vertAOff[3] = atan2(this.height/2,-this.width/2);
+    this.shape.vertR[3] = sqrt(sq(this.height/2)+sq(-this.width/2));
+
+    this.shape.update();
+    this.shape.display();
+
     //oscillator
     this.oscAdrenaline = new p5.Oscillator();
     this.oscAdrenaline.setType('sawtooth');
@@ -45,6 +64,10 @@ class Paddle {
     this.displayScore(); //paddles score
     this.displayFillMeter(); //meter in paddle
     this.displayPaddle(); //outline of paddle
+    this.shape.x = this.x;
+    this.shape.y = this.y;
+    this.shape.update();
+    this.shape.display();
   }
 
   updateOscillator(){

@@ -30,6 +30,7 @@ class Ball {
   //shape
 
     this.shape = new Shape(this.x, this.y, 0, 4);
+    shapes.push(this.shape);
     for (let j = 0; j < this.shape.vertNumber; j++) { //set pos of vertexes
       this.shape.vertR[j] = this.radius+2;
       this.shape.vertAOff[j] = (TWO_PI/this.shape.vertNumber*j) + QUARTER_PI +random(-0.0001,0.0001);
