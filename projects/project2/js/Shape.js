@@ -51,7 +51,7 @@ class Shape {
   }
 
   display() {
-    this.displayVerts();
+    // this.displayVerts();
     for (let i = 0; i < this.vertNumber; i++) {
       this.lines[i].display();
     }

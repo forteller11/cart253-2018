@@ -26,7 +26,6 @@ class Ray {
   }
   update() {
     if (this.hasChildren === true) { //if you have children (and are therefore not a child)
-      this.setOrigin();
       this.checkIntersection();
       this.calculateAngle();
       this.updateChildren();
@@ -35,10 +34,11 @@ class Ray {
   updateChildren() {
       for (let i = 0; i < this.children.length; i++) {
         //offsets angle slightly each direction
-        let angleOffset = .00001
+        let angleOffset = .000001
         if (i === 0) {
           angleOffset *= -1;
         }
+        this.children[i].angle = this.angle+= angleOffset;
         this.calculateTargetBasedOnAngle(this.angle+angleOffset);
         this.children[i].targetX = this.targetX;
         this.children[i].targetY = this.targetY;
@@ -47,14 +47,11 @@ class Ray {
         this.children[i].y = this.y;
 
         this.children[i].checkIntersection();
+        this.children[i].display();
       }
 
   }
 
-  setOrigin() {
-    this.x = mouseX;
-    this.y = mouseY;
-  }
   checkIntersection() {
     //check if not infinit, parrellel, 0
 
@@ -156,11 +153,14 @@ class Ray {
 
   display() {
     strokeWeight(2);
-    let mapColor = map(this.angle,0,TWO_PI,0,255);
+    let mapColor = map(this.angle,0,TWO_PI*2,0,255);
     noStroke();
-    fill(mapColor,255-mapColor,155);
+        stroke(mapColor,(255-mapColor)/2,150);
     text(this.angle,40,(100*this.angle)+50);
-    stroke(mapColor,255-mapColor,155);
+    stroke(mapColor,(255-mapColor)/2,150);
+    if (this.hasChildren === false){
+      print(this.angle);
+    }
     line(this.x, this.y, (this.collidedX), (this.collidedY));
 
     stroke(255,100,0);
