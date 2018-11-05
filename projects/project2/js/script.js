@@ -39,9 +39,6 @@ let ball;
 let oscAmbience; //sin wave oscillator
 let oscAmbienceFreq = 250; //increases frequency of oscillator on collisions and scores
 
-let oscAdrenaline; //increases freq based on net speed of paddles
-let oscAdrenalineFreq = 80; //sets frequency of osilator
-let oscAdrenalineAmp = 0.1; //sets frequency of osilator
 
 function setup() {
   createCanvas(800, 800);
@@ -73,40 +70,23 @@ function setup() {
   oscAmbience.amp(1);
   oscAmbience.start();
 
-  //increases freq and amplitude with paddle speed
-  oscAdrenaline = new p5.Oscillator();
-  oscAdrenaline.setType('sawtooth');
-  oscAdrenaline.freq(oscAdrenalineFreq);
-  oscAdrenaline.amp(0);
-  oscAdrenaline.start();
-
 }
 
 function draw() {
   background(0);
+  padR.flashOnScore();
+  padL.flashOnScore();
 
-  //for paddles...
-  //move and deal with inputs
   centerLineDisplay(); //draw dotted line down center of screen;
   padR.update();
   padL.update();
 
-  //changes frequency and amp based of oscillator based off net velocities of paddles
-  oscAdrenalineFreq = 1.5 * (abs(padL.velX) + abs(padL.velY) + abs(padR.velX) + abs(padR.velY) + 20);
-  oscAdrenalineAmp = .005 * (abs(padL.velX) + abs(padL.velY) + abs(padR.velX) + abs(padR.velY) + abs(ball.velX) + abs(ball.velY));
-  oscAdrenaline.amp(oscAdrenalineAmp);
-  oscAdrenaline.freq(oscAdrenalineFreq);
+  //deal with Ball
+  ball.update();
 
   oscAmbienceFreq *= .98;
   oscAmbienceFreq = constrain(oscAmbienceFreq, 75, 200);
-  //changes frequency and amp of ossillator
   oscAmbience.freq(oscAmbienceFreq);
-
-  //deal with Ball
-  ball.changePosition();
-  ball.displayTrail();
-  ball.display();
-  ball.decrementFlashVars();
 
 }
 

@@ -1,4 +1,5 @@
-function Ball() {
+class Ball {
+  constructor(){
   this.x;
   this.y;
   this.xHist = []; //history of x positions
@@ -15,9 +16,27 @@ function Ball() {
   this.timer = 0;
   this.whiteFlash = 0; //determines whether the ball is white due to recent collision (0-1), 1 = 100% white
   this.sizeFlash = 1; //determines % graphical size of ellipse based relative to its radius (1 = 100%)
+
+  //oscillator
+  this.oscAdrenaline = new p5.Oscillator();
+  this.oscAdrenaline.setType('square');
+  this.oscAdrenalineAmp = 0;
+  this.oscAdrenalineFreq = 0;
+  this.collisionAmp = .03;
+  this.oscAdrenaline.freq(this.oscAdrenalineFreq);
+  this.oscAdrenaline.amp(this.oscAdrenalineAmp);
+  this.oscAdrenaline.start();
+
 }
 
-Ball.prototype.changePosition = function() {
+update(){
+  this.changePosition();
+  // this.updateOscillator();
+  this.displayTrail();
+  this.display();
+  this.decrementFlashVars();
+}
+changePosition() {
   this.x += this.velX;
   this.y += this.velY;
   this.canvasCollision(); //has the ball collided with the canvas?
@@ -27,7 +46,15 @@ Ball.prototype.changePosition = function() {
 
 }
 
-Ball.prototype.addToHistory = function(x, y) { //remove oldest ball postion history, add newest ball position history
+updateOscillator(){
+  //changes frequency and amp based of oscillator based off net velocities of paddles
+  this.oscAdrenalineFreq = 6 * (abs(this.velX*2) + abs(this.velY) + 20);
+  this.oscAdrenalineAmp *= .98;
+  this.oscAdrenaline.amp(this.oscAdrenalineAmp);
+  this.oscAdrenaline.freq(this.oscAdrenalineFreq);
+}
+
+addToHistory(x, y) { //remove oldest ball postion history, add newest ball position history
   this.xHist.splice(0, 1);
   this.yHist.splice(0, 1);
 
@@ -35,7 +62,7 @@ Ball.prototype.addToHistory = function(x, y) { //remove oldest ball postion hist
   this.yHist.push(this.y);
 }
 
-Ball.prototype.reset = function(xDirection) {
+reset(xDirection) {
   //resets pos, color and velocity of ball
   this.r = 255;
   this.g = 255;
@@ -57,8 +84,7 @@ Ball.prototype.reset = function(xDirection) {
   }
 }
 
-////////////NEW (now ball increases/decrease size on collsion)
-Ball.prototype.display = function() {
+display() {
   rectMode(RADIUS);
   noStroke();
   //draw coloured ball
@@ -72,15 +98,15 @@ Ball.prototype.display = function() {
   //ellipse(this.x,this.y,this.radius,this.radius);
 }
 
-//////NEW (now ball trail is tapered)
-Ball.prototype.displayTrail = function() { //draw trail of ball's histories
+
+displayTrail() { //draw trail of ball's histories
   rectMode(RADIUS);
   noStroke();
 
   for (let i = 0; i < this.xHist.length; i++) {
     //trail increases alpha based on balls speed,
     //alpha is greatest near the current position of the ball, then it fades to 0
-    velocityMagnitude = sqrt(sq(this.velX) + sq(this.velY));
+    let velocityMagnitude = sqrt(sq(this.velX) + sq(this.velY));
     //increase alpha of trail if it is closer in history to the current ball pos,
     //and if the ball is currently travleing faster
     let trailAlpha = (i/this.trailLength)*10*velocityMagnitude;
@@ -92,9 +118,11 @@ Ball.prototype.displayTrail = function() { //draw trail of ball's histories
 
 }
 
-Ball.prototype.canvasCollision = function() {
+canvasCollision() {
+
   //if ball goes off left then rightpaddle score increases
   if (this.x + (this.radius * 4) < 0) {
+    this.oscAdrenalineAmp = this.collisionAmp;
     padR.score++;
     padR.scored = .5;
     padR.hit = 1; //fill the scoring paddle with colour
@@ -104,6 +132,7 @@ Ball.prototype.canvasCollision = function() {
   }
   //if ball goes off right then leftpaddle score increases
   if (this.x - (this.radius * 4) > width) {
+    this.oscAdrenalineAmp = this.collisionAmp;
     padL.score++;
     padL.scored = .5;
     padL.hit = 1; //fill the scoring paddle with colour
@@ -112,9 +141,10 @@ Ball.prototype.canvasCollision = function() {
 
   }
 
-  /////////NEWWW now ball makes dynamic change to oscillator on collison w/ceiling/floor, and shrinks
+
   //if ball hits ceiling or floor of canvas
   if ((this.y + this.radius > height) || (this.y - this.radius < 0)) {
+    this.oscAdrenalineAmp = this.collisionAmp;
     this.y = constrain(this.y, this.radius, height - this.radius);
     this.velY = this.velY * -1;
     let changeInOscFreq = abs(ball.velY) * 10; //more change if the ball is traveling faster vertically
@@ -124,7 +154,7 @@ Ball.prototype.canvasCollision = function() {
 }
 
 //////NEW return various graphic-related vars to given numbers
-Ball.prototype.decrementFlashVars = function() { //decrements this.hit var
+decrementFlashVars () { //decrements this.hit var
   //this.hit is set to one on collison w/ball
   if (this.whiteFlash > 0) {
     this.whiteFlash -= 0.15;
@@ -135,4 +165,5 @@ Ball.prototype.decrementFlashVars = function() { //decrements this.hit var
   if (this.sizeFlash < .99) {
     this.sizeFlash *= 1.2;
   }
+}
 }

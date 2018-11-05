@@ -31,7 +31,7 @@ class Paddle {
     //oscillator
     this.oscAdrenaline = new p5.Oscillator();
     this.oscAdrenaline.setType('sawtooth');
-    this.oscAdrenaline.freq(oscAdrenalineFreq);
+    this.oscAdrenaline.freq(this.oscAdrenalineFreq);
     this.oscAdrenaline.amp(0);
     this.oscAdrenaline.start();
   }
@@ -39,13 +39,22 @@ class Paddle {
   update(){
     this.accelerate(); //deal with inputs
     this.changePos(); //move
+    this.updateOscillator();
     this.checkBallCollision();
     //display
-    this.flashOnScore(); //fill screen on score breifly
     this.displayScore(); //paddles score
     this.displayFillMeter(); //meter in paddle
     this.displayPaddle(); //outline of paddle
   }
+
+  updateOscillator(){
+    //changes frequency and amp based of oscillator based off net velocities of paddles
+    this.oscAdrenalineFreq = 2 * (abs(this.velX*2) + abs(this.velY) + 20);
+    this.oscAdrenalineAmp = .005 * (abs(this.velX*2) + abs(this.velY));
+    this.oscAdrenaline.amp(this.oscAdrenalineAmp);
+    this.oscAdrenaline.freq(this.oscAdrenalineFreq);
+  }
+
   displayFillMeter() {
     //fills in the paddle briefly with a meter repsenting how hard the ball was hit last
     let w = this.width / 2;
