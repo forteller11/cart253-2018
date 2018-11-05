@@ -3,7 +3,7 @@ class Light {
     this.r = 255;
     this.g = 255;
     this.b = 255;
-    this.a = 10;
+    this.a = 30;
     this.x = 0;
     this.y = 0;
     //initialize ray, give them each unique vertex as a target, tell them to produce children
@@ -68,11 +68,19 @@ class Light {
     beginShape();
     vertex(this.parentRay[0].x, this.parentRay[0].y); //origin
     for (let i = 0; i < this.parentRay.length; i++) {
-      vertex(this.parentRay[i].children[0].collidedX, this.parentRay[i].children[0].collidedY);
+          // print(this.parentRay[i].angle);
+      fill(255,100,100);
+      text((i*3)+0,this.parentRay[i].children[1].collidedX+15,this.parentRay[i].children[1].collidedY);
+      // vertex(this.parentRay[i].children[0].collidedX, this.parentRay[i].children[0].collidedY);
+      fill(100,255,100);
+      text((i*3)+1,this.parentRay[i].collidedX+30,this.parentRay[i].collidedY);
       vertex(this.parentRay[i].collidedX, this.parentRay[i].collidedY);
-      vertex(this.parentRay[i].children[1].collidedX, this.parentRay[i].children[1].collidedY);
+      fill(100,100,255);
+      text((i*3)+2,this.parentRay[i].children[0].collidedX+45,this.parentRay[i].children[0].collidedY);
+      // vertex(this.parentRay[i].children[1].collidedX, this.parentRay[i].children[1].collidedY);
+      fill(this.r, this.b, this.g, this.a);
     }
-    vertex(this.parentRay[0].children[0].collidedX, this.parentRay[0].children[0].collidedY);
+    vertex(this.parentRay[0].children[1].collidedX, this.parentRay[0].children[1].collidedY);
     endShape();
   }
 

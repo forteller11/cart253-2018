@@ -30,7 +30,7 @@ function setup() {
     // if (i === 0) { //make one shape the same size as the canvas
     //   shape[i] = new Shape(width / 2, height / 2, 0, 4);
     // } else {
-    shape[i] = new Shape(width/2, (i)*height/2, 3, 4);
+    shape[i] = new Shape(width/2, (i+.5)*height/2, 3, 4);
     // }
     for (let j = 0; j < shape[0].vertNumber; j++) { //set pos of vertexes
       shape[i].vertR[j] = random(40,140);
@@ -45,7 +45,7 @@ function setup() {
 
 
     }
-    for (let i = 0; i < 2; i ++){
+    for (let i = 0; i < 1; i ++){
       light[i] = new Light;
     }
   }

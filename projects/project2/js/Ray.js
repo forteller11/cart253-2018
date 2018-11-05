@@ -34,18 +34,16 @@ class Ray {
   updateChildren() {
       for (let i = 0; i < this.children.length; i++) {
         //offsets angle slightly each direction
-        let angleOffset = .000001
+        let angleOffset = .0001
         if (i === 0) {
-          angleOffset *= -1;
+          angleOffset = -angleOffset;
         }
-        this.children[i].angle = this.angle+= angleOffset;
-        this.calculateTargetBasedOnAngle(this.angle+angleOffset);
-        this.children[i].targetX = this.targetX;
-        this.children[i].targetY = this.targetY;
 
+        this.children[i].angle = this.angle + angleOffset;
+        // print(i+":"+this.angle);
+        this.calculateTargetBasedOnAngle(this.angle+angleOffset,i);
         this.children[i].x = this.x;
         this.children[i].y = this.y;
-
         this.children[i].checkIntersection();
         this.children[i].display();
       }
@@ -137,12 +135,12 @@ class Ray {
       text(round(this.angle * 10000) / 10000, this.collidedX + 20, this.collidedY);
     }
   }
-  calculateTargetBasedOnAngle(angle) {
+  calculateTargetBasedOnAngle(angle,index) {
     let radius = sqrt(sq(this.targetX - this.x) + sq(this.targetY - this.y));
     // let vecX = this.targetX - this.x;
     // let vecY = this.targetY - this.y;
-    this.targetX = (-cos(angle)*radius)+this.x;
-    this.targetY = (-sin(angle)*radius)+this.y;
+    this.children[index].targetX = (-cos(angle)*radius)+this.x;
+    this.children[index].targetY = (-sin(angle)*radius)+this.y;
     // strokeWeight(30);
     // stroke(0);
     // line(this.x,this.y,this.targetX,this.targetY);
@@ -158,11 +156,11 @@ class Ray {
     fill(mapColor,(255-mapColor),255);
     text(this.angle,40,(100*this.angle)+50);
     if (this.hasChildren == true){
-      strokeWeight(3);
-      stroke(mapColor,(255-mapColor),200);
+      strokeWeight(1);
+      stroke(mapColor,(255-mapColor),200,255);
     } else {
       strokeWeight(1);
-      stroke(mapColor,(255-mapColor),200,100);
+      stroke(mapColor,(255-mapColor),200,50);
     }
 
     line(this.x, this.y, (this.collidedX), (this.collidedY));
