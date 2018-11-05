@@ -29,9 +29,7 @@ ball trails now taper slighly
 Credits:
 used p5.js references to setup the oscillator p5.sound objects
 ******************/
-let fluidPop = 20;
-let fluid = [];
-let fluidDisplayThreshold = 1;
+
 let padR; //right paddle
 let padL; //let paddle
 let horzPaddleIndent = 32; //indent of paddle
