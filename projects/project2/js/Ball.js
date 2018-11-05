@@ -28,15 +28,24 @@ class Ball {
   this.oscAdrenaline.start();
 
   //shape
-
     this.shape = new Shape(this.x, this.y, 0, 4);
-    shapes.push(this.shape);
+    shape.push(this.shape);
     for (let j = 0; j < this.shape.vertNumber; j++) { //set pos of vertexes
       this.shape.vertR[j] = this.radius+2;
       this.shape.vertAOff[j] = (TWO_PI/this.shape.vertNumber*j) + QUARTER_PI +random(-0.0001,0.0001);
     }
     this.shape.update();
     this.shape.display();
+
+    //canvas border
+      this.canvasShape = new Shape(this.x, this.y, 0, 4);
+      shape.push(this.canvasShape);
+      for (let j = 0; j < this.shape.vertNumber; j++) { //set pos of vertexes
+        this.canvasShape.vertR[j] = sqrt(sq(width/2)+sq(height/2));
+        this.canvasShape.vertAOff[j] = (TWO_PI/this.canvasShape.vertNumber*j) + QUARTER_PI +random(-0.0001,0.0001);
+      }
+      this.canvasShape.update();
+      this.canvasShape.display();
 
 }
 
@@ -50,6 +59,11 @@ update(){
   this.shape.y = this.y;
   this.shape.update();
   this.shape.display();
+
+  this.canvasShape.x = width/2;
+  this.canvasShape.y = height/2;
+  this.canvasShape.update();
+  this.canvasShape.display();
 }
 changePosition() {
   this.x += this.velX;

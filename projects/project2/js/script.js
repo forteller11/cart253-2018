@@ -38,7 +38,10 @@ let maxStrokeWidth = 6;
 let ball;
 let oscAmbience; //sin wave oscillator
 let oscAmbienceFreq = 250; //increases frequency of oscillator on collisions and scores
-let shapes = [];
+let shape = [];
+let bulb = [];
+let debugDisplay = true;
+// let canvasShape;
 
 function setup() {
   createCanvas(800, 800);
@@ -63,18 +66,38 @@ function setup() {
   }
   ball.reset(direction);
 
+//canvas shape
+// canvasShape = new Shape(this.x, this.y, 0, 4);
+// shape.push(canvasShape);
+// for (let j = 0; j < canvasShape.vertNumber; j++) { //set pos of vertexes
+//   canvasShape.vertR[j] = sqrt(sq(width/2)+sq(height/2));
+//   canvasShape.vertAOff[j] = (TWO_PI/canvasShape.vertNumber*j) + QUARTER_PI +random(-0.0001,0.0001);
+// }
+// canvasShape.update();
+// canvasShape.display();
+
   //oscillator which increases frequency on scores and collisions
   oscAmbience = new p5.Oscillator();
   oscAmbience.setType('sin');
   oscAmbience.freq(oscAmbienceFreq);
   oscAmbience.amp(1);
   oscAmbience.start();
-  print(shapes);
 
+  print(shape);
+
+  //light
+  for (let i = 0; i < 1; i ++){
+    bulb[i] = new Bulb(255,255,0,1,15);
+  }
 }
 
 function draw() {
   background(0);
+  // canvasShape.x = width/2;
+  // canvasShape.y = height/2;
+  // canvasShape.update();
+  // canvasShape.display();
+
   padR.flashOnScore();
   padL.flashOnScore();
 
@@ -88,6 +111,12 @@ function draw() {
   oscAmbienceFreq *= .98;
   oscAmbienceFreq = constrain(oscAmbienceFreq, 75, 200);
   oscAmbience.freq(oscAmbienceFreq);
+
+  for (let i = 0; i < bulb.length; i ++){
+    bulb[i].x = width/2;
+    bulb[i].y = height/2;
+    bulb[i].update();
+  }
 
 }
 

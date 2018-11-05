@@ -30,18 +30,18 @@ class Paddle {
 
     //shape
     this.shape = new Shape(this.x, this.y, 0, 4);
-    shapes.push(this.shape);
+    shape.push(this.shape);
     //bottom right
-    this.shape.vertAOff[0] = atan2(this.height/2,this.width/2);
+    this.shape.vertAOff[0] = atan2(this.height/2,this.width/2)+random(-0.0001,0.0001);
     this.shape.vertR[0] = sqrt(sq(this.height/2)+sq(this.width/2));
     //bottom left
-    this.shape.vertAOff[1] = atan2(-this.height/2,this.width/2);
+    this.shape.vertAOff[1] = atan2(-this.height/2,this.width/2)+random(-0.0001,0.0001);
     this.shape.vertR[1] = sqrt(sq(-this.height/2)+sq(this.width/2));
     //upper left
-    this.shape.vertAOff[2] = atan2(-this.height/2,-this.width/2);
+    this.shape.vertAOff[2] = atan2(-this.height/2,-this.width/2)+random(-0.0001,0.0001);
     this.shape.vertR[2] = sqrt(sq(-this.height/2)+sq(-this.width/2));
     //upper right
-    this.shape.vertAOff[3] = atan2(this.height/2,-this.width/2);
+    this.shape.vertAOff[3] = atan2(this.height/2,-this.width/2)+random(-0.0001,0.0001);
     this.shape.vertR[3] = sqrt(sq(this.height/2)+sq(-this.width/2));
 
     this.shape.update();
