@@ -20,8 +20,8 @@ let shapePop = 2;
 let parentRay = [];
 let parentRayPop = 1;
 let graphicRays = [];
-let light;
-let debugDisplay = true;
+let light = [];
+let debugDisplay = false;
 function setup() {
   createCanvas(1000, 1000);
   background(0, 0, 0);
@@ -45,16 +45,11 @@ function setup() {
 
 
     }
-    light = new Light();
-
-    //create one parentRay for every vertex in the scene
-    let k = 0;
-    for (let i = 0; i < shape.length; i++) {
-      for (let j = 0; j < shape[0].vertNumber; j++) {
-        light.parentRay[k] = new Ray(shape[i].vertX[j], shape[i].vertY[j],true);
-        k++;
-      }
+    for (let i = 0; i < 30; i ++){
+      light[i] = new Light();
     }
+
+
   }
 
 
@@ -63,7 +58,7 @@ function setup() {
 }
 
 function draw() {
-  background(51);
+  background(0);
   //update position and display of shapes/vertexes/lines
   for (let i = 0; i < shape.length; i++) { //set pos of vertexes
     shape[i].update();
@@ -76,29 +71,11 @@ function draw() {
     }
   }
 
-  // //set target of every light.parentRay to a unique vertex in the scene
-  // let k = 0;
-  // for (let i = 0; i < shape.length; i++) {
-  //   for (let j = 0; j < shape[0].vertNumber; j++) {
-  //     light.parentRay[k].targetX = shape[i].vertX[j];
-  //     light.parentRay[k].targetY = shape[i].vertY[j];
-  //     light.parentRay[k].update();
-  //     light.parentRay[k].display();
-  //     k++;
-  //   }
-  // }
-  // light.update();
-  // // GRADIANT TEST
-  // for (let i = width; i > 0; i --){
-  //   noStroke();
-  //   let colorRamp = map(i,0,width,255,0);
-  //   fill(colorRamp);
-  //   ellipse(mouseX,mouseY,i);
-  // }
-  light.update();
-  // light.selectionSort();
-  // //draw fill light
-  // light.display();
+  for (let i = 0; i < light.length; i ++){
+    light[i].x = mouseX + i*20;
+    light[i].y = mouseY + i*20;
+    light[i].update();
+  }
 
 
 }

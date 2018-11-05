@@ -79,7 +79,7 @@ class Ray {
         let intersectionX = simplifyB / simplifySlope; //the x location where lines intersects
         let intersectionY = (raySlope * intersectionX) + rayB; //y where lines interesct
 
-        
+
         //make sure only recognizes intersections which happen in the direction of the ray
         if (((this.targetX - this.x <= 0) && (intersectionX < this.x)) || ((this.targetX - this.x > 0) && (intersectionX > this.x))) {
           //check to see if collsion happened within confines of line (and not infinite funciton)
@@ -172,11 +172,6 @@ class Ray {
       line(this.x, this.y, (this.collidedX), (this.collidedY));
       stroke(this.r, this.g, this.b,20);
       line(this.x, this.y, (this.targetX), (this.targetY));
-
-      stroke(this.r, this.g, this.b);
-      noFill();
-      ellipse(this.x, this.y, 20);
-
 
       //display children
       for (let i = 0; i < this.children.length; i++) {

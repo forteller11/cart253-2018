@@ -4,21 +4,21 @@ class Light {
     this.y = mouseY;
     this.r = 255;
     this.g = 255;
-    this.b = 255;
-    this.alpha = 100;
+    this.b = 0;
+    this.alpha = 90;
 
     this.parentRay = [];
     //create one parentRay for every vertex in the scene
     let k = 0;
     for (let i = 0; i < shape.length; i++) {
       for (let j = 0; j < shape[0].vertNumber; j++) {
-        parentRay[k] = new Ray(shape[i].vertX[j], shape[i].vertY[j],true);
+        this.parentRay[k] = new Ray(shape[i].vertX[j], shape[i].vertY[j],true);
         k++;
       }
     }
   }
   update(){
-    this.setOrigin();
+    // this.setOrigin();
     //set target of every light.parentRay to a unique vertex in the scene
     let k = 0;
     for (let i = 0; i < shape.length; i++) {
@@ -60,7 +60,20 @@ class Light {
   }
 
   display(){
-    fill(this.r, this.g, this.g, this.alpha);
+    this.displayFill();
+    if (debugDisplay === true){
+      let k = 0;
+      for (let i = 0; i < shape.length; i++) {
+        for (let j = 0; j < shape[0].vertNumber; j++) {
+          this.parentRay[k].display();
+          k++
+        }
+      }
+      ellipse(this.x,this.y,20);
+    }
+  }
+  displayFill(){
+    fill(this.r, this.g, this.b, this.alpha);
     stroke(255,255,255,0);
     beginShape();
     vertex(this.parentRay[0].x,this.parentRay[0].y); //origin
@@ -71,16 +84,5 @@ class Light {
     }
     vertex(this.parentRay[0].children[0].collidedX,this.parentRay[0].children[0].collidedY);
     endShape();
-
-    if (debugDisplay === true){
-      let k = 0;
-      for (let i = 0; i < shape.length; i++) {
-        for (let j = 0; j < shape[0].vertNumber; j++) {
-          this.parentRay[k].display();
-          k++
-        }
-      }
-    }
-
   }
 }
