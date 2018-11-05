@@ -21,6 +21,7 @@ let parentRay = [];
 let parentRayPop = 1;
 let graphicRays = [];
 let light;
+let debugDisplay = true;
 function setup() {
   createCanvas(1000, 1000);
   background(0, 0, 0);

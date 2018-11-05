@@ -28,7 +28,6 @@ class Light {
         this.parentRay[k].targetX = shape[i].vertX[j];
         this.parentRay[k].targetY = shape[i].vertY[j];
         this.parentRay[k].update();
-        this.parentRay[k].display();
         k++;
       }
     }
@@ -59,9 +58,10 @@ class Light {
       }
     }
   }
+
   display(){
     fill(this.r, this.g, this.g, this.alpha);
-    stroke(255,255,255,255);
+    stroke(255,255,255,0);
     beginShape();
     vertex(this.parentRay[0].x,this.parentRay[0].y); //origin
     for (let i = 0; i < this.parentRay.length; i ++){
@@ -71,5 +71,16 @@ class Light {
     }
     vertex(this.parentRay[0].children[0].collidedX,this.parentRay[0].children[0].collidedY);
     endShape();
+
+    if (debugDisplay === true){
+      let k = 0;
+      for (let i = 0; i < shape.length; i++) {
+        for (let j = 0; j < shape[0].vertNumber; j++) {
+          this.parentRay[k].display();
+          k++
+        }
+      }
+    }
+
   }
 }

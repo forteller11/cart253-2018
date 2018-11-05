@@ -2,6 +2,9 @@ class Ray {
   constructor(targetX, targetY, createChildren) {
     this.x;
     this.y;
+    this.r = 0;
+    this.g = 0;
+    this.b = 0;
     // this.angle = angle;
     // this.vecX = (cos(this.angle) * this.r);
     // this.vecY = (sin(this.angle) * this.r);
@@ -32,21 +35,21 @@ class Ray {
     }
   }
   updateChildren() {
-      for (let i = 0; i < this.children.length; i++) {
-        //offsets angle slightly each direction
-        let angleOffset = .00001
-        if (i === 0) {
-          angleOffset = -angleOffset;
-        }
-
-        this.children[i].angle = this.angle + angleOffset;
-        // print(i+":"+this.angle);
-        this.calculateTargetBasedOnAngle(this.angle+angleOffset,i);
-        this.children[i].x = this.x;
-        this.children[i].y = this.y;
-        this.children[i].checkIntersection();
-        this.children[i].display();
+    for (let i = 0; i < this.children.length; i++) {
+      //offsets angle slightly each direction
+      let angleOffset = .00001
+      if (i === 0) {
+        angleOffset = -angleOffset;
       }
+
+      this.children[i].angle = this.angle + angleOffset;
+      // print(i+":"+this.angle);
+      this.calculateTargetBasedOnAngle(this.angle + angleOffset, i);
+      this.children[i].x = this.x;
+      this.children[i].y = this.y;
+      this.children[i].checkIntersection();
+      this.children[i].display();
+    }
 
   }
 
@@ -76,21 +79,27 @@ class Ray {
         let intersectionX = simplifyB / simplifySlope; //the x location where lines intersects
         let intersectionY = (raySlope * intersectionX) + rayB; //y where lines interesct
 
-        stroke(255, 255, 255, 50);
+        
         //make sure only recognizes intersections which happen in the direction of the ray
         if (((this.targetX - this.x <= 0) && (intersectionX < this.x)) || ((this.targetX - this.x > 0) && (intersectionX > this.x))) {
           //check to see if collsion happened within confines of line (and not infinite funciton)
           let c = 0.0000000001; //creates a buffer so the intersection doesn't have to happen exactly on the line to be recognized
           if (line.x1 < line.x2) {
             if ((intersectionX + c >= line.x1) && (intersectionX - c <= line.x2)) {
-              // ellipse(intersectionX,intersectionY,10);
+              if (debugDisplay === true){
+                stroke(this.r, this.g, this.b,50);
+                fill(this.r, this.g, this.b);
+                ellipse(intersectionX,intersectionY,7);
+              }
               //change collidedX,Y to the intersection's X,Y's are closer to the ray origin
               this.makeCollidedShortestIntersection(intersectionX, intersectionY);
             }
           } else if (line.x1 > line.x2) {
             if ((intersectionX - c <= line.x1) && (intersectionX + c >= line.x2)) {
-              if (this.debug === true) {
-                ellipse(intersectionX, intersectionY, 10);
+              if (debugDisplay === true){
+                stroke(this.r, this.g, this.b,50);
+                fill(this.r, this.g, this.b);
+                ellipse(intersectionX,intersectionY,7);
               }
               //change collidedX,Y to the intersection's X,Y's are closer to the ray origin
               this.makeCollidedShortestIntersection(intersectionX, intersectionY);
@@ -98,16 +107,6 @@ class Ray {
           }
         }
 
-
-
-        // //draw linear functions (for debugging)
-        // for (let i = 0; i < width; i ++){
-        //   stroke(255);
-        //   strokeWeight(1);
-        //   point(i,(lineSlope*i)+lineB);
-        //   stroke(255,255,0);
-        //   point(i,(raySlope*i)+rayB);
-        // }
       }
     }
   }
@@ -123,7 +122,7 @@ class Ray {
   }
   calculateAngle() {
     //calculates the angle of the ray from origin to target
-    let radius = sqrt(sq( this.targetX-this.x) + sq(this.targetY-this.y));
+    let radius = sqrt(sq(this.targetX - this.x) + sq(this.targetY - this.y));
     let yVec = this.targetY - this.y;
     let xVec = this.targetX - this.x;
     let newAngle = atan2(yVec, xVec);
@@ -131,16 +130,16 @@ class Ray {
     this.angle = newAngle;
     noStroke();
     fill(180);
-    if (this.debug === true){
+    if (this.debug === true) {
       text(round(this.angle * 10000) / 10000, this.collidedX + 20, this.collidedY);
     }
   }
-  calculateTargetBasedOnAngle(angle,index) {
+  calculateTargetBasedOnAngle(angle, index) {
     let radius = sqrt(sq(this.targetX - this.x) + sq(this.targetY - this.y));
     // let vecX = this.targetX - this.x;
     // let vecY = this.targetY - this.y;
-    this.children[index].targetX = (-cos(angle)*radius)+this.x;
-    this.children[index].targetY = (-sin(angle)*radius)+this.y;
+    this.children[index].targetX = (-cos(angle) * radius) + this.x;
+    this.children[index].targetY = (-sin(angle) * radius) + this.y;
     // strokeWeight(30);
     // stroke(0);
     // line(this.x,this.y,this.targetX,this.targetY);
@@ -150,30 +149,39 @@ class Ray {
   }
 
   display() {
-    strokeWeight(2);
-    let mapColor = map(this.angle,0,TWO_PI*2,0,255);
-    noStroke();
-    fill(mapColor,(255-mapColor),255);
-    text(this.angle,40,(100*this.angle)+50);
-    if (this.hasChildren == true){
-      strokeWeight(1);
-      stroke(mapColor,(255-mapColor),200,255);
-    } else {
-      strokeWeight(1);
-      stroke(mapColor,(255-mapColor),200,50);
-    }
+    if (debugDisplay === true){
+      strokeWeight(2);
+      //calcs colour based on angle
+      let mapColor = map(this.angle, 0, TWO_PI * 2, 0, 255);
+      this.r = mapColor;
+      this.g = 255-mapColor;
+      this.b = 200;
 
-    line(this.x, this.y, (this.collidedX), (this.collidedY));
+      noStroke();
+      fill(this.r, this.g, this.b);
+      text(this.angle, 40, (100 * this.angle) + 50);
+      if (this.hasChildren == true) {
+        strokeWeight(1);
+        stroke(this.r, this.g, this.b, 255);
+      } else {
+        strokeWeight(1);
+
+        stroke(this.r, this.g, this.b, 200, 50);
+      }
+      stroke(this.r, this.g, this.b,255);
+      line(this.x, this.y, (this.collidedX), (this.collidedY));
+      stroke(this.r, this.g, this.b,20);
+      line(this.x, this.y, (this.targetX), (this.targetY));
+
+      stroke(this.r, this.g, this.b);
+      noFill();
+      ellipse(this.x, this.y, 20);
 
 
-    stroke(255,100,0);
-    ellipse(this.x, this.y, 20);
-    ellipse(this.targetX, this.targetY, 10);
-
-    //display children
-    for (let i = 0; i < this.children.length; i++) {
-      this.children[i].display();
+      //display children
+      for (let i = 0; i < this.children.length; i++) {
+        this.children[i].display();
+      }
     }
   }
-
 }
