@@ -18,7 +18,7 @@ class Light {
     }
   }
   update(){
-          print(this.x);    // this.setOrigin();
+    // this.setOrigin();
     //set target of every light.parentRay to a unique vertex in the scene
     let k = 0;
     for (let i = 0; i < shape.length; i++) {
@@ -73,8 +73,7 @@ class Light {
     }
   }
   displayFill(){
-    background(0);
-    fill(255,255,255, 25);
+    fill(this.r,this.g,this.b,this.alpha);
     stroke(255,255,255,0);
     beginShape();
     vertex(this.parentRay[0].x,this.parentRay[0].y); //origin

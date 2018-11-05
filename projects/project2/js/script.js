@@ -22,7 +22,7 @@ let parentRayPop = 1;
 let graphicRays = [];
 let light = [];
 let bulb;
-let debugDisplay = true;
+let debugDisplay = false;
 
 let imgRadial;
 function preload(){
@@ -51,9 +51,7 @@ function setup() {
     }
   }
 
-
-    bulb = new Bulb(3,30);
-
+  bulb = new Bulb(255,255,0,10,15);
 
 
 
@@ -76,7 +74,6 @@ function draw() {
   }
 
   bulb.update();
-
 
   // image(imgRadial,mouseX-imgRadial.width/2,mouseY-imgRadial.height/2);
 
