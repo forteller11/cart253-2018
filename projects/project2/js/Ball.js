@@ -27,6 +27,16 @@ class Ball {
   this.oscAdrenaline.amp(this.oscAdrenalineAmp);
   this.oscAdrenaline.start();
 
+  //shape
+
+    this.shape = new Shape(this.x, this.y, 0, 4);
+    for (let j = 0; j < this.shape.vertNumber; j++) { //set pos of vertexes
+      this.shape.vertR[j] = this.radius+2;
+      this.shape.vertAOff[j] = (TWO_PI/this.shape.vertNumber*j) + QUARTER_PI +random(-0.0001,0.0001);
+    }
+    this.shape.update();
+    this.shape.display();
+
 }
 
 update(){
@@ -35,6 +45,10 @@ update(){
   this.displayTrail();
   this.display();
   this.decrementFlashVars();
+  this.shape.x = this.x;
+  this.shape.y = this.y;
+  this.shape.update();
+  this.shape.display();
 }
 changePosition() {
   this.x += this.velX;

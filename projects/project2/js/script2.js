@@ -34,22 +34,23 @@ function setup() {
     // if (i === 0) { //make one shape the same size as the canvas
     //   shape[i] = new Shape(width / 2, height / 2, 0, 4);
     // } else {
-    shape[i] = new Shape(width/2, (i)*height/shapePop, 3, 4);
+    shape[i] = new Shape(width/2, (i)*height/shapePop, 0, 4);
     // }
     for (let j = 0; j < shape[0].vertNumber; j++) { //set pos of vertexes
-      shape[i].vertR[j] = random(40,140);
-      shape[i].vertAOff[j] = (((2 * PI) / shape[0].vertNumber) * j + PI / 4) + 0.0001;
+      shape[i].vertR[j] = 50;
       shape[0].x = width/2;
       shape[0].y = height/2;
+      shape[i].vertAOff[j] = (TWO_PI/shape[0].vertNumber*j) + QUARTER_PI +random(-0.0001,0.0001);
+      shape[0].angle = 0;
       shape[0].vertR[j] = sqrt(sq(width/2)+sq(height/2));
       shape[0].vertAOff[j] = (PI/2*j) + (PI/4);
 
-      shape[i].update();
-      shape[i].display();
     }
+    shape[i].update();
+    shape[i].display();
   }
 
-  bulb = new Bulb(255,255,0,10,15);
+  bulb = new Bulb(255,255,0,1,15);
     bulb2 = new Bulb(255,0,255,10,15);
 
 
@@ -66,6 +67,7 @@ function draw() {
     shape[i].display();
     for (let j = 0; j < shape[0].vertNumber; j++) { //set pos of vertexes
       if (i > 0) {
+
         // shape[i].vertAOff[j] += random(-.01,.01);
         // shape[i].vertR[j] += random(-1,1);
       }
@@ -76,7 +78,7 @@ function draw() {
   bulb2.x = mouseX+600;
   bulb2.y = mouseY;
   bulb.update();
-  bulb2.update();
+  // bulb2.update();
   // image(imgRadial,mouseX-imgRadial.width/2,mouseY-imgRadial.height/2);
 
 

@@ -2,7 +2,7 @@ class Shape {
   constructor(x, y, angle, vertNumber) {
     this.x = x;
     this.y = y;
-    this.a = angle;
+    this.angle = angle;
     this.vertNumber = vertNumber;
     this.vertAOff = []; //angle offset
     this.vertR = []; //radius
@@ -28,10 +28,10 @@ class Shape {
 
   updateVertCartesian() { //updates x,y of verts based on angle and r offsets
     for (let i = 0; i < this.vertNumber; i++) {
-      this.vertX[i] = (cos(this.vertAOff[i]) * this.vertR[i]) + this.x;
+      this.vertX[i] = (cos(this.vertAOff[i]+this.angle) * this.vertR[i]) + this.x;
       // print(this.vertAOff[i]);
       // print(this.vertAOff);
-      this.vertY[i] = (sin(this.vertAOff[i]) * this.vertR[i]) + this.y;
+      this.vertY[i] = (sin(this.vertAOff[i]+this.angle) * this.vertR[i]) + this.y;
     }
   }
 
