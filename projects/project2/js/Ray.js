@@ -25,8 +25,6 @@ class Ray {
 
   }
   update() {
-    this.x = mouseX;
-    this.y = mouseY;
     if (this.hasChildren === true) { //if you have children (and are therefore not a child)
       this.checkIntersection();
       this.calculateAngle();

@@ -75,17 +75,17 @@ function draw() {
     }
   }
 
-  //set target of every light.parentRay to a unique vertex in the scene
-  let k = 0;
-  for (let i = 0; i < shape.length; i++) {
-    for (let j = 0; j < shape[0].vertNumber; j++) {
-      light.parentRay[k].targetX = shape[i].vertX[j];
-      light.parentRay[k].targetY = shape[i].vertY[j];
-      light.parentRay[k].update();
-      light.parentRay[k].display();
-      k++;
-    }
-  }
+  // //set target of every light.parentRay to a unique vertex in the scene
+  // let k = 0;
+  // for (let i = 0; i < shape.length; i++) {
+  //   for (let j = 0; j < shape[0].vertNumber; j++) {
+  //     light.parentRay[k].targetX = shape[i].vertX[j];
+  //     light.parentRay[k].targetY = shape[i].vertY[j];
+  //     light.parentRay[k].update();
+  //     light.parentRay[k].display();
+  //     k++;
+  //   }
+  // }
   // light.update();
   // // GRADIANT TEST
   // for (let i = width; i > 0; i --){
@@ -94,40 +94,10 @@ function draw() {
   //   fill(colorRamp);
   //   ellipse(mouseX,mouseY,i);
   // }
-  selectionSortparentRayAngles();
-  //draw fill light
-  fill(255, 255, 255, 100);
-  stroke(255,255,255,255);
-  beginShape();
-  vertex(light.parentRay[0].x,light.parentRay[0].y); //origin
-  for (let i = 0; i < light.parentRay.length; i ++){
-    vertex(light.parentRay[i].children[0].collidedX,light.parentRay[i].children[0].collidedY);
-    vertex(light.parentRay[i].collidedX,light.parentRay[i].collidedY);
-    vertex(light.parentRay[i].children[1].collidedX,light.parentRay[i].children[1].collidedY);
-  }
-  vertex(light.parentRay[0].children[0].collidedX,light.parentRay[0].children[0].collidedY);
-  endShape();
+  light.update();
+  // light.selectionSort();
+  // //draw fill light
+  // light.display();
 
-}
 
-//selection sort algoritihim
-function selectionSortparentRayAngles() {
-  for (let i = 0; i < light.parentRay.length; i++) {
-    let smallestValue = Infinity;
-    let smallestValueIndex;
-    for (let j = i; j < light.parentRay.length; j++) {
-      //cycle through arlight.parentRay, find smallest value
-      if (light.parentRay[j].angle < smallestValue) {
-        smallestValueIndex = j;
-        smallestValue = light.parentRay[j].angle;
-      }
-      //once at end of the arlight.parentRay, swap light.parentRay index i with smallest light.parentRay...
-      if (j === light.parentRay.length - 1) {
-        let parentRayStore = light.parentRay[i];
-        light.parentRay[i] = light.parentRay[smallestValueIndex];
-        light.parentRay[smallestValueIndex] = parentRayStore;
-      }
-      //then increment i and repeat until arparentRay is sorted...
-    }
-  }
 }
