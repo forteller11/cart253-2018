@@ -39,10 +39,11 @@ class Light {
     this.y = mouseY;
   }
   selectionSort() {
+    let smallestValue;
     let smallestValueIndex;
     //selection sort algoritihim
     for (let i = 0; i < this.parentRay.length; i++) {
-      let smallestValue = Infinity;
+      smallestValue = Infinity;
       for (let j = i; j < this.parentRay.length; j++) {
         //cycle through arthis.parentRay, find smallest value
         if (this.parentRay[j].angle < smallestValue) {
@@ -66,21 +67,22 @@ class Light {
     stroke(255, 255, 255, 255);
     noStroke();
     beginShape();
-    vertex(this.parentRay[0].x, this.parentRay[0].y); //origin
+    // vertex(this.parentRay[0].x, this.parentRay[0].y); //origin
     for (let i = 0; i < this.parentRay.length; i++) {
           // print(this.parentRay[i].angle);
       fill(255,100,100);
-      text((i*3)+0,this.parentRay[i].children[1].collidedX+15,this.parentRay[i].children[1].collidedY);
+      text((i*3)+0,this.parentRay[i].children[0].collidedX+15,this.parentRay[i].children[0].collidedY);
       // vertex(this.parentRay[i].children[0].collidedX, this.parentRay[i].children[0].collidedY);
       fill(100,255,100);
       text((i*3)+1,this.parentRay[i].collidedX+30,this.parentRay[i].collidedY);
       vertex(this.parentRay[i].collidedX, this.parentRay[i].collidedY);
       fill(100,100,255);
-      text((i*3)+2,this.parentRay[i].children[0].collidedX+45,this.parentRay[i].children[0].collidedY);
+      print(this.parentRay[i].children[1].collidedY);
+      // text((i*3)+2,this.parentRay[i].children[1].collidedX+45,this.parentRay[i].children[1].collidedY);
       // vertex(this.parentRay[i].children[1].collidedX, this.parentRay[i].children[1].collidedY);
       fill(this.r, this.b, this.g, this.a);
     }
-    vertex(this.parentRay[0].children[1].collidedX, this.parentRay[0].children[1].collidedY);
+    // vertex(this.parentRay[0].children[0].collidedX, this.parentRay[0].children[0].collidedY);
     endShape();
   }
 
