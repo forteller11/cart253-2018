@@ -1,7 +1,7 @@
 class Light {
   constructor(){
-    this.x = mouseX;
-    this.y = mouseY;
+    this.x;
+    this.y;
     this.r = 255;
     this.g = 255;
     this.b = 0;
@@ -18,7 +18,7 @@ class Light {
     }
   }
   update(){
-    // this.setOrigin();
+          print(this.x);    // this.setOrigin();
     //set target of every light.parentRay to a unique vertex in the scene
     let k = 0;
     for (let i = 0; i < shape.length; i++) {
@@ -73,10 +73,8 @@ class Light {
     }
   }
   displayFill(){
-    this.mask = createImage(width,height);
-    this.mask.loadPixels();
     background(0);
-    fill(255,255,255, this.alpha);
+    fill(255,255,255, 25);
     stroke(255,255,255,0);
     beginShape();
     vertex(this.parentRay[0].x,this.parentRay[0].y); //origin
@@ -87,7 +85,5 @@ class Light {
     }
     vertex(this.parentRay[0].children[0].collidedX,this.parentRay[0].children[0].collidedY);
     endShape();
-    this.mask.updatePixels();
-    image(this.mask,0,0);
   }
 }
