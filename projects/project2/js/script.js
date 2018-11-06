@@ -48,14 +48,16 @@ let lightColorR = 0;
 let lightColorG = 0;
 let lightColorB = 0;
 let netScore =  0;
-
+let startScreen = true;
 //imgs
+let imgTitle;
 let imgBorder1;
 let imgBorder2;
 let imgBorder3;
 let imgBorder4;
 let imgVignette;
 function preload() {
+  imgTitle = loadImage('images/title.png');
   imgBorder1 = loadImage('images/border1.png');
   imgBorder2 = loadImage('images/border2.png');
   imgBorder3 = loadImage('images/border3.png');
@@ -87,9 +89,8 @@ function setup() {
   ball.reset(direction);
 
   //light
-  let moveType = round(random(3));
   for (let i = 0; i < bulbPop; i ++){
-    bulb[i] = new Bulb(lightColorR,lightColorG,lightColorB,255/(bulbPop),10,50,moveType);
+    bulb[i] = new Bulb(lightColorR,lightColorG,lightColorB,255/(bulbPop),10,50,1);
     bulb[i].y = height-bulb[i].radius;
     bulb[i].x = (width/bulbPop) * (i+.5);
   }
@@ -103,13 +104,21 @@ function setup() {
 }
 
 function draw() {
+  if (keyIsPressed){
+    startScreen = false;
+  }
+  if (startScreen === true){
+    background(21);
+    image(imgTitle,0,0);
+  }
+  else {
+    background(51);
   if (netScore === 0) {
-    let lightIncrement = 10;
+    let lightIncrement = 8;
     lightColorR +=lightIncrement;
     lightColorG +=lightIncrement;
     lightColorB +=lightIncrement;
   }
-  background(0);
 
   padR.flashOnScore();
   padL.flashOnScore();
@@ -140,17 +149,20 @@ function draw() {
   centerLineDisplay(); //draw dotted line down center of screen;
   padL.displayScore();
   padR.displayScore();
-  image(imgVignette,0,0,width,height);
-  let w = imgBorder1.width;
-  image(imgBorder1,0,0);
-  image(imgBorder2,width-w,0);
-  image(imgBorder3,width-w,height-w);
-  image(imgBorder4,0,height-w);
 
   //sound
   oscAmbienceFreq *= .98;
   oscAmbienceFreq = constrain(oscAmbienceFreq, 75, 200);
   oscAmbience.freq(oscAmbienceFreq);
+
+  image(imgVignette,0,0,width,height);
+}
+
+let w = imgBorder1.width;
+image(imgBorder1,0,0);
+image(imgBorder2,width-w,0);
+image(imgBorder3,width-w,height-w);
+image(imgBorder4,0,height-w);
 
 }
 
