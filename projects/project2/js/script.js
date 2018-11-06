@@ -40,13 +40,14 @@ let oscAmbience; //sin wave oscillator
 let oscAmbienceFreq = 250; //increases frequency of oscillator on collisions and scores
 let shape = [];
 let bulb = [];
-let bulbPop = 4;
+let bulbPop = 6;
 let debugDisplay = false;
 let covers = [];
 let theta = 0;
 let lightColorR = 255;
 let lightColorG = 255;
 let lightColorB = 255;
+let netScore =  0;
 // let canvasShape;
 
 function setup() {
@@ -91,8 +92,6 @@ function setup() {
   oscAmbience.amp(1);
   oscAmbience.start();
 
-  print(shape);
-
   //light
   for (let i = 0; i < bulbPop; i ++){
     bulb[i] = new Bulb(lightColorR,lightColorG,lightColorB,255/(bulbPop),10,50);
@@ -133,17 +132,14 @@ function draw() {
   oscAmbienceFreq = constrain(oscAmbienceFreq, 75, 200);
   oscAmbience.freq(oscAmbienceFreq);
 
-theta += .01;
-// lightColorG -= .5;
   for (let i = 0; i < bulb.length; i ++){
     bulb[i].r = lightColorR;
     bulb[i].g = lightColorG;
     bulb[i].b = lightColorB;
-    bulb[i].y = map(sin(theta),-1,1,bulb[i].radius,height-bulb[i].radius);
     bulb[i].update();
-    fill(0);
-    ellipse(bulb[i].x,bulb[i].y,bulb[i].radius*2);
+    bulb[i].display();
   }
+  ball.displayTrail();
 
 }
 
@@ -168,7 +164,7 @@ function centerLineDisplay() {
   let lineH = height / lineAmount;
   stroke(100);
   strokeWeight(2);
-  for (i = 0; i < (lineAmount / 2); i++) {
+  for (let i = 0; i < (lineAmount / 2); i++) {
     let y1 = ((lineH * i) * 2) + (lineH / 2); //
     let y2 = y1 + lineH;
     line(xx, y1, xx, y2);
