@@ -40,8 +40,13 @@ let oscAmbience; //sin wave oscillator
 let oscAmbienceFreq = 250; //increases frequency of oscillator on collisions and scores
 let shape = [];
 let bulb = [];
+let bulbPop = 4;
 let debugDisplay = false;
 let covers = [];
+let theta = 0;
+let lightColorR = 255;
+let lightColorG = 255;
+let lightColorB = 255;
 // let canvasShape;
 
 function setup() {
@@ -69,7 +74,7 @@ function setup() {
 
   // //shape
   // for (let i = 0; i < 1; i ++){
-  //   covers[i] = new Shape(0, 0, 0, 4);
+  //   covers[i] = new Shape(0, 0, 0, 4);ds
   //   shape.push(covers[i]);
   //   for (let j = 0; j < covers.vertNumber; j++) { //set pos of vertexes
   //     covers[i].vertR[j] = this.radius+2;
@@ -89,8 +94,10 @@ function setup() {
   print(shape);
 
   //light
-  for (let i = 0; i < 1; i ++){
-    bulb[i] = new Bulb(255,255,0,255,10,15);
+  for (let i = 0; i < bulbPop; i ++){
+    bulb[i] = new Bulb(lightColorR,lightColorG,lightColorB,255/(bulbPop),10,50);
+    bulb[i].y = height;
+    bulb[i].x = (width/bulbPop) * (i+.5);
   }
 }
 
@@ -126,10 +133,16 @@ function draw() {
   oscAmbienceFreq = constrain(oscAmbienceFreq, 75, 200);
   oscAmbience.freq(oscAmbienceFreq);
 
+theta += .01;
+// lightColorG -= .5;
   for (let i = 0; i < bulb.length; i ++){
-    bulb[i].x = width/2;
-    bulb[i].y = height/2;
+    bulb[i].r = lightColorR;
+    bulb[i].g = lightColorG;
+    bulb[i].b = lightColorB;
+    bulb[i].y = map(sin(theta),-1,1,bulb[i].radius,height-bulb[i].radius);
     bulb[i].update();
+    fill(0);
+    ellipse(bulb[i].x,bulb[i].y,bulb[i].radius*2);
   }
 
 }

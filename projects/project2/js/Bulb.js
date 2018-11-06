@@ -1,5 +1,5 @@
-class Bulb{
-  constructor(r,g,b,alpha,lightPop,radius){
+class Bulb {
+  constructor(r, g, b, alpha, lightPop, radius) {
     this.x;
     this.y;
     this.light = [];
@@ -8,35 +8,35 @@ class Bulb{
     this.r = r;
     this.b = b;
     this.g = g;
-    this.noiseIndex = 0;
-    this.noiseIndexIncrement = 0.05;
 
-    for (let i = 0; i < lightPop; i ++){
+    for (let i = 0; i < lightPop; i++) {
       this.light[i] = new Light();
-      let colorVariation = (lightPop*5);
-      this.light[i].r = this.r + random(-colorVariation,colorVariation);
-      this.light[i].g = this.g + random(-colorVariation,colorVariation);
-      this.light[i].b = this.b + random(-colorVariation,colorVariation);
+      let colorVariation = (lightPop * 3);
+      this.rVariation = random(-colorVariation, colorVariation)
+      this.gVariation = random(-colorVariation, colorVariation)
+      this.bVariation = random(-colorVariation, colorVariation)
+      this.light[i].r = this.r + this.rVariation;
+      this.light[i].g = this.g + this.gVariation;
+      this.light[i].b = this.b + this.bVariation;
     }
   }
-  update(){
-
-    // this.x = mouseX;
-    // this.y = mouseY;
-    this.noiseIndex += this.noiseIndexIncrement;
-    let noiseValue = map(noise(this.noiseIndex),0,1,.7,1)
-    // this.g = map(noise(this.noiseIndex),0,1,230,255)
-    for (let i = 0; i < this.light.length; i ++){
-      let angleOffset = (TWO_PI/this.light.length)*(i+.5);
-      let xOffset = cos(angleOffset) * this.radius;
-      let yOffset = sin(angleOffset) * this.radius;
-      this.light[i].x = this.x+xOffset;
-      this.light[i].y = this.y+yOffset;
-      // this.light[i].g = this.g;
-      this.light[i].alpha = noiseValue * (this.alpha/(this.light.length));
-      this.light[i].update();
-      this.light[i].display();
+  update() {
+    for (let i = 0; i < this.light.length; i++) {
+      this.light[i].r = this.r + this.rVariation;
+      this.light[i].g = this.g + this.gVariation;
+      this.light[i].b = this.b + this.bVariation;
     }
-
+  for (let i = 0; i < this.light.length; i++) {
+    let angleOffset = (TWO_PI / this.light.length) * (i + .5);
+    let xOffset = cos(angleOffset) * this.radius;
+    let yOffset = sin(angleOffset) * this.radius;
+    this.light[i].x = this.x + xOffset;
+    this.light[i].y = this.y + yOffset;
+    // this.light[i].g = this.g;
+    this.light[i].alpha = (this.alpha / (this.light.length));
+    this.light[i].update();
+    this.light[i].display();
   }
+
+}
 }

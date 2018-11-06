@@ -59,18 +59,19 @@ class Paddle {
 
   updatePaddleVerts(){
     this.sWeight *= .995;
-    this.sWeight = constrain(this.sWeight, 1, 2);
+    this.sWeight = constrain(this.sWeight, 1, 1.2);
+    let angleOffset = .001;
     //bottom right
-    this.shape.vertAOff[0] = atan2(this.height/2,this.width/2)+random(-0.01,0.01);
+    this.shape.vertAOff[0] = atan2(this.height/2,this.width/2)+angleOffset;
     this.shape.vertR[0] = sqrt(sq(this.height/2)+sq(this.width/2))*(this.sWeight);
     //bottom left
-    this.shape.vertAOff[1] = atan2(-this.height/2,this.width/2)+random(-0.01,0.01);
+    this.shape.vertAOff[1] = atan2(-this.height/2,this.width/2)+angleOffset;
     this.shape.vertR[1] = sqrt(sq(-this.height/2)+sq(this.width/2))*(this.sWeight);
     //upper left
-    this.shape.vertAOff[2] = atan2(-this.height/2,-this.width/2)+random(-0.01,0.01);
+    this.shape.vertAOff[2] = atan2(-this.height/2,-this.width/2)+angleOffset;
     this.shape.vertR[2] = sqrt(sq(-this.height/2)+sq(-this.width/2))*(this.sWeight);
     //upper right
-    this.shape.vertAOff[3] = atan2(this.height/2,-this.width/2)+random(-0.01,0.01);
+    this.shape.vertAOff[3] = atan2(this.height/2,-this.width/2)+angleOffset;
     this.shape.vertR[3] = sqrt(sq(this.height/2)+sq(-this.width/2))*(this.sWeight);
 
   }
