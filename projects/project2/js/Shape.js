@@ -11,27 +11,27 @@ class Shape {
     this.y = y;
     this.angle = angle;
     this.vertNumber = vertNumber;
-    this.vertAOff = []; //angle offset
-    this.vertR = []; //radius
+    this.vertAOff = []; //angle offset of vertex
+    this.vertR = []; //radius of vertex (dist from origin (this.x,y))
     this.vertX = [];
     this.vertY = [];
-    this.lines = []; //line obj
+    this.lines = []; //array which stores lines
 
+    //create one line for every vertex
     for (let i = 0; i < this.vertNumber; i++) {
       this.lines[i] = new Line();
     }
   }
 
   update() {
+    //based on angleOffset+radius of vertex determine is cartesian coords
     this.updateVertCartesian();
-    this.updateLines();
+    this.updateLines(); //update the end/start points of each line
   }
 
-  updateVertCartesian() { //updates x,y of verts based on angle and r offsets
+  updateVertCartesian() { //updates x,y of verts based on angleOffset, shape's angle, and verts' radius
     for (let i = 0; i < this.vertNumber; i++) {
       this.vertX[i] = (cos(this.vertAOff[i]+this.angle) * this.vertR[i]) + this.x;
-      // print(this.vertAOff[i]);
-      // print(this.vertAOff);
       this.vertY[i] = (sin(this.vertAOff[i]+this.angle) * this.vertR[i]) + this.y;
     }
   }
@@ -51,14 +51,13 @@ class Shape {
     }
   }
 
-  display() {
-    // this.displayVerts();
+  display() { //tells line's to draw themselves
     for (let i = 0; i < this.vertNumber; i++) {
       this.lines[i].display();
     }
   }
 
-  displayVerts() {
+  displayVerts() { //draws circle at vertex
     for (let i = 0; i < this.vertNumber; i++) {
       noFill();
       stroke(255);
