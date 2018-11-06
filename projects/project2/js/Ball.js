@@ -155,10 +155,20 @@ class Ball {
   }
 
   score(){
-    netScore ++;
-    if (netScore <= 5){
-      // bulb.splice(bulb.length-1,1);
+
+    if (netScore === bulbPop -1) {
+      netScore = 0;
+      //every point remove lapha of one light
+      let moveType = round(random(3));
+      for (let i = 0; i < bulb.length; i ++){
+        bulb[i].alpha = 255/bulb.length;
+        bulb[i].moveType = moveType;
+      }
     }
+    if (bulb.length > 1){
+      bulb[netScore].alpha = 0;
+    }
+    netScore ++;
     lightColorRandomize();
   }
   canvasCollision() {

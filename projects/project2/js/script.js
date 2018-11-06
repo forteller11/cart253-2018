@@ -87,9 +87,10 @@ function setup() {
   ball.reset(direction);
 
   //light
+  let moveType = round(random(3));
   for (let i = 0; i < bulbPop; i ++){
-    bulb[i] = new Bulb(lightColorR,lightColorG,lightColorB,255/(bulbPop),10,50);
-    bulb[i].y = height;
+    bulb[i] = new Bulb(lightColorR,lightColorG,lightColorB,255/(bulbPop),10,50,moveType);
+    bulb[i].y = height-bulb[i].radius;
     bulb[i].x = (width/bulbPop) * (i+.5);
   }
 
@@ -129,10 +130,10 @@ function draw() {
     bulb[i].g = lightColorG;
     bulb[i].b = lightColorB;
     bulb[i].update();
-    // bulb[i].display();
+    bulb[i].display();
   }
   for (let i = 0; i < bulb.length; i ++){
-    // bulb[i].display();
+    bulb[i].display();
   }
 
   ball.displayTrail();

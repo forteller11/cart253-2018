@@ -1,14 +1,14 @@
 class Bulb {
-  constructor(r, g, b, alpha, lightPop, radius) {
-    this.x;
-    this.y;
+  constructor(r, g, b, alpha, lightPop, radius,moveType) {
+    this.x= width/2;
+    this.y = height/2;
     this.light = [];
     this.radius = radius;
     this.alpha = alpha;
     this.r = r;
     this.b = b;
     this.g = g;
-    this.moveType = 0;
+    this.moveType = moveType;
     this.thetaX = random(0,TWO_PI);
     this.thetaY = random(0,TWO_PI);
     this.thetaIncrement = random(0.001,.01);
@@ -25,8 +25,18 @@ class Bulb {
     }
   }
   update() {
-    this.moveSinHorz();
-    this.moveSinVert();
+    if (this.moveType === 0){
+      this.moveSinHorz();
+    } else if (this.moveType === 1){
+      this.x = width/2;
+      this.moveSinVert();
+    } else if (this.moveType ===2){
+      this.moveSinHorz();
+      this.moveSinVert();
+    } else if (this.moveType === 3){
+      this.y = this.radius;
+      this.moveSinHorz();
+    }
     for (let i = 0; i < this.light.length; i++) {
       this.light[i].r = this.r + this.rVariation;
       this.light[i].g = this.g + this.gVariation;
@@ -58,8 +68,8 @@ class Bulb {
   }
 
   display(){
-    fill(lightColorR,lightColorG,lightColorB,255/this.radius);
-    for (let j = 0; j < this.radius; j ++){
+    fill(lightColorR,lightColorG,lightColorB,(this.alpha/this.radius));
+    for (let j = 0; j < this.radius*2; j +=4){
       ellipse(this.x,this.y,j);
     }
   }
