@@ -110,7 +110,6 @@ function draw() {
   padR.flashOnScore();
   padL.flashOnScore();
 
-  centerLineDisplay(); //draw dotted line down center of screen;
   padR.update();
   padL.update();
 
@@ -137,10 +136,14 @@ function draw() {
     bulb[i].g = lightColorG;
     bulb[i].b = lightColorB;
     bulb[i].update();
+    // bulb[i].display();
+  }
+  for (let i = 0; i < bulb.length; i ++){
     bulb[i].display();
   }
   ball.displayTrail();
-
+    centerLineDisplay(); //draw dotted line down center of screen;
+// lightColorRandomize();
 }
 
 function padRReset() {
@@ -156,13 +159,79 @@ function padLReset() {
   padL.velX = 0;
   padL.velY = 0;
 }
+function lightColorRandomize(){
+  let r = random(1);
+  let rThreshold = 0;
+  let rThresholdIncrement = 0.1;
+  if (r >= rThreshold){ //purple
+    lightColorR = 155;
+    lightColorG = 120;
+    lightColorB = 255;
+    rThreshold += rThresholdIncrement;
+  }
+  if (r >= rThreshold){ //cyan
+    lightColorR = 120;
+    lightColorG = 255;
+    lightColorB = 255;
+    rThreshold += rThresholdIncrement;
+  }
+  if (r >= rThreshold){ //green
+    lightColorR = 150;
+    lightColorG = 255;
+    lightColorB = 200;
+    rThreshold += rThresholdIncrement;
+  }
+  if (r >= rThreshold){ //lime 5
+    lightColorR = 200;
+    lightColorG = 255;
+    lightColorB = 65;
+    rThreshold += rThresholdIncrement;
+  }
+  if (r >= rThreshold){ //pale yellow
+    lightColorR = 230;
+    lightColorG = 255;
+    lightColorB = 135;
+    rThreshold += rThresholdIncrement;
+  }
+  if (r >= rThreshold){ //hard yellow
+    lightColorR = 255;
+    lightColorG = 235;
+    lightColorB = 60;
+    rThreshold += rThresholdIncrement;
+  }
+  if (r >= rThreshold){ //orange
+    lightColorR = 255;
+    lightColorG = 181;
+    lightColorB = 80;
+    rThreshold += rThresholdIncrement;
+  }
+  if (r >= rThreshold){ //red
+    lightColorR = 255;
+    lightColorG = 80;
+    lightColorB = 80;
+    rThreshold += rThresholdIncrement;
+  }
+  if (r >= rThreshold){ //magenta
+    lightColorR = 255;
+    lightColorG = 105;
+    lightColorB = 207;
+    rThreshold += rThresholdIncrement;
+  }
+  if (r >= rThreshold){ //blue
+    print(rThreshold);
+    lightColorR = 90;
+    lightColorG = 205;
+    lightColorB = 255;
+    rThreshold += rThresholdIncrement;
+  }
 
+}
 function centerLineDisplay() {
   //draws dotted line down center of screen
   let xx = width / 2;
   let lineAmount = 40;
   let lineH = height / lineAmount;
-  stroke(100);
+  stroke(random(25),random(25),random(25),50);
   strokeWeight(2);
   for (let i = 0; i < (lineAmount / 2); i++) {
     let y1 = ((lineH * i) * 2) + (lineH / 2); //

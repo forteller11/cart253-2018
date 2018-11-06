@@ -64,6 +64,7 @@ class Ball {
   }
 
   update() {
+
     this.changePosition();
     // this.updateOscillator();
     // this.displayTrail();
@@ -177,39 +178,36 @@ class Ball {
 
   }
 
+  score(){
+    netScore ++;
+    if (netScore <= 5){
+      // bulb.splice(bulb.length-1,1);
+    }
+    lightColorRandomize();
+  }
   canvasCollision() {
 
     //if ball goes off left then rightpaddle score increases
     if (this.x + (this.radius * 4) < 0) {
       this.oscAdrenalineAmp = this.collisionAmp;
       padR.score++;
-      netScore ++;
+      this.score();
       padR.scored = .5;
       padR.hit = 1; //fill the scoring paddle with colour
       this.reset(1);
       oscAmbienceFreq += 70; //increases frequency of oscillator
-      if (netScore <= 5){
-        bulb.splice(bulb.length-1,1);
-      }
+
     }
     //if ball goes off right then leftpaddle score increases
     if (this.x - (this.radius * 4) > width) {
       this.oscAdrenalineAmp = this.collisionAmp;
       padL.score++;
-      netScore ++;
       padL.scored = .5;
+      this.score();
       padL.hit = 1; //fill the scoring paddle with colour
       this.reset(-1);
       oscAmbienceFreq += 70;
-      if (netScore <= 5){
-        bulb.splice(bulb.length-1,1);
-      } else {
-        // for (let i = 0; i < bulbPop; i ++){
-        //   bulb[i] = new Bulb(lightColorR,lightColorG,lightColorB,255/(bulbPop),10,50);
-        //   bulb[i].y = height;
-        //   bulb[i].x = (width/bulbPop) * (i+.5);
-        // }
-      }
+
 
     }
 

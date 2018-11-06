@@ -58,8 +58,7 @@ class Bulb {
   }
 
   display(){
-    let lightBlur = this.radius;
-    fill(lightColorR,lightColorG,lightColorB,1);
+    fill(lightColorR,lightColorG,lightColorB,255/this.radius);
     for (let j = 0; j < this.radius; j ++){
       ellipse(this.x,this.y,j);
     }
