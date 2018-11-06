@@ -241,7 +241,6 @@ function lightColorRandomize(){
     rThreshold += rThresholdIncrement;
   }
   if (r >= rThreshold){ //blue
-    print(rThreshold);
     lightColorR = 90;
     lightColorG = 205;
     lightColorB = 255;
