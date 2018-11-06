@@ -102,6 +102,7 @@ class Bulb {
 
   display(){ //creates a blurred ellipse where the Bulb is
     fill(lightColorR,lightColorG,lightColorB,(this.alpha/this.radius));
+    noStroke();
     for (let j = 0; j < this.radius*2; j +=4){
       ellipse(this.x,this.y,j);
     }

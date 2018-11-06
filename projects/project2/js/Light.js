@@ -91,6 +91,7 @@ class Light {
     and then fills in the space inbetween. It starts at the ray with the smallest angle
     and works its way up to the ray with the largest angle. */
     fill(this.r,this.g,this.b,this.alpha);
+    noStroke();
     beginShape();
     vertex(this.parentRay[0].x,this.parentRay[0].y); //origin
     for (let i = 0; i < this.parentRay.length; i ++){

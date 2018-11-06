@@ -29,7 +29,6 @@ class Ray {
     this.angle; //angle
     this.hasChildren = createChildren; //true or false, does this ray have children?
     this.children = []; //the array where any children will be put
-    this.debug = false;
     //if set to create children create two rays who are set NOT to create children.
     if (createChildren === true) {
       this.children[0] = new Ray(targetX, targetY, false);
@@ -143,7 +142,7 @@ class Ray {
     let newAngle = atan2(yVec, xVec);
     newAngle = map(newAngle, -PI, PI, 0, PI * 2);
     this.angle = newAngle;
-    if (this.debug === true) { //draws angles if debugMode is on
+    if (debugDisplay === true) { //draws angles if debugMode is on
       noStroke();
       fill(180);
       text(round(this.angle * 10000) / 10000, this.collidedX + 20, this.collidedY);
