@@ -4,8 +4,6 @@ to the shape's origin point, then it calculates the cartesian coords of the vert
 every frame. It also creates instance of the Line class which it gives two verts as
 the lines start and end points.
 
-and then converts this to find its cartesian cordinates every frame.
-
 */
 class Shape {
   constructor(x, y, angle, vertNumber) {

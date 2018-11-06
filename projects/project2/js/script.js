@@ -63,7 +63,7 @@ let oscAmbienceFreq = 250; //increases frequency of oscillator on collisions and
 let shape = [];
 let bulb = [];
 let bulbPop = 6;
-let debugDisplay = false;
+const debugDisplay = false;
 let covers = [];
 let theta = 0;
 let lightColorR = 0;
@@ -80,10 +80,6 @@ let imgBorder4;
 let imgVignette;
 function preload() {
   imgTitle = loadImage('images/title.png');
-  imgBorder1 = loadImage('images/border1.png');
-  imgBorder2 = loadImage('images/border2.png');
-  imgBorder3 = loadImage('images/border3.png');
-  imgBorder4 = loadImage('images/border4.png');
   imgVignette = loadImage('images/vignette.png');
 }
 
@@ -183,11 +179,7 @@ function draw() {
   image(imgVignette,0,0,width,height);
 }
 
-let w = imgBorder1.width;
-image(imgBorder1,0,0);
-image(imgBorder2,width-w,0);
-image(imgBorder3,width-w,height-w);
-image(imgBorder4,0,height-w);
+
 
 }
 

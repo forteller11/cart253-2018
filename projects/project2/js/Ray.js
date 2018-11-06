@@ -1,3 +1,14 @@
+/*
+a Ray has an origin (this.x,this.y) and a target(x,y) which represents the position of
+a unique vertex of a Shape class. It's main job is checking to see if it intersects
+with a line within a shape. It does this by itterating through every line in the scene,
+coverting the start/endpoints of itself and the line into slope form, and then using pretty
+basic algebra to where the two functions intersect, it records the shortest point
+of intersection (from its origin) in the collidedX,collidedY variables, which are later
+used by the light Class to actually draw the light.
+
+
+*/
 class Ray {
   constructor(targetX, targetY, createChildren) {
     this.x;
@@ -54,9 +65,6 @@ class Ray {
   }
 
   checkIntersection() {
-    //check if not infinit, parrellel, 0
-
-    //convert point form to y = mx+b
     //find slope
     this.collidedX = Infinity;
     this.collidedY = Infinity;
@@ -136,16 +144,8 @@ class Ray {
   }
   calculateTargetBasedOnAngle(angle, index) {
     let radius = sqrt(sq(this.targetX - this.x) + sq(this.targetY - this.y));
-    // let vecX = this.targetX - this.x;
-    // let vecY = this.targetY - this.y;
     this.children[index].targetX = (-cos(angle) * radius) + this.x;
     this.children[index].targetY = (-sin(angle) * radius) + this.y;
-    // strokeWeight(30);
-    // stroke(0);
-    // line(this.x,this.y,this.targetX,this.targetY);
-    // angleMode(DEGREES);
-
-
   }
 
   display() {
