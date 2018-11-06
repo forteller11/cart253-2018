@@ -28,7 +28,10 @@ and are interupted by the Shape/Line classes...
 Shape/Line:
 The shape class's job is to store and move a set of points, it then creates instances
 of the Line class which are each asigned two of these points so that the lines form
-an enclosed shape around the verts.
+an enclosed shape around the verts. the paddles and balls each have their own Shape
+objects which represent their light hit-box. The ball also has the canvas-Shape which
+is a shape in the shape of the canvas so rays will always intersect with something.
+
 Ray/Light/Bulb:
 the Ray is a infinite line that checks collision with all lines in the scene and stores
 the nearest collision.

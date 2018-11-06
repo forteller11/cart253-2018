@@ -1,3 +1,7 @@
+/*
+has shape class which stores verts equal to the 4 points of the paddle, besides
+that virtually all this class's code comes from exercise 5
+*/
 class Paddle {
   constructor(upKey, downKey, leftKey, rightKey, fluidKey, r, g, b) {
     //stores key codes to move and shoot fluid from the paddle

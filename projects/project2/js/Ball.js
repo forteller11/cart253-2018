@@ -1,3 +1,11 @@
+/*
+has stwo shape classes, one whose verts = the 4 corners of the ball, the other whose
+4 verts = the 4 corners of the canvas.
+on every point the ball calls the this.score() function which dims a bulb in the scene,
+randomizes the lights' colors, and changes the movementType of all bulbs every 6 points...
+Besides that the ball class's code is fundementallythe same from exercise 5;
+*/
+
 class Ball {
   constructor() {
     this.x;
