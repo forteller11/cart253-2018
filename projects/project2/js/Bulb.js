@@ -21,7 +21,8 @@ class Bulb {
     this.thetaY = random(0,TWO_PI); //used in the sin and noise functions to determine y pos
     this.thetaIncrement = random(0.001,.01); //used to increase thetax,y everyframe
 
-    //create children, and offset their color slightly from the Bulbs (to create subtle chromatic abberation)
+    //create children,
+    //give them a random color offset (to create subtle chromatic abberation)
     for (let i = 0; i < lightPop; i++) {
       this.light[i] = new Light();
       let colorVariation = (lightPop * 10);
@@ -60,13 +61,18 @@ class Bulb {
       this.x = this.radius;
       this.moveSinVert();
     }
-    //
+
+    this.spreadLights(); //set light position
+
+    //set lights' color to Bulb's color with their color offsets (cVariations)
     for (let i = 0; i < this.light.length; i++) {
       this.light[i].r = this.r + this.light[i].rVariation;
       this.light[i].g = this.g + this.light[i].gVariation;
       this.light[i].b = this.b + this.light[i].bVariation;
+      this.light[i].alpha = (this.alpha / (this.light.length));
+      this.light[i].update();
+      this.light[i].display();
     }
-    this.spreadLights();
 
   }
   moveNoise(){
@@ -84,21 +90,17 @@ class Bulb {
     this.thetaX += this.thetaIncrement;
     this.x = map(sin(this.thetaX),-1,1,this.radius,width-this.radius);
   }
-  spreadLights(){
+  spreadLights(){ //revolves lights around Bulb's origin evenly (polar-->cartesian)
     for (let i = 0; i < this.light.length; i++) {
       let angleOffset = (TWO_PI / this.light.length) * (i + .5);
       let xOffset = cos(angleOffset) * this.radius;
       let yOffset = sin(angleOffset) * this.radius;
       this.light[i].x = this.x + xOffset;
       this.light[i].y = this.y + yOffset;
-      // this.light[i].g = this.g;
-      this.light[i].alpha = (this.alpha / (this.light.length));
-      this.light[i].update();
-      this.light[i].display();
     }
   }
 
-  display(){
+  display(){ //creates a blurred ellipse where the Bulb is
     fill(lightColorR,lightColorG,lightColorB,(this.alpha/this.radius));
     for (let j = 0; j < this.radius*2; j +=4){
       ellipse(this.x,this.y,j);

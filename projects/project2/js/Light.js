@@ -28,8 +28,8 @@ class Light {
     }
   }
   update(){
-    // this.setOrigin();
-    //set target of every light.parentRay to a unique vertex in the scene
+  /* set every parentRay (ray with children) target to a unique vertex in the scene,
+  set its origin to the light's origin, update the ray */
     let k = 0;
     for (let i = 0; i < shape.length; i++) {
       for (let j = 0; j < shape[0].vertNumber; j++) {
@@ -41,19 +41,23 @@ class Light {
         k++;
       }
     }
-    this.selectionSort();
-    this.display();
+    this.selectionSort(); //sort the rays by their angles
+    this.display(); //using data from the rays fill in a shape (this is what draws the light)
   }
-  setOrigin(){
-    this.x = mouseX;
-    this.y = mouseY;
-  }
+
   selectionSort(){
+    /*selectionSort parentRay array by their angles... It basically cycles through
+    the array and finds the smallest value and puts it at the start of the array, then
+    itterates through the array again but starts at index 1, finds the smallest value
+    and puts it at index one, now it starts at index 2....
+     (this really should be at least an insertion-sort algorithim because selection-sort
+     always takes the same amount of calculations even if the array is already sorted,
+      but it is slightly harder to implement) */
     for (let i = 0; i < this.parentRay.length; i++) {
       let smallestValue = Infinity;
       let smallestValueIndex;
       for (let j = i; j < this.parentRay.length; j++) {
-        //cycle through arthis.parentRay, find smallest value
+        //cycle through this.parentRay[], find index of smallest value
         if (this.parentRay[j].angle < smallestValue) {
           smallestValueIndex = j;
           smallestValue = this.parentRay[j].angle;
@@ -64,14 +68,14 @@ class Light {
           this.parentRay[i] = this.parentRay[smallestValueIndex];
           this.parentRay[smallestValueIndex] = parentRayStore;
         }
-        //then increment i and repeat until arparentRay is sorted...
+        //then increment i and repeat until parentRay[] is sorted...
       }
     }
   }
 
   display(){
     this.displayFill();
-    if (debugDisplay === true){
+    if (debugDisplay === true){ //if debug mode is on this draws the lines of the rays
       let k = 0;
       for (let i = 0; i < shape.length; i++) {
         for (let j = 0; j < shape[0].vertNumber; j++) {
@@ -83,8 +87,10 @@ class Light {
     }
   }
   displayFill(){
+    /*This displays the "light", it connects the dots between all the the rays,
+    and then fills in the space inbetween. It starts at the ray with the smallest angle
+    and works its way up to the ray with the largest angle. */
     fill(this.r,this.g,this.b,this.alpha);
-    stroke(255,255,255,0);
     beginShape();
     vertex(this.parentRay[0].x,this.parentRay[0].y); //origin
     for (let i = 0; i < this.parentRay.length; i ++){
