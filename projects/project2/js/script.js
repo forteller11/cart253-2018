@@ -1,30 +1,52 @@
 /*****************
 
-Exercise 5
+Project 2
 Charly Yan Miller
-a game of 2 dimensional pong, with extra visual flourish and pre ES6 obj-oriented programming.
+a game of 2 dimensional pong -- and some lights.
 
-Objects:
-I used pre ES6 object-oriented paradigms/syntax
+Overview of Design:
+In many ways this project is simply an aesthetic change (upgrade?) to exercise 5 which was
+a game of 2D PONG where the velocity of the ball as result of a collision with a paddle depended on
+the current paddle velocity and how close to the center of the screen the paddle was
+on collision.
+Originally light had a more mechanical rather than aesthetic role to play, I was
+thinking players would be able to manipulate lights by hitting switches with balls
+or their own bodie, and also lights would have fall-off and therefore when
+the ball wasn't near any light-sources the ball would be effectively invisble and players would
+have to keep track of the balls velocity mentally...
+However in the final version due to programmatic shortcomings lights have come to play
+a princpally aesthetic role in the game. At the start of the game there are 6 light-sources "Bulbs"
+and every time a player scores the lights change colours and a light turns off,
+once there is only one light the score turns all the lights back on, and changes
+the way they move about the canvas.
 
-Collsiion changes:
-made collsions more robust --> now collisions are independant of paddle-side (left or right),
-now paddles know from which direction a collision happened and can push balls into their
-own court with the back of thier paddle (before collisions with back of the paddle did not behave realistically)
-now balls MORE realistically collide with the tops and bottoms of paddles
+Overview of Code:
+Basically there are two types of objects with deal with lights, there is the Shape
+and Line class who serve to act as obstacles for light to be blocked by and cause shadows.
+Then there are the Ray, Light and Bulb class who cast out "rays" in all directions
+and are interupted by the Shape/Line classes...
+Shape/Line:
+The shape class's job is to store and move a set of points, it then creates instances
+of the Line class which are each asigned two of these points so that the lines form
+an enclosed shape around the verts.
+Ray/Light/Bulb:
+the Ray is a infinite line that checks collision with all lines in the scene and stores
+the nearest collision.
+the Light class is responsible for creating a ray pointed in at every vert in the scene,
+updating the rays, sorting the rays according to their angle, and then drawing a
+line between the nearest collision point of every ray and filling this area in, effectively
+creating a single light-source.
+the Bulb class stores several lights evenly spread out around its x/y position, the
+Bulb class's purpose is to create soft shadows.
 
-Visual Changes:
-- gave the fill of paddles a new animation (now it's size continually decreases instead of the opacity slowly fading out)
-now the fill of paddles actually reflects the force o collision with a ball.
-On collision w/ball the stroke of the paddle increases based on the force of collision
 
-- new ball animations: breifly increase the size of ball on collision w/paddle
- decreases size of ball on collison w/ceiling/floor
-ball trails now taper slighly
 
-- now the pitch that is added to the ambientOsccilator on collisions changes
- with the force of said collison
 
+Credits:
+Used developer Nick Liow's toturial on 2D ray casting/lighting "Sight and Light"
+almost all the ideas of how to create 2D lighting system were taken from this toturial,
+actual code-level implementation details were not used.
+https://ncase.me/sight-and-light/
 
 Credits:
 used p5.js references to setup the oscillator p5.sound objects

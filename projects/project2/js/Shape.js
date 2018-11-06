@@ -1,3 +1,12 @@
+/*
+Shape stores an arbitrary number of verts by storing their angle and radius relative
+to the shape's origin point, then it calculates the cartesian coords of the vertexes
+every frame. It also creates instance of the Line class which it gives two verts as
+the lines start and end points.
+
+and then converts this to find its cartesian cordinates every frame.
+
+*/
 class Shape {
   constructor(x, y, angle, vertNumber) {
     this.x = x;
@@ -9,13 +18,7 @@ class Shape {
     this.vertX = [];
     this.vertY = [];
     this.lines = []; //line obj
-    // //create vertexes
-    // for (let i = 0; i < this.vertNumber; i++) {
-    //   this.vertXOff[i] = 0;
-    //   this.vertYOff[i] = 0;
-    // }
-    // this.updateVert();
-    //create Lines
+
     for (let i = 0; i < this.vertNumber; i++) {
       this.lines[i] = new Line();
     }
