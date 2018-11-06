@@ -2,10 +2,15 @@
 a Ray has an origin (this.x,this.y) and a target(x,y) which represents the position of
 a unique vertex of a Shape class. It's main job is checking to see if it intersects
 with a line within a shape. It does this by itterating through every line in the scene,
-coverting the start/endpoints of itself and the line into slope form, and then using pretty
-basic algebra to where the two functions intersect, it records the shortest point
+coverting the start/endpoints of itself and the line into slope form, and then using
+ algebra to find out where the two functions intersect, it records the shortest point
 of intersection (from its origin) in the collidedX,collidedY variables, which are later
-used by the light Class to actually draw the light.
+used by the light Class to actually draw the light. Rays also calculate and store the
+angle of their line (origin --> target).
+Rays CAN also have children, parentRays controlled by the light object will each
+contain two children which its responsible for updating. parentRays offset its childrens
+ targetX,Y by a small angle this is done so there are rays which go past vertexes
+  to cast realistic shadows.
 
 
 */
@@ -16,9 +21,6 @@ class Ray {
     this.r = 0;
     this.g = 0;
     this.b = 0;
-    // this.angle = angle;
-    // this.vecX = (cos(this.angle) * this.r);
-    // this.vecY = (sin(this.angle) * this.r);
 
     this.targetX = targetX; //where the line is pointed (xvec)
     this.targetY = targetY; //where the line is pointed (yvec)

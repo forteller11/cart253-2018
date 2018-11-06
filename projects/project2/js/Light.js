@@ -1,11 +1,18 @@
+/*
+A light is responsble for creating a ray (which contain 2 children) for every vertex in the scene and setting
+its target to that vertex, it also sets its rays' origin to its own x,y. After the
+its rays' check collision with the lines it sorts the rays in an array according to
+their angle. Using the sorted array Light fills ("displayFill" method) in the space between the stored collisions
+of every child ray using an opacity and colour given to it by the Bulb class.
+*/
 class Light {
   constructor(){
     this.x;
     this.y;
-    this.r = 255;
-    this.g = 255;
-    this.b = 0;
-    this.alpha = 20;
+    this.r;
+    this.g;
+    this.b;
+    this.alpha;
 
     this.parentRay = [];
     //create one parentRay for every vertex in the scene

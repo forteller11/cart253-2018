@@ -1,3 +1,11 @@
+/*
+The bulb class stores and sets the position of an arbitrary amount of light objects,
+it spreads the lights evenly around its origin according to a radius. The Bulb gives
+each light object a slightly different hue effectively create chromatic abberation
+and visual flourish.
+The bulb class has several movementTypes/(states) which determine the way in which
+it (and its many children) moves about the canvas, according to either a sin-wave or perlin-noise function.
+*/
 class Bulb {
   constructor(r, g, b, alpha, lightPop, radius,moveType) {
     this.x= width/2;
