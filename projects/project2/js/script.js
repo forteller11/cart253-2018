@@ -41,6 +41,7 @@ let oscAmbienceFreq = 250; //increases frequency of oscillator on collisions and
 let shape = [];
 let bulb = [];
 let debugDisplay = false;
+let covers = [];
 // let canvasShape;
 
 function setup() {
@@ -66,15 +67,17 @@ function setup() {
   }
   ball.reset(direction);
 
-//canvas shape
-// canvasShape = new Shape(this.x, this.y, 0, 4);
-// shape.push(canvasShape);
-// for (let j = 0; j < canvasShape.vertNumber; j++) { //set pos of vertexes
-//   canvasShape.vertR[j] = sqrt(sq(width/2)+sq(height/2));
-//   canvasShape.vertAOff[j] = (TWO_PI/canvasShape.vertNumber*j) + QUARTER_PI +random(-0.0001,0.0001);
-// }
-// canvasShape.update();
-// canvasShape.display();
+  // //shape
+  // for (let i = 0; i < 1; i ++){
+  //   covers[i] = new Shape(0, 0, 0, 4);
+  //   shape.push(covers[i]);
+  //   for (let j = 0; j < covers.vertNumber; j++) { //set pos of vertexes
+  //     covers[i].vertR[j] = this.radius+2;
+  //     covers[i].vertAOff[j] = (TWO_PI/covers.vertNumber*j) + QUARTER_PI +random(-0.0001,0.0001);
+  //   }
+  //   covers[i].update();
+  //   covers[i].display();
+  // }
 
   //oscillator which increases frequency on scores and collisions
   oscAmbience = new p5.Oscillator();
@@ -108,6 +111,17 @@ function draw() {
   //deal with Ball
   ball.update();
 
+  //shape
+  for (let i = 0; i < shape.length; i ++){
+    // for (let j = 0; j < covers.vertNumber; j++) { //set pos of vertexes
+    //   covers[i].vertR[j] = this.radius+2;
+    //   covers[i].vertAOff[j] = (TWO_PI/covers.vertNumber*j) + QUARTER_PI +random(-0.0001,0.0001);
+    // }
+    shape[i].update();
+    // shape[i].display();
+  }
+
+  //sound
   oscAmbienceFreq *= .98;
   oscAmbienceFreq = constrain(oscAmbienceFreq, 75, 200);
   oscAmbience.freq(oscAmbienceFreq);

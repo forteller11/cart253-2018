@@ -31,19 +31,7 @@ class Paddle {
     //shape
     this.shape = new Shape(this.x, this.y, 0, 4);
     shape.push(this.shape);
-    //bottom right
-    this.shape.vertAOff[0] = atan2(this.height/2,this.width/2)+random(-0.0001,0.0001);
-    this.shape.vertR[0] = sqrt(sq(this.height/2)+sq(this.width/2));
-    //bottom left
-    this.shape.vertAOff[1] = atan2(-this.height/2,this.width/2)+random(-0.0001,0.0001);
-    this.shape.vertR[1] = sqrt(sq(-this.height/2)+sq(this.width/2));
-    //upper left
-    this.shape.vertAOff[2] = atan2(-this.height/2,-this.width/2)+random(-0.0001,0.0001);
-    this.shape.vertR[2] = sqrt(sq(-this.height/2)+sq(-this.width/2));
-    //upper right
-    this.shape.vertAOff[3] = atan2(this.height/2,-this.width/2)+random(-0.0001,0.0001);
-    this.shape.vertR[3] = sqrt(sq(this.height/2)+sq(-this.width/2));
-
+    this.updatePaddleVerts();
     this.shape.update();
     // this.shape.display();
 
@@ -56,6 +44,7 @@ class Paddle {
   }
 
   update(){
+    this.updatePaddleVerts();
     this.accelerate(); //deal with inputs
     this.changePos(); //move
     this.updateOscillator();
@@ -66,10 +55,25 @@ class Paddle {
     // this.displayPaddle(); //outline of paddle
     this.shape.x = this.x;
     this.shape.y = this.y;
-    this.shape.update();
-    // this.shape.display();
   }
 
+  updatePaddleVerts(){
+    this.sWeight *= .995;
+    this.sWeight = constrain(this.sWeight, 1, 2);
+    //bottom right
+    this.shape.vertAOff[0] = atan2(this.height/2,this.width/2)+random(-0.01,0.01);
+    this.shape.vertR[0] = sqrt(sq(this.height/2)+sq(this.width/2))*(this.sWeight);
+    //bottom left
+    this.shape.vertAOff[1] = atan2(-this.height/2,this.width/2)+random(-0.01,0.01);
+    this.shape.vertR[1] = sqrt(sq(-this.height/2)+sq(this.width/2))*(this.sWeight);
+    //upper left
+    this.shape.vertAOff[2] = atan2(-this.height/2,-this.width/2)+random(-0.01,0.01);
+    this.shape.vertR[2] = sqrt(sq(-this.height/2)+sq(-this.width/2))*(this.sWeight);
+    //upper right
+    this.shape.vertAOff[3] = atan2(this.height/2,-this.width/2)+random(-0.01,0.01);
+    this.shape.vertR[3] = sqrt(sq(this.height/2)+sq(-this.width/2))*(this.sWeight);
+
+  }
   updateOscillator(){
     //changes frequency and amp based of oscillator based off net velocities of paddles
     this.oscAdrenalineFreq = 2 * (abs(this.velX*2) + abs(this.velY) + 20);
@@ -112,6 +116,7 @@ class Paddle {
 
     this.sWeight *= .9;
     constrain(this.sWeight, 0, 1);
+
     stroke(this.r, this.g, this.b);
     //draw paddle with width and color, increase stroke weight as paddle is closer to center of screen
 
@@ -262,10 +267,10 @@ class Paddle {
         let xMagnitude = abs(ball.velX);
         //change sound and animations/graphics based upon x speed of ball
         ball.whiteFlash = map(xMagnitude, 0, ball.maxVelX, 0, 3); //makes ball flash white
-        ball.sizeFlash = map(xMagnitude, 0, ball.maxVelX, 1, 1.8); //makes ball briefly enlarge
+        ball.sizeFlash = map(xMagnitude, 0, ball.maxVelX, 1, 3); //makes ball briefly enlarge
         //this.hit = map(xMagnitude,0,ball.maxVelX,0,1); //
         this.fillMeter = map(xMagnitude, 0, ball.maxVelX, 0, 1);
-        this.sWeight = map(xMagnitude, 0, ball.maxVelX, 1, 2); //makes ball briefly enlarge
+        this.sWeight = map(xMagnitude, 0, ball.maxVelX, 1, 1.5); //makes ball briefly enlarge
         //increase frequency of oscillator
         oscAmbienceFreq += map(xMagnitude, 0, ball.maxVelX, 0, 40) + 10;
       }

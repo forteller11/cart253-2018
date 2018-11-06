@@ -44,8 +44,6 @@ class Ball {
         this.canvasShape.vertR[j] = sqrt(sq(width/2)+sq(height/2));
         this.canvasShape.vertAOff[j] = (TWO_PI/this.canvasShape.vertNumber*j) + QUARTER_PI +random(-0.0001,0.0001);
       }
-      this.canvasShape.update();
-      this.canvasShape.display();
 
 }
 
@@ -54,16 +52,16 @@ update(){
   // this.updateOscillator();
   // this.displayTrail();
   // this.display();
-  this.decrementFlashVars();
   this.shape.x = this.x;
   this.shape.y = this.y;
-  this.shape.update();
-  // this.shape.display();
+  for (let j = 0; j < this.shape.vertNumber; j++) { //set pos of vertexes
+    this.shape.vertR[j] = this.radius*this.sizeFlash;
+  }
+  this.decrementFlashVars();
 
   this.canvasShape.x = width/2;
   this.canvasShape.y = height/2;
-  this.canvasShape.update();
-  this.canvasShape.display();
+
 }
 changePosition() {
   this.x += this.velX;
