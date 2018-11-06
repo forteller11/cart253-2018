@@ -42,8 +42,13 @@ creating a single light-source.
 the Bulb class stores several lights evenly spread out around its x/y position, the
 Bulb class's purpose is to create soft shadows.
 
-Script Overview:
-
+grade rational:
+did not add ball class because I already added a ton of other classes with complex movement
+systems which hopefully displays a similar programatic ability; did not add a winstate
+because I want the dotted lines which represent player-score to gradually fill up the screen,
+which would take hundreds of points to fill up completely (will never normally happen)
+and therefore a win-screen is not necessary, hopefully by title screen demonstrates
+my know how to create this type of effect.
 
 
 Credits:
