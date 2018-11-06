@@ -50,7 +50,7 @@ class Paddle {
     this.updateOscillator();
     this.checkBallCollision();
     //display
-    this.displayScore(); //paddles score
+    // this.displayScore(); //paddles score
     // this.displayFillMeter(); //meter in paddle
     // this.displayPaddle(); //outline of paddle
     this.shape.x = this.x;
@@ -290,8 +290,8 @@ class Paddle {
 
     let lineAmount = 40; //amount of dotted lines (spaces included)
     let lineH = height / lineAmount; //height in pixels of every line
-    stroke(this.r, this.g, this.b);
-    strokeWeight(minStrokeWidth);
+    stroke(255,255,255,150);
+    strokeWeight(minStrokeWidth+1);
     for (let i = 0; i < this.score; i++) {
       //used to wrap the lines vertically once at edge of canvas, will = 0 until this.score > 20
       let yOffset = floor(map(i, 0, 20, 0, 1));

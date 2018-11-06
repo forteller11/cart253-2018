@@ -44,9 +44,9 @@ let bulbPop = 6;
 let debugDisplay = false;
 let covers = [];
 let theta = 0;
-let lightColorR = 255;
-let lightColorG = 255;
-let lightColorB = 255;
+let lightColorR = 0;
+let lightColorG = 0;
+let lightColorB = 0;
 let netScore =  0;
 
 //imgs
@@ -86,17 +86,12 @@ function setup() {
   }
   ball.reset(direction);
 
-  // //shape
-  // for (let i = 0; i < 1; i ++){
-  //   covers[i] = new Shape(0, 0, 0, 4);ds
-  //   shape.push(covers[i]);
-  //   for (let j = 0; j < covers.vertNumber; j++) { //set pos of vertexes
-  //     covers[i].vertR[j] = this.radius+2;
-  //     covers[i].vertAOff[j] = (TWO_PI/covers.vertNumber*j) + QUARTER_PI +random(-0.0001,0.0001);
-  //   }
-  //   covers[i].update();
-  //   covers[i].display();
-  // }
+  //light
+  for (let i = 0; i < bulbPop; i ++){
+    bulb[i] = new Bulb(lightColorR,lightColorG,lightColorB,255/(bulbPop),10,50);
+    bulb[i].y = height;
+    bulb[i].x = (width/bulbPop) * (i+.5);
+  }
 
   //oscillator which increases frequency on scores and collisions
   oscAmbience = new p5.Oscillator();
@@ -104,46 +99,31 @@ function setup() {
   oscAmbience.freq(oscAmbienceFreq);
   oscAmbience.amp(1);
   oscAmbience.start();
-
-  //light
-  for (let i = 0; i < bulbPop; i ++){
-    bulb[i] = new Bulb(lightColorR,lightColorG,lightColorB,255/(bulbPop),10,50);
-    bulb[i].y = height;
-    bulb[i].x = (width/bulbPop) * (i+.5);
-  }
 }
 
 function draw() {
+  if (netScore === 0) {
+    let lightIncrement = 10;
+    lightColorR +=lightIncrement;
+    lightColorG +=lightIncrement;
+    lightColorB +=lightIncrement;
+  }
   background(0);
-  // canvasShape.x = width/2;
-  // canvasShape.y = height/2;
-  // canvasShape.update();
-  // canvasShape.display();
 
   padR.flashOnScore();
   padL.flashOnScore();
-
   padR.update();
   padL.update();
 
-  //deal with Ball
   ball.update();
 
   //shape
   for (let i = 0; i < shape.length; i ++){
-    // for (let j = 0; j < covers.vertNumber; j++) { //set pos of vertexes
-    //   covers[i].vertR[j] = this.radius+2;
-    //   covers[i].vertAOff[j] = (TWO_PI/covers.vertNumber*j) + QUARTER_PI +random(-0.0001,0.0001);
-    // }
     shape[i].update();
     // shape[i].display();
   }
 
-  //sound
-  oscAmbienceFreq *= .98;
-  oscAmbienceFreq = constrain(oscAmbienceFreq, 75, 200);
-  oscAmbience.freq(oscAmbienceFreq);
-
+  //lights
   for (let i = 0; i < bulb.length; i ++){
     bulb[i].r = lightColorR;
     bulb[i].g = lightColorG;
@@ -152,16 +132,24 @@ function draw() {
     // bulb[i].display();
   }
   for (let i = 0; i < bulb.length; i ++){
-    bulb[i].display();
+    // bulb[i].display();
   }
+
   ball.displayTrail();
   centerLineDisplay(); //draw dotted line down center of screen;
+  padL.displayScore();
+  padR.displayScore();
   image(imgVignette,0,0,width,height);
   let w = imgBorder1.width;
   image(imgBorder1,0,0);
   image(imgBorder2,width-w,0);
   image(imgBorder3,width-w,height-w);
   image(imgBorder4,0,height-w);
+
+  //sound
+  oscAmbienceFreq *= .98;
+  oscAmbienceFreq = constrain(oscAmbienceFreq, 75, 200);
+  oscAmbience.freq(oscAmbienceFreq);
 
 }
 
@@ -251,7 +239,7 @@ function centerLineDisplay() {
   let lineAmount = 40;
   let lineH = height / lineAmount;
   stroke(random(25),random(25),random(25),50);
-  strokeWeight(2);
+  strokeWeight(3);
   for (let i = 0; i < (lineAmount / 2); i++) {
     let y1 = ((lineH * i) * 2) + (lineH / 2); //
     let y2 = y1 + lineH;

@@ -26,22 +26,6 @@ class Ball {
     this.oscAdrenaline.freq(this.oscAdrenalineFreq);
     this.oscAdrenaline.amp(this.oscAdrenalineAmp);
     this.oscAdrenaline.start();
-    this.shape2 = [];
-    this.dottedLine = [];
-    this.lineAmount = 40;
-    // //draws dotted line down center of screen
-    // let xx = width / 2;
-    // let lineH = height / this.lineAmount;
-    // for (let i = 0; i < (this.lineAmount / 2); i++) {
-    //   let y1 = ((lineH * i) * 2) + (lineH / 2)
-    //   this.dottedLine[i] = new Shape(xx, y1, 0, 2);
-    //   shape.push(this.dottedLine[i]);
-    //   for (let j = 0; j < this.dottedLine.vertNumber; j++) { //set pos of vertexes
-    //     this.dottedLine[i].vertR[j] = i * lineH;
-    //     this.dottedLine[i].vertAOff[j] = QUARTER_PI + random(-0.0001, 0.0001);
-    //   }
-    // }
-
 
     //shape
     this.shape = new Shape(this.x, this.y, 0, 4);
@@ -82,15 +66,7 @@ class Ball {
 
     this.canvasShape.x = width / 2;
     this.canvasShape.y = height / 2;
-    // //draws dotted line down center of screen
-    // let xx = width / 2;
-    // let lineH = height / this.lineAmount;
-    // this.lineAmount = 40;
-    // for (let i = 0; i < this.dottedLine.length; i++) {
-    //   let y1 = ((lineH * i) * 2) + (lineH / 2)
-    //   this.dottedLine[i].x = 0;
-    //   this.dottedLine[i].y = 0;
-    // }
+
   }
   changePosition() {
     this.x += this.velX;
