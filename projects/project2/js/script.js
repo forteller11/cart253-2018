@@ -48,7 +48,20 @@ let lightColorR = 255;
 let lightColorG = 255;
 let lightColorB = 255;
 let netScore =  0;
-// let canvasShape;
+
+//imgs
+let imgBorder1;
+let imgBorder2;
+let imgBorder3;
+let imgBorder4;
+let imgVignette;
+function preload() {
+  imgBorder1 = loadImage('images/border1.png');
+  imgBorder2 = loadImage('images/border2.png');
+  imgBorder3 = loadImage('images/border3.png');
+  imgBorder4 = loadImage('images/border4.png');
+  imgVignette = loadImage('images/vignette.png');
+}
 
 function setup() {
   createCanvas(800, 800);
@@ -142,8 +155,14 @@ function draw() {
     bulb[i].display();
   }
   ball.displayTrail();
-    centerLineDisplay(); //draw dotted line down center of screen;
-// lightColorRandomize();
+  centerLineDisplay(); //draw dotted line down center of screen;
+  image(imgVignette,0,0,width,height);
+  let w = imgBorder1.width;
+  image(imgBorder1,0,0);
+  image(imgBorder2,width-w,0);
+  image(imgBorder3,width-w,height-w);
+  image(imgBorder4,0,height-w);
+
 }
 
 function padRReset() {
@@ -164,8 +183,8 @@ function lightColorRandomize(){
   let rThreshold = 0;
   let rThresholdIncrement = 0.1;
   if (r >= rThreshold){ //purple
-    lightColorR = 155;
-    lightColorG = 120;
+    lightColorR = 190;
+    lightColorG = 170;
     lightColorB = 255;
     rThreshold += rThresholdIncrement;
   }
