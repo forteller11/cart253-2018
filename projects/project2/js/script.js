@@ -110,7 +110,6 @@ function setup() {
   let moveType = round(random(6));
   for (let i = 0; i < bulbPop; i ++){
     bulb[i] = new Bulb(lightColorR,lightColorG,lightColorB,255/(bulbPop),10,50,moveType);
-    bulb[i].y = height-bulb[i].radius;
     bulb[i].x = (width/bulbPop) * (i+.5);
   }
 

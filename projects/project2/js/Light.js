@@ -13,6 +13,9 @@ class Light {
     this.g;
     this.b;
     this.alpha;
+    this.rVariation;
+    this.gVariation;
+    this.bVariation;
 
     this.parentRay = [];
     //create one parentRay for every vertex in the scene

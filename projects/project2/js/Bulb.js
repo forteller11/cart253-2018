@@ -8,56 +8,63 @@ it (and its many children) moves about the canvas, according to either a sin-wav
 */
 class Bulb {
   constructor(r, g, b, alpha, lightPop, radius,moveType) {
-    this.x= width/2;
-    this.y = height/2;
-    this.light = [];
-    this.radius = radius;
+    this.x;
+    this.y;
+    this.light = []; //children
+    this.radius = radius; //determines how far away light-children are placed away from origin
     this.alpha = alpha;
     this.r = r;
     this.b = b;
     this.g = g;
-    this.moveType = moveType;
-    this.thetaX = random(0,TWO_PI);
-    this.thetaY = random(0,TWO_PI);
-    this.thetaIncrement = random(0.001,.01);
+    this.moveType = moveType; //set to interger value, determines how the Bulb updates its position
+    this.thetaX = random(0,TWO_PI); //used in the sin and noise functions to determine x pos
+    this.thetaY = random(0,TWO_PI); //used in the sin and noise functions to determine y pos
+    this.thetaIncrement = random(0.001,.01); //used to increase thetax,y everyframe
 
+    //create children, and offset their color slightly from the Bulbs (to create subtle chromatic abberation)
     for (let i = 0; i < lightPop; i++) {
       this.light[i] = new Light();
-      let colorVariation = (lightPop * 3);
-      this.rVariation = random(-colorVariation, colorVariation)
-      this.gVariation = random(-colorVariation, colorVariation)
-      this.bVariation = random(-colorVariation, colorVariation)
-      this.light[i].r = this.r + this.rVariation;
-      this.light[i].g = this.g + this.gVariation;
-      this.light[i].b = this.b + this.bVariation;
+      let colorVariation = (lightPop * 10);
+      let rVariation = random(-colorVariation, colorVariation)
+      let gVariation = random(-colorVariation, colorVariation)
+      let bVariation = random(-colorVariation, colorVariation)
+      this.light[i].rVariation = this.r + rVariation;
+      this.light[i].gVariation = this.g + gVariation;
+      this.light[i].bVariation = this.b + bVariation;
+      this.light[i].r = this.r + this.light[i].rVariation;
+      this.light[i].g = this.g + this.light[i].gVariation;
+      this.light[i].b = this.b + this.light[i].bVariation;
     }
   }
   update() {
-    if (this.moveType === 0){
+    //changes position of Bulb based on moveType
+    if (this.moveType === 0){ //oscillate horizontally at bottom of canvas
       this.moveSinHorz();
-    } else if (this.moveType === 1){
+      this.y = height-this.radius;
+    } else if (this.moveType === 1){ //oscillate vertically in middle of canvas
       this.x = width/2;
       this.moveSinVert();
-    } else if (this.moveType ===2){
+    } else if (this.moveType ===2){ //oscillate diagonally
       this.moveSinHorz();
       this.moveSinVert();
-    } else if (this.moveType === 3){
+    } else if (this.moveType === 3){ //oscillate horizontally at top of canvas
       this.y = this.radius;
       this.moveSinHorz();
-    } else if (this.moveType === 4){
+    } else if (this.moveType === 4){ //move according to perlin noise within canvas
       this.moveNoise();
     }
-    else if (this.moveType === 5){
+    else if (this.moveType === 5){ //oscillate vertically at right of canvas
       this.x = width-this.radius;
       this.moveSinVert();
-    }else if (this.moveType === 6){
+    }else if (this.moveType === 6){ //oscillate vertically at left of canvas
       this.x = this.radius;
       this.moveSinVert();
     }
+    //
     for (let i = 0; i < this.light.length; i++) {
-      this.light[i].r = this.r + this.rVariation;
-      this.light[i].g = this.g + this.gVariation;
-      this.light[i].b = this.b + this.bVariation;
+      this.light[i].r = this.r + this.light[i].rVariation;
+      this.light[i].g = this.g + this.light[i].gVariation;
+      this.light[i].b = this.b + this.light[i].bVariation;
     }
     this.spreadLights();
 
