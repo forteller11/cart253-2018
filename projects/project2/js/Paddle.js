@@ -273,7 +273,7 @@ class Paddle {
         this.fillMeter = map(xMagnitude, 0, ball.maxVelX, 0, 1);
         this.sWeight = map(xMagnitude, 0, ball.maxVelX, 1, 1.5); //makes ball briefly enlarge
         //increase frequency of oscillator
-        oscAmbienceFreq += map(xMagnitude, 0, ball.maxVelX, 0, 40) + 10;
+        oscAmbienceFreq += map(xMagnitude, 0, ball.maxVelX, 20, 60);
       }
     }
   }

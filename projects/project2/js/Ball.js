@@ -17,16 +17,6 @@ class Ball {
     this.whiteFlash = 0; //determines whether the ball is white due to recent collision (0-1), 1 = 100% white
     this.sizeFlash = 1; //determines % graphical size of ellipse based relative to its radius (1 = 100%)
 
-    //oscillator
-    this.oscAdrenaline = new p5.Oscillator();
-    this.oscAdrenaline.setType('square');
-    this.oscAdrenalineAmp = 0;
-    this.oscAdrenalineFreq = 0;
-    this.collisionAmp = .03;
-    this.oscAdrenaline.freq(this.oscAdrenalineFreq);
-    this.oscAdrenaline.amp(this.oscAdrenalineAmp);
-    this.oscAdrenaline.start();
-
     //shape
     this.shape = new Shape(this.x, this.y, 0, 4);
     shape.push(this.shape);
@@ -76,14 +66,6 @@ class Ball {
 
     this.velX = constrain(this.velX, -this.maxVelX, this.maxVelX);
 
-  }
-
-  updateOscillator() {
-    //changes frequency and amp based of oscillator based off net velocities of paddles
-    this.oscAdrenalineFreq = 6 * (abs(this.velX * 2) + abs(this.velY) + 20);
-    this.oscAdrenalineAmp *= .98;
-    this.oscAdrenaline.amp(this.oscAdrenalineAmp);
-    this.oscAdrenaline.freq(this.oscAdrenalineFreq);
   }
 
   addToHistory(x, y) { //remove oldest ball postion history, add newest ball position history
@@ -155,11 +137,10 @@ class Ball {
   }
 
   score(){
-
     if (netScore === bulbPop -1) {
       netScore = 0;
       //every point remove lapha of one light
-      let moveType = round(random(3));
+      let moveType = round(random(6));
       for (let i = 0; i < bulb.length; i ++){
         bulb[i].alpha = 255/bulb.length;
         bulb[i].moveType = moveType;
@@ -175,7 +156,6 @@ class Ball {
 
     //if ball goes off left then rightpaddle score increases
     if (this.x + (this.radius * 4) < 0) {
-      this.oscAdrenalineAmp = this.collisionAmp;
       padR.score++;
       this.score();
       padR.scored = .5;
@@ -186,7 +166,6 @@ class Ball {
     }
     //if ball goes off right then leftpaddle score increases
     if (this.x - (this.radius * 4) > width) {
-      this.oscAdrenalineAmp = this.collisionAmp;
       padL.score++;
       padL.scored = .5;
       this.score();
@@ -200,7 +179,6 @@ class Ball {
 
     //if ball hits ceiling or floor of canvas
     if ((this.y + this.radius > height) || (this.y - this.radius < 0)) {
-      this.oscAdrenalineAmp = this.collisionAmp;
       this.y = constrain(this.y, this.radius, height - this.radius);
       this.velY = this.velY * -1;
       let changeInOscFreq = abs(ball.velY) * 10; //more change if the ball is traveling faster vertically

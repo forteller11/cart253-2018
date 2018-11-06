@@ -36,6 +36,15 @@ class Bulb {
     } else if (this.moveType === 3){
       this.y = this.radius;
       this.moveSinHorz();
+    } else if (this.moveType === 4){
+      this.moveNoise();
+    }
+    else if (this.moveType === 5){
+      this.x = width-this.radius;
+      this.moveSinVert();
+    }else if (this.moveType === 6){
+      this.x = this.radius;
+      this.moveSinVert();
     }
     for (let i = 0; i < this.light.length; i++) {
       this.light[i].r = this.r + this.rVariation;
@@ -43,6 +52,13 @@ class Bulb {
       this.light[i].b = this.b + this.bVariation;
     }
     this.spreadLights();
+
+  }
+  moveNoise(){
+    this.thetaY += this.thetaIncrement/10;
+    this.thetaX += this.thetaIncrement/10;
+    this.x = map(noise(this.thetaX*10),0,1,0,width-this.radius);
+    this.y = map(noise(this.thetaY*10),0,1,0,height-this.radius);
 
   }
   moveSinVert(){

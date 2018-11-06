@@ -89,8 +89,9 @@ function setup() {
   ball.reset(direction);
 
   //light
+  let moveType = round(random(6));
   for (let i = 0; i < bulbPop; i ++){
-    bulb[i] = new Bulb(lightColorR,lightColorG,lightColorB,255/(bulbPop),10,50,1);
+    bulb[i] = new Bulb(lightColorR,lightColorG,lightColorB,255/(bulbPop),10,50,moveType);
     bulb[i].y = height-bulb[i].radius;
     bulb[i].x = (width/bulbPop) * (i+.5);
   }
@@ -98,14 +99,15 @@ function setup() {
   //oscillator which increases frequency on scores and collisions
   oscAmbience = new p5.Oscillator();
   oscAmbience.setType('sin');
-  oscAmbience.freq(oscAmbienceFreq);
-  oscAmbience.amp(1);
+  oscAmbience.freq(0);
+  oscAmbience.amp(0);
   oscAmbience.start();
 }
 
 function draw() {
-  if (keyIsPressed){
+  if (keyIsPressed && (startScreen = true)){
     startScreen = false;
+      oscAmbience.freq(oscAmbienceFreq);
   }
   if (startScreen === true){
     background(21);
@@ -152,7 +154,8 @@ function draw() {
 
   //sound
   oscAmbienceFreq *= .98;
-  oscAmbienceFreq = constrain(oscAmbienceFreq, 75, 200);
+  oscAmbienceFreq = constrain(oscAmbienceFreq, 100, 200);
+  oscAmbience.amp(1);
   oscAmbience.freq(oscAmbienceFreq);
 
   image(imgVignette,0,0,width,height);
