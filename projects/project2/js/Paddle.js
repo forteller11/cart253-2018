@@ -32,12 +32,11 @@ class Paddle {
     this.fillMeter = 0; //what % of the paddle will be filled on collision w/ball?
     this.sWeight = 1; //used to interpolate between min and max stroke widths (1 = min, 2 = max)
 
-    //shape
+    //shape which represents paddle's boundaries
     this.shape = new Shape(this.x, this.y, 0, 4);
-    shape.push(this.shape);
+    shape.push(this.shape); //add to global shape array
     this.updatePaddleVerts();
     this.shape.update();
-    // this.shape.display();
 
     //oscillator
     this.oscAdrenaline = new p5.Oscillator();
@@ -48,7 +47,7 @@ class Paddle {
   }
 
   update(){
-    this.updatePaddleVerts();
+    this.updatePaddleVerts(); //update shape which represents paddle boundries
     this.accelerate(); //deal with inputs
     this.changePos(); //move
     this.updateOscillator();
@@ -62,9 +61,11 @@ class Paddle {
   }
 
   updatePaddleVerts(){
+    //s weight will grow if the ball has recently been hit and then shrink back down to 1
     this.sWeight *= .995;
     this.sWeight = constrain(this.sWeight, 1, 1.2);
-    let angleOffset = .001;
+    let angleOffset = .0001; //so that slope of lines is never 0, infinity or -Infinity
+    //set aoffset and radius of every vert with cartesian-->polar conversion
     //bottom right
     this.shape.vertAOff[0] = atan2(this.height/2,this.width/2)+angleOffset;
     this.shape.vertR[0] = sqrt(sq(this.height/2)+sq(this.width/2))*(this.sWeight);

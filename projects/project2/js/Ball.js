@@ -25,22 +25,24 @@ class Ball {
     this.whiteFlash = 0; //determines whether the ball is white due to recent collision (0-1), 1 = 100% white
     this.sizeFlash = 1; //determines % graphical size of ellipse based relative to its radius (1 = 100%)
 
-    //shape
+    let offset = 0.0001; //added to the angle offset of verts so no line ever has a slope of 0,Infinity or -Infinity
+
+    //shape in the size of the ball
     this.shape = new Shape(this.x, this.y, 0, 4);
-    shape.push(this.shape);
+    shape.push(this.shape); //add to global shape array so shapes can updated at the same time
     for (let j = 0; j < this.shape.vertNumber; j++) { //set pos of vertexes
       this.shape.vertR[j] = this.radius + 2;
-      this.shape.vertAOff[j] = (TWO_PI / this.shape.vertNumber * j) + QUARTER_PI + random(-0.0001, 0.0001);
+      this.shape.vertAOff[j] = (TWO_PI / this.shape.vertNumber * j) + QUARTER_PI + offset;
     }
     this.shape.update();
     this.shape.display();
 
-    //canvas border
+    //shape in with the dimensions of the canvas
     this.canvasShape = new Shape(this.x, this.y, 0, 4);
-    shape.push(this.canvasShape);
+    shape.push(this.canvasShape);//add to global shape array so shapes can updated at the same time
     for (let j = 0; j < this.shape.vertNumber; j++) { //set pos of vertexes
       this.canvasShape.vertR[j] = sqrt(sq(width / 2) + sq(height / 2));
-      this.canvasShape.vertAOff[j] = (TWO_PI / this.canvasShape.vertNumber * j) + QUARTER_PI + random(-0.0001, 0.0001);
+      this.canvasShape.vertAOff[j] = (TWO_PI / this.canvasShape.vertNumber * j) + QUARTER_PI + offset;
     }
 
   }
