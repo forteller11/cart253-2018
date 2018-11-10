@@ -44,14 +44,20 @@ class Player {
     /*This displays the "light", it connects the dots between all the the rays,
     and then fills in the space inbetween. It starts at the ray with the smallest angle
     and works its way up to the ray with the largest angle. */
-    fill(0,0,0,100);
-    noStroke();
+    fill(255,255,255,100);
+    stroke(255,0,255);
     beginShape();
+    let widthHistory = 0;
     vertex(this.parentRay[0].x, this.parentRay[0].y); //origin
-    for (let i = 0; i < this.parentRay.length; i++) {
-      vertex(this.parentRay[i].children[0].collidedX, this.parentRay[i].children[0].collidedY);
-      vertex(this.parentRay[i].collidedX, this.parentRay[i].collidedY);
-      vertex(this.parentRay[i].children[1].collidedX, this.parentRay[i].children[1].collidedY);
+    for (let i = 1; i < this.parentRay.length; i++) {
+      let vPrev = this.parentRay[i-1]
+      let v = this.parentRay[i];
+      let d = (255/v.collidedR) * 100;
+      let w = (width)*(v.angle-vPrev.angle);
+      fill(d);
+      print(w);
+      rect(widthHistory,height/2,w,d);
+      widthHistory += w;
     }
     vertex(this.parentRay[0].children[0].collidedX, this.parentRay[0].children[0].collidedY);
     endShape();

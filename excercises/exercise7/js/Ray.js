@@ -26,6 +26,7 @@ class Ray {
     this.targetY = targetY; //where the line is pointed (yvec)
     this.collidedX; //closest point of x intersection
     this.collidedY; //closest point of y intersection
+    this.collidedR; //distance to closest point of intersection
     this.angle; //angle
     this.hasChildren = createChildren; //true or false, does this ray have children?
     this.children = []; //the array where any children will be put
@@ -52,7 +53,7 @@ class Ray {
       }
       this.children[i].angle = this.angle + angleOffset;
       //sets the new target of children based on their new offset angle
-      this.calculateTargetBasedOnAngle(this.angle + angleOffset, i);
+      this.calculateTargetBasedOnAngle(this.angle + angleOffset-player.angle, i);
       this.children[i].x = this.x;
       this.children[i].y = this.y;
       this.children[i].checkIntersection();
@@ -65,6 +66,7 @@ class Ray {
     //vars store the closest point(x,y) of collision
     this.collidedX = Infinity;
     this.collidedY = Infinity;
+    this.collidedR = Infinity;
 
     //transform ray into linear function in slope form (y = mx+b)
     //find slope
@@ -132,6 +134,7 @@ class Ray {
     if (intersectionR < collidedR) {
       this.collidedX = intersectionX;
       this.collidedY = intersectionY;
+      this.collidedR = intersectionR;
     }
   }
   calculateAngle() {
@@ -141,7 +144,7 @@ class Ray {
     let xVec = this.targetX - this.x;
     let newAngle = atan2(yVec, xVec);
     newAngle = map(newAngle, -PI, PI, 0, PI * 2);
-    this.angle = newAngle;
+    this.angle = newAngle+player.angle;
     if (debugDisplay === true) { //draws angles if debugMode is on
       noStroke();
       fill(180);
