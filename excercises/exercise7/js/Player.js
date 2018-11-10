@@ -1,53 +1,63 @@
 class Player {
   constructor(x, y, angle) {
-    this.upKey = 38;
-    this.downKey = 40;
-    this.leftKey = 37;
-    this.rightKey = 39;
+    this.upKey = 87;
+    this.downKey = 83;
+    this.leftKey = 65;
+    this.rightKey = 68;
     this.x = x;
     this.y = y;
+
     this.angle = angle;
-    this.angularIncrement = PI/10;
+    this.angularIncrement = PI/30;
+    this.angularDrag = 0.6;
+    this.angularVel = 0;
+
     this.vel = 0;
+    this.velX = 0;
+    this.velY = 0;
     this.drag = 0.95;
-    this.angularDrag = 0.85;
-    this.radius = 20;
     this.velIncrement = 1;
-    this.maxVel = 0;
+
+    this.radius = 20;
   }
   update(){
     this.input();
+    this.changeAngle();
     this.changePos();
     this.display();
   }
    input() {
 
       if (keyIsDown(this.upKey)) {
-        this.vel += this.velIncrement;
+        this.velX += cos(this.angle)*this.velIncrement;
+        this.velY += sin(this.angle)*this.velIncrement;
       }
       if (keyIsDown(this.downKey)) {
-      this.vel -= this.velIncrement
+        this.velX -= cos(this.angle)*this.velIncrement;
+        this.velY -= sin(this.angle)*this.velIncrement;
       }
       if (keyIsDown(this.leftKey)) {
-        this.angle -= this.angularIncrement;
+        this.velX -= cos(this.angle+HALF_PI)*this.velIncrement;
+        this.velY -= sin(this.angle+HALF_PI)*this.velIncrement;
       }
       if (keyIsDown(this.rightKey)) {
-        this.angle += this.angularIncrement;
+        this.velX += cos(this.angle+HALF_PI)*this.velIncrement;
+        this.velY += sin(this.angle+HALF_PI)*this.velIncrement;
       }
-      print(round(this.vel));
+      this.angle = atan2(mouseY-this.y,mouseX-this.x);
+      // this.angle = map(mouseX,0,width,0,TWO_PI);
 
-this.vel = this.vel * this.drag;
-this.x += cos(this.angle)*this.vel;
-this.y += sin(this.angle)*this.vel;
 
 }
+changeAngle(){
+  this.angularVel = this.angularVel * this.angularDrag;
+}
 changePos(){
-  // let xVec = cos(this.angle)*this.vel;
-  // let yVec = sin(this.angle)*this.vel;
-  let xVec = cos(this.angle)*this.vel;
-  let yVec = sin(this.angle)*this.vel;
-  this.x += xVec;
-  this.y += yVec;
+  this.velX = this.velX * this.drag;
+  this.velY = this.velY * this.drag;
+
+  this.x += this.velX;
+  this.y += this.velY;
 }
   display(){
     stroke(255);
