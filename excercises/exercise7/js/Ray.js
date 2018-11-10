@@ -52,7 +52,7 @@ class Ray {
       }
       this.children[i].angle = this.angle + angleOffset;
       //sets the new target of children based on their new offset angle
-      this.calculateTargetBasedOnAngle(this.angle + angleOffset, i);
+      this.calculateTargetBasedOnAngle(this.angle + angleOffset-player.angle, i);
       this.children[i].x = this.x;
       this.children[i].y = this.y;
       this.children[i].checkIntersection();
@@ -141,11 +141,11 @@ class Ray {
     let xVec = this.targetX - this.x;
     let newAngle = atan2(yVec, xVec);
     newAngle = map(newAngle, -PI, PI, 0, PI * 2);
-    this.angle = newAngle;
+    this.angle = newAngle+player.angle;
     if (debugDisplay === true) { //draws angles if debugMode is on
       noStroke();
       fill(180);
-      text(round(this.angle * 10000) / 10000, this.collidedX + 20, this.collidedY);
+      text(round(this.angle * 1000) / 1000, this.collidedX + 20, this.collidedY);
     }
   }
   calculateTargetBasedOnAngle(angle, index) { //polar-->Cartesian
@@ -167,7 +167,7 @@ class Ray {
 
       noStroke();
       fill(this.r, this.g, this.b);
-      text(this.angle, 40, (100 * this.angle) + 50);
+      text(round(100 * this.angle)/100, 40, (100 * this.angle) + 50);
       if (this.hasChildren == true) {
         strokeWeight(1);
         stroke(this.r, this.g, this.b, 255);

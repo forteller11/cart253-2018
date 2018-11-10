@@ -29,6 +29,15 @@ class Player {
     }
   }
   update(){
+    this.updateRays();
+    this.selectionSort();
+    this.changeAngle();
+    this.input();
+    this.changePos();
+    this.display();
+
+  }
+  updateRays(){
     /* set every parentRay (ray with children) target to a unique vertex in the scene,
     set its origin to the light's origin, update the ray */
     let k = 0;
@@ -42,12 +51,6 @@ class Player {
         k++;
       }
     }
-    
-    this.changeAngle();
-    this.input();
-    this.changePos();
-    this.display();
-
   }
    input() {
       if (keyIsDown(this.upKey)) {
@@ -85,6 +88,33 @@ changePos(){
     strokeWeight(4);
     ellipse(this.x,this.y,this.radius*2);
     line(this.x,this.y,this.x+(cos(this.angle)*this.radius),this.y+(sin(this.angle)*this.radius));
+  }
+  selectionSort() {
+    /*selectionSort parentRay array by their angles... It basically cycles through
+    the array and finds the smallest value and puts it at the start of the array, then
+    itterates through the array again but starts at index 1, finds the smallest value
+    and puts it at index one, now it starts at index 2....
+     (this really should be at least an insertion-sort algorithim because selection-sort
+     always takes the same amount of calculations even if the array is already sorted,
+      but it is slightly harder to implement) */
+    for (let i = 0; i < this.parentRay.length; i++) {
+      let smallestValue = Infinity;
+      let smallestValueIndex;
+      for (let j = i; j < this.parentRay.length; j++) {
+        //cycle through this.parentRay[], find index of smallest value
+        if (this.parentRay[j].angle < smallestValue) {
+          smallestValueIndex = j;
+          smallestValue = this.parentRay[j].angle;
+        }
+        //once at end of the arthis.parentRay, swap this.parentRay index i with smallest this.parentRay...
+        if (j === this.parentRay.length - 1) {
+          let parentRayStore = this.parentRay[i];
+          this.parentRay[i] = this.parentRay[smallestValueIndex];
+          this.parentRay[smallestValueIndex] = parentRayStore;
+        }
+        //then increment i and repeat until parentRay[] is sorted...
+      }
+    }
   }
 
 }
