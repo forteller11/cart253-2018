@@ -6,7 +6,7 @@ their angle. Using the sorted array Light fills ("displayFill" method) in the sp
 of every child ray using an opacity and colour given to it by the Bulb class.
 */
 class Light {
-  constructor() {
+  constructor(){
     this.x;
     this.y;
     this.r;
@@ -22,14 +22,14 @@ class Light {
     let k = 0;
     for (let i = 0; i < shape.length; i++) {
       for (let j = 0; j < shape[0].vertNumber; j++) {
-        this.parentRay[k] = new Ray(shape[i].vertX[j], shape[i].vertY[j], true);
+        this.parentRay[k] = new Ray(shape[i].vertX[j], shape[i].vertY[j],true);
         k++;
       }
     }
   }
-  update() {
-    /* set every parentRay (ray with children) target to a unique vertex in the scene,
-    set its origin to the light's origin, update the ray */
+  update(){
+  /* set every parentRay (ray with children) target to a unique vertex in the scene,
+  set its origin to the light's origin, update the ray */
     let k = 0;
     for (let i = 0; i < shape.length; i++) {
       for (let j = 0; j < shape[0].vertNumber; j++) {
@@ -45,7 +45,7 @@ class Light {
     this.display(); //using data from the rays fill in a shape (this is what draws the light)
   }
 
-  selectionSort() {
+  selectionSort(){
     /*selectionSort parentRay array by their angles... It basically cycles through
     the array and finds the smallest value and puts it at the start of the array, then
     itterates through the array again but starts at index 1, finds the smallest value
@@ -72,23 +72,10 @@ class Light {
       }
     }
   }
-  insertionSort() {
-    //move key up array, checking to see where key should be inserted in the sorted array behind it
-    for (let i = 1; i < this.parentRay.length; i++) {
-      //itterate down the array starting at key(i) until the key's value is larger than an element
-      let j = i - 1;
-      while ((this.parentRay[i].angle < this.parentRay[j]).angle && (j >= 0)) {
-        j--;
-      }
-      //once an element has been found that is smaller than the key, insert the key
-      //in front of that element
-      this.parentRay.splice(j + 1, 0, this.parentRay[i]);
-      this.parentRay.splice(i + 1, 1); //also remove the previous position of the key
-    }
-  }
-  display() {
+
+  display(){
     this.displayFill();
-    if (debugDisplay === true) { //if debug mode is on this draws the lines of the rays
+    if (debugDisplay === true){ //if debug mode is on this draws the lines of the rays
       let k = 0;
       for (let i = 0; i < shape.length; i++) {
         for (let j = 0; j < shape[0].vertNumber; j++) {
@@ -96,23 +83,23 @@ class Light {
           k++
         }
       }
-      ellipse(this.x, this.y, 20);
+      ellipse(this.x,this.y,20);
     }
   }
-  displayFill() {
+  displayFill(){
     /*This displays the "light", it connects the dots between all the the rays,
     and then fills in the space inbetween. It starts at the ray with the smallest angle
     and works its way up to the ray with the largest angle. */
-    fill(this.r, this.g, this.b, this.alpha);
+    fill(this.r,this.g,this.b,this.alpha);
     noStroke();
     beginShape();
-    vertex(this.parentRay[0].x, this.parentRay[0].y); //origin
-    for (let i = 0; i < this.parentRay.length; i++) {
-      vertex(this.parentRay[i].children[0].collidedX, this.parentRay[i].children[0].collidedY);
-      vertex(this.parentRay[i].collidedX, this.parentRay[i].collidedY);
-      vertex(this.parentRay[i].children[1].collidedX, this.parentRay[i].children[1].collidedY);
+    vertex(this.parentRay[0].x,this.parentRay[0].y); //origin
+    for (let i = 0; i < this.parentRay.length; i ++){
+      vertex(this.parentRay[i].children[0].collidedX,this.parentRay[i].children[0].collidedY);
+      vertex(this.parentRay[i].collidedX,this.parentRay[i].collidedY);
+      vertex(this.parentRay[i].children[1].collidedX,this.parentRay[i].children[1].collidedY);
     }
-    vertex(this.parentRay[0].children[0].collidedX, this.parentRay[0].children[0].collidedY);
+    vertex(this.parentRay[0].children[0].collidedX,this.parentRay[0].children[0].collidedY);
     endShape();
   }
 }
