@@ -9,8 +9,6 @@ class Player {
 
     this.angle = angle;
     this.angularIncrement = PI/30;
-    this.angularDrag = 0.6;
-    this.angularVel = 0;
 
     this.vel = 0;
     this.velX = 0;
@@ -19,38 +17,38 @@ class Player {
     this.velIncrement = 1;
 
     this.radius = 20;
+
+
   }
   update(){
-    this.input();
     this.changeAngle();
+    this.input();
     this.changePos();
     this.display();
+
   }
    input() {
-
       if (keyIsDown(this.upKey)) {
         this.velX += cos(this.angle)*this.velIncrement;
         this.velY += sin(this.angle)*this.velIncrement;
       }
       if (keyIsDown(this.downKey)) {
-        this.velX -= cos(this.angle)*this.velIncrement;
-        this.velY -= sin(this.angle)*this.velIncrement;
+        this.velX += cos(this.angle+PI)*this.velIncrement;
+        this.velY += sin(this.angle+PI)*this.velIncrement;
       }
       if (keyIsDown(this.leftKey)) {
-        this.velX -= cos(this.angle+HALF_PI)*this.velIncrement;
-        this.velY -= sin(this.angle+HALF_PI)*this.velIncrement;
+        this.velX += cos(this.angle-HALF_PI)*this.velIncrement;
+        this.velY += sin(this.angle-HALF_PI)*this.velIncrement;
       }
       if (keyIsDown(this.rightKey)) {
         this.velX += cos(this.angle+HALF_PI)*this.velIncrement;
         this.velY += sin(this.angle+HALF_PI)*this.velIncrement;
       }
-      this.angle = atan2(mouseY-this.y,mouseX-this.x);
-      // this.angle = map(mouseX,0,width,0,TWO_PI);
-
 
 }
 changeAngle(){
-  this.angularVel = this.angularVel * this.angularDrag;
+  this.angle = atan2(mouseY-this.y,mouseX-this.x);
+  // this.angle = map(mouseX,0,width,0,TWO_PI);
 }
 changePos(){
   this.velX = this.velX * this.drag;
