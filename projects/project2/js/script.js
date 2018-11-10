@@ -74,13 +74,9 @@ let lightColorR = 0;
 let lightColorG = 0;
 let lightColorB = 0;
 let netScore = 0;
-let startScreen = true;
+let startScreen = false;
 //imgs
 let imgTitle;
-let imgBorder1;
-let imgBorder2;
-let imgBorder3;
-let imgBorder4;
 let imgVignette;
 
 function preload() {

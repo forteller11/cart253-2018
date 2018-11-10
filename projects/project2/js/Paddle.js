@@ -67,8 +67,13 @@ class Paddle {
     let angleOffset = .0001; //so that slope of lines is never 0, infinity or -Infinity
     //set aoffset and radius of every vert with cartesian-->polar conversion
     //bottom right
-    this.shape.vertAOff[0] = atan2(this.height/2,this.width/2)+angleOffset;
-    this.shape.vertR[0] = sqrt(sq(this.height/2)+sq(this.width/2))*(this.sWeight);
+    for (let i = 0; i < this.shape.vertNumber; i++) {
+      this.shape.x = this.x;
+      this.shape.y = this.y;
+      this.shape.vertX[i] = 0;
+      this.shape.vertY[i] = 1;
+    }
+    this.shape.updatePolarBasedOnCartesian()
     //bottom left
     this.shape.vertAOff[1] = atan2(-this.height/2,this.width/2)+angleOffset;
     this.shape.vertR[1] = sqrt(sq(-this.height/2)+sq(this.width/2))*(this.sWeight);

@@ -31,11 +31,19 @@ class Shape {
 
   updateVertCartesian() { //updates x,y of verts based on angleOffset, shape's angle, and verts' radius
     for (let i = 0; i < this.vertNumber; i++) {
-      this.vertX[i] = (cos(this.vertAOff[i]+this.angle) * this.vertR[i]) + this.x;
-      this.vertY[i] = (sin(this.vertAOff[i]+this.angle) * this.vertR[i]) + this.y;
+      this.vertX[i] = (cos(this.vertAOff[i] + this.angle) * this.vertR[i]) + this.x;
+      this.vertY[i] = (sin(this.vertAOff[i] + this.angle) * this.vertR[i]) + this.y;
     }
   }
 
+  updatePolarBasedOnCartesian() {
+    for (let i = 0; i < this.vertNumber; i++) {
+      print(this.vertX[i]);
+      this.vertAOff[i] = atan2(this.vertY[i]-this.y, this.vertX[i] - this.x);
+      this.vertR[i] = sqrt(sq(this.vertX[i] - this.x) + sq(this.vertY[i] - this.y));
+      print(this.vertY[i]);
+    }
+  }
   updateLines() {
     //recalc x1 and y1 of shape based on position of shape and vertexes.
     for (let i = 0; i < this.vertNumber; i++) {
