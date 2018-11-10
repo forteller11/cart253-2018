@@ -18,9 +18,31 @@ class Player {
 
     this.radius = 20;
 
-
+    this.parentRay = [];
+    //create one parentRay for every vertex in the scene
+    let k = 0;
+    for (let i = 0; i < shape.length; i++) {
+      for (let j = 0; j < shape[0].vertNumber; j++) {
+        this.parentRay[k] = new Ray(shape[i].vertX[j], shape[i].vertY[j], true);
+        k++;
+      }
+    }
   }
   update(){
+    /* set every parentRay (ray with children) target to a unique vertex in the scene,
+    set its origin to the light's origin, update the ray */
+    let k = 0;
+    for (let i = 0; i < shape.length; i++) {
+      for (let j = 0; j < shape[0].vertNumber; j++) {
+        this.parentRay[k].x = this.x;
+        this.parentRay[k].y = this.y;
+        this.parentRay[k].targetX = shape[i].vertX[j];
+        this.parentRay[k].targetY = shape[i].vertY[j];
+        this.parentRay[k].update();
+        k++;
+      }
+    }
+    
     this.changeAngle();
     this.input();
     this.changePos();
