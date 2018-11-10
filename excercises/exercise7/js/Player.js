@@ -22,19 +22,39 @@ class Player {
     //create one parentRay for every vertex in the scene
     let k = 0;
     for (let i = 0; i < shape.length; i++) {
-      for (let j = 0; j < shape[0].vertNumber; j++) {
+      for (let j = 0; j < shape[i].vertNumber; j++) {
         this.parentRay[k] = new Ray(shape[i].vertX[j], shape[i].vertY[j], true);
         k++;
       }
     }
   }
   update(){
-    this.updateRays();
-    this.selectionSort();
     this.changeAngle();
     this.input();
     this.changePos();
+
+    this.updateRays();
+    this.selectionSort();
+    this.visualizeRays();
     this.display();
+
+  }
+
+  visualizeRays(){
+    /*This displays the "light", it connects the dots between all the the rays,
+    and then fills in the space inbetween. It starts at the ray with the smallest angle
+    and works its way up to the ray with the largest angle. */
+    fill(0,0,0,100);
+    noStroke();
+    beginShape();
+    vertex(this.parentRay[0].x, this.parentRay[0].y); //origin
+    for (let i = 0; i < this.parentRay.length; i++) {
+      vertex(this.parentRay[i].children[0].collidedX, this.parentRay[i].children[0].collidedY);
+      vertex(this.parentRay[i].collidedX, this.parentRay[i].collidedY);
+      vertex(this.parentRay[i].children[1].collidedX, this.parentRay[i].children[1].collidedY);
+    }
+    vertex(this.parentRay[0].children[0].collidedX, this.parentRay[0].children[0].collidedY);
+    endShape();
 
   }
   updateRays(){
@@ -42,7 +62,7 @@ class Player {
     set its origin to the light's origin, update the ray */
     let k = 0;
     for (let i = 0; i < shape.length; i++) {
-      for (let j = 0; j < shape[0].vertNumber; j++) {
+      for (let j = 0; j < shape[i].vertNumber; j++) {
         this.parentRay[k].x = this.x;
         this.parentRay[k].y = this.y;
         this.parentRay[k].targetX = shape[i].vertX[j];
