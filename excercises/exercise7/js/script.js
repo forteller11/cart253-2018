@@ -10,6 +10,7 @@ function setup() {
   for (let j = 0; j < shape[0].vertNumber; j++) {
     shape[0].vertAOff[j] = (TWO_PI / 4) * j + QUARTER_PI;
     shape[0].vertR[j] = 10000;
+    shape[0].vertH[j] = 1000;
   }
   //randomshapes
   for (let i = 1; i < 4; i++) {
@@ -17,6 +18,7 @@ function setup() {
     for (let j = 0; j < shape[i].vertNumber; j++) {
       shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;
       shape[i].vertR[j] = 40;
+      shape[i].vertH[j] = j;
     }
   }
 

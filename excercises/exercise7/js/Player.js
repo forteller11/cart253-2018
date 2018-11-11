@@ -48,17 +48,26 @@ class Player {
     stroke(255,0,255);
     beginShape();
     let widthHistory = 0;
+    let angleDiffNet = 0;
     vertex(this.parentRay[0].x, this.parentRay[0].y); //origin
     for (let i = 1; i < this.parentRay.length; i++) {
       let vPrev = this.parentRay[i-1]
       let v = this.parentRay[i];
-      let d = (255/v.collidedR) * 100;
-      let w = (width)*(v.angle-vPrev.angle);
-      fill(d);
-      print(w);
-      rect(widthHistory,height/2,w,d);
+      // print(v.angle);
+      let distFill = (255/v.collidedR) * 100;
+      let distHeight = map(v.collidedR,0,width,height/2,0);
+      distHeight = constrain(distHeight,0,height);
+      let angleDiff = (v.angle)-(vPrev.angle);
+      let w = map(angleDiff,0,TWO_PI,0,width);
+      // print(((v.angle-player.angle)-(vPrev.angle-player.angle)));
+      fill(distFill,distFill,distFill,40);
       widthHistory += w;
+      angleDiffNet += abs((v.angle)-(vPrev.angle));
+      //pick mode of display
+      rect(widthHistory,(height/2),widthHistory+w,(height/2));
+
     }
+    // print("angleDif: w" + angleDiffNet);
     vertex(this.parentRay[0].children[0].collidedX, this.parentRay[0].children[0].collidedY);
     endShape();
 

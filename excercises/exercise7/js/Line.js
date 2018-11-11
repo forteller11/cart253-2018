@@ -10,6 +10,8 @@ class Line {
   this.y1;
   this.x2;
   this.y2;
+  this.h1;//height of vert
+  this.h2;
   }
 
   display(){ //draw line from start/end points of line

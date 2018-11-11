@@ -27,6 +27,7 @@ class Ray {
     this.collidedX; //closest point of x intersection
     this.collidedY; //closest point of y intersection
     this.collidedR; //distance to closest point of intersection
+    this.collidedH; //h of wall on collision
     this.angle; //angle
     this.hasChildren = createChildren; //true or false, does this ray have children?
     this.children = []; //the array where any children will be put
@@ -88,6 +89,11 @@ class Ray {
         let simplifySlope = raySlope - lineSlope;
         let intersectionX = simplifyB / simplifySlope; //the x location where lines intersects
         let intersectionY = (raySlope * intersectionX) + rayB; //y where lines interesct
+        let intersectionH = map(intersectionX,line.x1,line.x2,line.h1,line.h2);
+        // print("intersectionX:"+intersectionX);
+        // print("x1:"+line.x1);
+        // print("x2"+line.x2);
+        // print("intH:"+intersectionH);
 
 
         //make sure collision happened in front of the ray
@@ -107,7 +113,7 @@ class Ray {
               }
               //if intersection happend closer than current stored closest collision
               //change collisionX,Y to this be the points of this intersection
-              this.makeCollidedShortestIntersection(intersectionX, intersectionY);
+              this.makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH);
             }
           } else if (line.x1 > line.x2) {
             if ((intersectionX - c <= line.x1) && (intersectionX + c >= line.x2)) {
@@ -118,7 +124,7 @@ class Ray {
               }
               //if intersection happend closer than current stored closest collision
               //change collisionX,Y to this be the points of this intersection
-              this.makeCollidedShortestIntersection(intersectionX, intersectionY);
+              this.makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH);
             }
           }
         }
@@ -126,7 +132,7 @@ class Ray {
       }
     }
   }
-  makeCollidedShortestIntersection(intersectionX, intersectionY) {
+  makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH) {
     //compares the dist between the ray origin and the intersectionX,Y and collidedX,Y
     //and if intersection is shorter then it changes collision,x,y to be the intersection
     let collidedR = sqrt(sq(this.collidedX - this.x) + sq(this.collidedY - this.y));
@@ -135,6 +141,7 @@ class Ray {
       this.collidedX = intersectionX;
       this.collidedY = intersectionY;
       this.collidedR = intersectionR;
+      this.collidedH = intersectionH;
     }
   }
   calculateAngle() {

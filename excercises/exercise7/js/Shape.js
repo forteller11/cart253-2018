@@ -13,6 +13,7 @@ class Shape {
     this.vertNumber = vertNumber;
     this.vertAOff = []; //angle offset of vertex
     this.vertR = []; //radius of vertex (dist from origin (this.x,y))
+    this.vertH = [];
     this.vertX = [];
     this.vertY = [];
     this.lines = []; //array which stores lines
@@ -49,12 +50,15 @@ class Shape {
     for (let i = 0; i < this.vertNumber; i++) {
       this.lines[i].x1 = this.vertX[i];
       this.lines[i].y1 = this.vertY[i];
+      this.lines[i].h1 = this.vertH[i];
       if (i + 1 >= this.vertNumber) {
         this.lines[i].x2 = this.vertX[0];
         this.lines[i].y2 = this.vertY[0];
+        this.lines[i].h2 = this.vertH[0];
       } else {
         this.lines[i].x2 = this.vertX[i + 1];
         this.lines[i].y2 = this.vertY[i + 1];
+        this.lines[i].h2 = this.vertH[i+1];
       }
     }
   }
