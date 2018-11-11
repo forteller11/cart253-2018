@@ -73,16 +73,16 @@ class Player {
 
     for (let i = 0; i < this.parentRay.length - 1; i++) {
       if (wHist > width) {
-          // print(wHist);
-
         wHist = wHist-width;
-        // print(wHist);
       }
       let v0 = this.parentRay[i].children[0];
       let v1 = this.parentRay[i];
       let v2 = this.parentRay[i].children[1];
       let v3 = this.parentRay[i + 1].children[0];
-
+let b = 1;
+      if ((v1.angle > this.povAngle1 - b) && (v1.angle < this.povAngle1 + b)){
+        // print("pov1");
+      }
       let aDiff0 = v1.angle - v0.angle;
       let aDiff1 = v2.angle - v1.angle;
       let aDiff2 = v3.angle - v2.angle;
@@ -196,14 +196,25 @@ updateRays() {
       k++;
     }
   }
-  this.povAngle1 = this.angle-(this.pov/2); //start of cone
+  this.povAngle1 = this.angle-(this.pov/2); //start of cone;
+  // this.povAngle1 = map(this.povAngle1,-PI-(this.pov/2),PI-(this.pov/2),0,TWO_PI);
+  // print(this.angle);
+  // print(this.povAngle1);
+  // if (this.povAngle1 > PI){
+  //   this.povAngle1 -= TWO_PI;
+  // }
+  // if (this.povAngle1 < -PI){
+  //   this.povAngle1 += TWO_PI;
+  // }
   this.povAngle2 = this.angle+(this.pov/2); //end of cone
-
+  // this.povAngle2 = map(this.povAngle2,-PI+(this.pov/2),PI+(this.pov/2),0,TWO_PI);
   //create pov rays and set their angle
   this.parentRay[k].x = this.x;
   this.parentRay[k].y = this.y;
   this.parentRay[k].calculateThisTargetBasedOnAngle(this.povAngle1);
   this.parentRay[k].update();
+  // print(this.parentRay[k].angle);
+  // print(this.povAngle1);
 
   //create pov rays and set their angle
   this.parentRay[k+1].x = this.x;
@@ -238,12 +249,16 @@ changeAngle() {
   if (keyIsDown(RIGHT_ARROW)) {
     this.angle += this.angularIncrement;
   }
-  if (this.angle < -PI) {
+  if (this.angle < -PI) { //make pi stay within a range of two_pi
     this.angle += TWO_PI;
   }
-  if (this.angle > PI) {
+  if (this.angle > PI) { //make pi stay within a range of two_pi
     this.angle -= TWO_PI;
   }
+  if (this.angle < 0){ //make PI from -pi,pi to 0,two_pi
+    this.angle = TWO_PI + this.angle;
+  }
+  print(this.angle);
   // this.angle = atan2(mouseY - this.y, mouseX - this.x);
   // this.angle = map(mouseX,0,width,0,TWO_PI);
 }
