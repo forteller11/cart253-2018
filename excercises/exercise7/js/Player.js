@@ -50,18 +50,21 @@ class Player {
     // noStroke(0)
     let angleDiffNet = 0;
     noStroke();
+    // stroke(255);
     rectMode(CORNERS);
 
-    // print(this.angle);
+
     //this.k is basically what controls rotations now, and it determines the starting point of i;
     //it should be determined based on width, and then should visually wrap over i think
     let wHist = round(map(this.angle, -PI, PI, width, 0));
-    print(wHist);
+
     // if (this.k =)
 
     for (let i = 0; i < this.parentRay.length - 1; i++) {
       if (wHist > width) {
-        wHist = 0;
+          print(wHist);
+        wHist = wHist-width;
+        print(wHist);
       }
       let v0 = this.parentRay[i].children[0];
       let v1 = this.parentRay[i];
@@ -107,7 +110,7 @@ class Player {
       wHist += w0 + w1 + w2;
 
     }
-    let iFinal = this.parentRay.length - 1;
+    let iFinal = this.parentRay.length -1;
     let v0 = this.parentRay[iFinal].children[0];
     let v1 = this.parentRay[iFinal];
     let v2 = this.parentRay[iFinal].children[1];
@@ -138,8 +141,9 @@ class Player {
     let w1 = map(aDiff1, 0, TWO_PI, 0, width);
     let w2 = map(aDiff2, 0, TWO_PI, 0, width);
     // rect(wHist, hBase+hOff1, wHist + w, hBase-hOff1);
-    fill(v1.collidedR, v1.collidedG, v1.collidedB, opacityFill)
+    fill(v1.collidedR,v1.collidedG,v1.collidedB, opacityFill)
     beginShape();
+
     vertex(wHist, hBase - hOff0); //topleft
     vertex(wHist + w0, hBase - hOff1);
     vertex(wHist + w0 + w1, hBase - hOff2);
