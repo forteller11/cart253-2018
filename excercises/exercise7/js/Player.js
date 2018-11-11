@@ -8,7 +8,7 @@ class Player {
     this.y = y;
 
     this.angle = angle;
-    this.angularIncrement = PI/30;
+    this.angularIncrement = PI / 30;
 
     this.vel = 0;
     this.velX = 0;
@@ -28,7 +28,7 @@ class Player {
       }
     }
   }
-  update(){
+  update() {
     this.changeAngle();
     this.input();
     this.changePos();
@@ -40,39 +40,45 @@ class Player {
 
   }
 
-  visualizeRays(){
+  visualizeRays() {
     /*This displays the "light", it connects the dots between all the the rays,
     and then fills in the space inbetween. It starts at the ray with the smallest angle
     and works its way up to the ray with the largest angle. */
-    fill(255,255,255,100);
-    stroke(255,0,255);
-    beginShape();
-    let widthHistory = 0;
+    fill(255, 255, 255, 100);
+    stroke(255, 0, 255);
+    let wHist = 0;
     let angleDiffNet = 0;
-    vertex(this.parentRay[0].x, this.parentRay[0].y); //origin
-    for (let i = 1; i < this.parentRay.length; i++) {
-      let vPrev = this.parentRay[i-1]
-      let v = this.parentRay[i];
-      // print(v.angle);
-      let distFill = (255/v.collidedR) * 100;
-      let distHeight = map(v.collidedR,0,width,height/2,0);
-      distHeight = constrain(distHeight,0,height);
-      let angleDiff = (v.angle)-(vPrev.angle);
-      let w = map(angleDiff,0,TWO_PI,0,width);
-      // print(((v.angle-player.angle)-(vPrev.angle-player.angle)));
-      fill(distFill,distFill,distFill,40);
-      widthHistory += w;
-      angleDiffNet += abs((v.angle)-(vPrev.angle));
-      //pick mode of display
-      rect(widthHistory,(height/2),widthHistory+w,(height/2));
+    rectMode(CORNERS)
+    for (let i = 0; i < this.parentRay.length - 1; i++) {
+      let v1 = this.parentRay[i];
+      let v2 = this.parentRay[i + 1];
+      let aDiff = v2.angle - v1.angle;
+      print(aDiff);
+      let w = map(aDiff, 0, TWO_PI, 0, width);
+      rect(wHist, 50, wHist + w, 100);
 
+      // beginShape();
+      // vertex(wHist,distHeight);//upleft
+      // vertex(wHist+w,distHeight);//upright
+      // vertex(wHisty+w,height/2);//botright
+      // vertex(wHist,height/2);//botleft
+      // endShape();
+      wHist += w;
     }
+    //connect last to first
+    let v1 = this.parentRay[0];
+    let v2 = this.parentRay[this.parentRay.length - 1];
+    let aDiff = TWO_PI - (v2.angle - v1.angle);
+    print("heyy" + aDiff);
+    let w = map(aDiff, 0, TWO_PI, 0, width);
+    rectMode(CORNERS);
+    fill(0);
+    rect(wHist, 50, wHist + w, 100);
     // print("angleDif: w" + angleDiffNet);
-    vertex(this.parentRay[0].children[0].collidedX, this.parentRay[0].children[0].collidedY);
-    endShape();
+
 
   }
-  updateRays(){
+  updateRays() {
     /* set every parentRay (ray with children) target to a unique vertex in the scene,
     set its origin to the light's origin, update the ray */
     let k = 0;
@@ -87,42 +93,42 @@ class Player {
       }
     }
   }
-   input() {
-      if (keyIsDown(this.upKey)) {
-        this.velX += cos(this.angle)*this.velIncrement;
-        this.velY += sin(this.angle)*this.velIncrement;
-      }
-      if (keyIsDown(this.downKey)) {
-        this.velX += cos(this.angle+PI)*this.velIncrement;
-        this.velY += sin(this.angle+PI)*this.velIncrement;
-      }
-      if (keyIsDown(this.leftKey)) {
-        this.velX += cos(this.angle-HALF_PI)*this.velIncrement;
-        this.velY += sin(this.angle-HALF_PI)*this.velIncrement;
-      }
-      if (keyIsDown(this.rightKey)) {
-        this.velX += cos(this.angle+HALF_PI)*this.velIncrement;
-        this.velY += sin(this.angle+HALF_PI)*this.velIncrement;
-      }
+  input() {
+    if (keyIsDown(this.upKey)) {
+      this.velX += cos(this.angle) * this.velIncrement;
+      this.velY += sin(this.angle) * this.velIncrement;
+    }
+    if (keyIsDown(this.downKey)) {
+      this.velX += cos(this.angle + PI) * this.velIncrement;
+      this.velY += sin(this.angle + PI) * this.velIncrement;
+    }
+    if (keyIsDown(this.leftKey)) {
+      this.velX += cos(this.angle - HALF_PI) * this.velIncrement;
+      this.velY += sin(this.angle - HALF_PI) * this.velIncrement;
+    }
+    if (keyIsDown(this.rightKey)) {
+      this.velX += cos(this.angle + HALF_PI) * this.velIncrement;
+      this.velY += sin(this.angle + HALF_PI) * this.velIncrement;
+    }
 
-}
-changeAngle(){
-  this.angle = atan2(mouseY-this.y,mouseX-this.x);
-  // this.angle = map(mouseX,0,width,0,TWO_PI);
-}
-changePos(){
-  this.velX = this.velX * this.drag;
-  this.velY = this.velY * this.drag;
+  }
+  changeAngle() {
+    this.angle = atan2(mouseY - this.y, mouseX - this.x);
+    // this.angle = map(mouseX,0,width,0,TWO_PI);
+  }
+  changePos() {
+    this.velX = this.velX * this.drag;
+    this.velY = this.velY * this.drag;
 
-  this.x += this.velX;
-  this.y += this.velY;
-}
-  display(){
+    this.x += this.velX;
+    this.y += this.velY;
+  }
+  display() {
     stroke(255);
     fill(51);
     strokeWeight(4);
-    ellipse(this.x,this.y,this.radius*2);
-    line(this.x,this.y,this.x+(cos(this.angle)*this.radius),this.y+(sin(this.angle)*this.radius));
+    ellipse(this.x, this.y, this.radius * 2);
+    line(this.x, this.y, this.x + (cos(this.angle) * this.radius), this.y + (sin(this.angle) * this.radius));
   }
   selectionSort() {
     /*selectionSort parentRay array by their angles... It basically cycles through
