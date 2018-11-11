@@ -17,6 +17,9 @@ class Shape {
     this.vertX = [];
     this.vertY = [];
     this.lines = []; //array which stores lines
+    this.r;
+    this.b;
+    this.g;
 
     //create one line for every vertex
     for (let i = 0; i < this.vertNumber; i++) {
@@ -60,6 +63,11 @@ class Shape {
         this.lines[i].y2 = this.vertY[i + 1];
         this.lines[i].h2 = this.vertH[i+1];
       }
+    }
+    for (let i = 0; i < this.vertNumber; i++) {
+      this.lines[i].r = this.r;
+      this.lines[i].g = this.g;
+      this.lines[i].b = this.b;
     }
   }
 

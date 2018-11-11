@@ -45,7 +45,7 @@ class Player {
     and then fills in the space inbetween. It starts at the ray with the smallest angle
     and works its way up to the ray with the largest angle. */
     fill(255, 255, 255, 100);
-    stroke(255, 0, 255);
+    stroke(255, 255, 255);
     let wHist = 0;
     let angleDiffNet = 0;
     rectMode(CORNERS)
@@ -55,35 +55,36 @@ class Player {
       let aDiff = v2.angle - v1.angle;
       let hBase = height/2;
       let hTune = 1;
-      let dist1 = map(v1.collidedR,0,width,height/8,0);
+      let dist1 = map(v1.collidedRad,0,width,height/8,0);
       dist1 = constrain(dist1,0,height);
+      let dist2 = map(v2.collidedRad,0,width,height/8,0);
+      dist2 = constrain(dist2,0,height);
       let hOff1 = (dist1*v1.collidedH)*hTune;
-      let hOff2 = ((1/v1.collidedR)*v1.collidedH)*hTune;
-      let fillOpacity = 500*(1/(v1.collidedR));
-      print(round(v1.collidedR));
+      let hOff2 = (dist2*v1.collidedH)*hTune;
+      let fillOpacity = map((v1.collidedRad+v2.collidedRad)/2,0,width,255,0);
 
       // print(aDiff);
       let w = map(aDiff, 0, TWO_PI, 0, width);
       print(hOff1);
-      rect(wHist, hBase+hOff1, wHist + w, hBase-hOff1);
-
-      // beginShape();
-      // vertex(wHist,distHeight);//upleft
-      // vertex(wHist+w,distHeight);//upright
-      // vertex(wHisty+w,height/2);//botright
-      // vertex(wHist,height/2);//botleft
-      // endShape();
+      // rect(wHist, hBase+hOff1, wHist + w, hBase-hOff1);
+      fill(v1.collidedR,v1.collidedG,v1.collidedB,fillOpacity)
+      beginShape();
+      vertex(wHist,hBase-hOff1); //topleft
+      vertex(wHist+w,hBase-hOff2); //topright
+      vertex(wHist+w,hBase+hOff2); //botright
+      vertex(wHist,hBase+hOff1); //botleft
+      endShape();
       wHist += w;
     }
     //connect last to first
-    let v1 = this.parentRay[0];
-    let v2 = this.parentRay[this.parentRay.length - 1];
-    let aDiff = TWO_PI - (v2.angle - v1.angle);
-    // print("heyy" + aDiff);
-    let w = map(aDiff, 0, TWO_PI, 0, width);
-    rectMode(CORNERS);
-    fill(0);
-    rect(wHist, 50, wHist + w, 100);
+    // let v1 = this.parentRay[0];
+    // let v2 = this.parentRay[this.parentRay.length - 1];
+    // let aDiff = TWO_PI - (v2.angle - v1.angle);
+    // // print("heyy" + aDiff);
+    // let w = map(aDiff, 0, TWO_PI, 0, width);
+    // rectMode(CORNERS);
+    // fill(0);
+    // rect(wHist, 50, wHist + w, 100);
     // print("angleDif: w" + angleDiffNet);
 
 

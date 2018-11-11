@@ -12,11 +12,15 @@ class Line {
   this.y2;
   this.h1;//height of vert
   this.h2;
+
+  this.r;
+  this.g;
+  this.b;
   }
 
   display(){ //draw line from start/end points of line
     strokeWeight(2);
-    stroke(200);
+    stroke(this.r,this.g,this.b);
     line(this.x1,this.y1,this.x2,this.y2);
   }
 }
