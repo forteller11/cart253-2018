@@ -58,6 +58,10 @@ class Player {
     //this.k is basically what controls rotations now, and it determines the starting point of i;
     //it should be determined based on width, and then should visually wrap over i think
     let wHist = round(map(this.angle, -PI, PI, width, 0));
+    wHist = wHist + width/2;
+    if (wHist > width){
+      wHist = wHist-width;
+    }
 
     // if (this.k =)
 

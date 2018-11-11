@@ -4,6 +4,9 @@ let debugDisplay = false;
 let bgR = 255;
 let bgG = 190;
 let bgB = 135;
+bgR = 51;
+bgG = 51;
+bgB = 51;
 
 function setup() {
   createCanvas(windowWidth / 1.1, windowHeight / 1.1);
