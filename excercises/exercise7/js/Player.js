@@ -46,13 +46,14 @@ class Player {
     and then fills in the space inbetween. It starts at the ray with the smallest angle
     and works its way up to the ray with the largest angle. */
     fill(255, 255, 255, 100);
-    strokeWeight(4);
+    strokeWeight(.5);
     // noStroke(0)
     let angleDiffNet = 0;
     noStroke();
     // stroke(255);
     rectMode(CORNERS);
-
+    let fadeHeightDist = width; //dist from player to wall at which wall is height 0
+    let maxHeight = height/2; //what height is wall when player is on top of wall
 
     //this.k is basically what controls rotations now, and it determines the starting point of i;
     //it should be determined based on width, and then should visually wrap over i think
@@ -62,9 +63,10 @@ class Player {
 
     for (let i = 0; i < this.parentRay.length - 1; i++) {
       if (wHist > width) {
-          print(wHist);
+          // print(wHist);
+
         wHist = wHist-width;
-        print(wHist);
+        // print(wHist);
       }
       let v0 = this.parentRay[i].children[0];
       let v1 = this.parentRay[i];
@@ -77,13 +79,13 @@ class Player {
 
       let hBase = height / 2;
       let hTune = 1;
-      let dist0 = map(v0.collidedRad, 0, width, height / 2, 0);
+      let dist0 = map(v0.collidedRad, 0, fadeHeightDist, maxHeight, 0);
       dist0 = constrain(dist0, 0, height);
-      let dist1 = map(v1.collidedRad, 0, width, height / 2, 0);
+      let dist1 = map(v1.collidedRad, 0, fadeHeightDist, maxHeight, 0);
       dist1 = constrain(dist1, 0, height);
-      let dist2 = map(v2.collidedRad, 0, width, height / 2, 0);
+      let dist2 = map(v2.collidedRad, 0, fadeHeightDist, maxHeight, 0);
       dist2 = constrain(dist2, 0, height);
-      let dist3 = map(v3.collidedRad, 0, width, height / 2, 0);
+      let dist3 = map(v3.collidedRad, 0, fadeHeightDist, maxHeight, 0);
       dist3 = constrain(dist3, 0, height);
 
       let hOff0 = (dist0 * v1.collidedH) * hTune;
@@ -91,12 +93,15 @@ class Player {
       let hOff2 = (dist2 * v1.collidedH) * hTune;
       let hOff3 = (dist3 * v1.collidedH) * hTune;
 
-      let opacityFill = map((v1.collidedRad), 0, width, 255, 0);
+      let opacityFill = map((v1.collidedRad), 0, fadeHeightDist, 255, 0);
       let w0 = map(aDiff0, 0, TWO_PI, 0, width);
       let w1 = map(aDiff1, 0, TWO_PI, 0, width);
       let w2 = map(aDiff2, 0, TWO_PI, 0, width);
       // rect(wHist, hBase+hOff1, wHist + w, hBase-hOff1);
-      fill(v1.collidedR, v1.collidedG, v1.collidedB, opacityFill)
+      fill(v1.collidedR, v1.collidedG, v1.collidedB, opacityFill);
+      let sW = map((v1.collidedRad), 0, fadeHeightDist, 3, 1);
+      strokeWeight(sW);
+      stroke(v1.collidedR, v1.collidedG, v1.collidedB, 255);
       beginShape();
       vertex(wHist, hBase - hOff0); //topleft
       vertex(wHist + w0, hBase - hOff1);
@@ -122,13 +127,13 @@ class Player {
 
     let hBase = height / 2;
     let hTune = 1;
-    let dist0 = map(v0.collidedRad, 0, width, height / 2, 0);
+    let dist0 = map(v0.collidedRad, 0, fadeHeightDist, maxHeight, 0);
     dist0 = constrain(dist0, 0, height);
-    let dist1 = map(v1.collidedRad, 0, width, height / 2, 0);
+    let dist1 = map(v1.collidedRad, 0, fadeHeightDist, maxHeight, 0);
     dist1 = constrain(dist1, 0, height);
-    let dist2 = map(v2.collidedRad, 0, width, height / 2, 0);
+    let dist2 = map(v2.collidedRad, 0, fadeHeightDist, maxHeight, 0);
     dist2 = constrain(dist2, 0, height);
-    let dist3 = map(v3.collidedRad, 0, width, height / 2, 0);
+    let dist3 = map(v3.collidedRad, 0, fadeHeightDist, maxHeight, 0);
     dist3 = constrain(dist3, 0, height);
 
     let hOff0 = (dist0 * v1.collidedH) * hTune;
