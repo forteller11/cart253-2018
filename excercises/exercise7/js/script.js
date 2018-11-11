@@ -1,6 +1,6 @@
 let player;
 let shape = [];
-let debugDisplay = false;
+let debugDisplay = true;
 let bgR = 255;
 let bgG = 190;
 let bgB = 135;
@@ -12,7 +12,7 @@ function setup() {
   createCanvas(windowWidth / 1.1, windowHeight / 1.1);
 
   //border
-  shape[0] = new Shape(width / 2, height / 2, 0.0001, 16);
+  shape[0] = new Shape(width / 2, height / 2, 0.0001, 4);
   for (let j = 0; j < shape[0].vertNumber; j++) {
     shape[0].vertAOff[j] = (TWO_PI / shape[0].vertNumber) * j + QUARTER_PI;
     shape[0].vertR[j] = 10000;
@@ -22,7 +22,7 @@ function setup() {
     shape[0].b = random(0);
   }
   //randomshapes
-  for (let i = 1; i < 4; i++) {
+  for (let i = 1; i < 2; i++) {
     shape[i] = new Shape(random(width), random(height), random(TWO_PI), round(random(3, 8)));
     for (let j = 0; j < shape[i].vertNumber; j++) {
       shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;
@@ -45,7 +45,5 @@ function draw() {
     shape[i].display();
   }
   player.update();
-noStroke();
-fill(255);
 // console.timeEnd();
 }

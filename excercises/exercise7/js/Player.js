@@ -16,7 +16,9 @@ class Player {
     this.velY = 0;
     this.drag = 0.95;
     this.velIncrement = 1;
-
+    this.pov = PI; //angle of perspective
+    this.povAngle1 = this.angle-(this.pov/2); //start of cone
+    this.povAngle2 = this.angle-(this.pov/2); //end of cone
     this.radius = 20;
 
     this.parentRay = [];
@@ -28,6 +30,10 @@ class Player {
         k++;
       }
     }
+    //create pov rays
+    this.parentRay[k] = new Ray(1, 1, true);
+    this.parentRay[k+1] = new Ray(1, 1, true);
+
   }
   update() {
     this.changeAngle();
@@ -103,7 +109,7 @@ class Player {
       let w2 = map(aDiff2, 0, TWO_PI, 0, width);
       // rect(wHist, hBase+hOff1, wHist + w, hBase-hOff1);
       fill(v1.collidedR, v1.collidedG, v1.collidedB, opacityFill);
-      let sW = map((v1.collidedRad), 0, fadeHeightDist, 3, 1);
+      let sW = map((v1.collidedRad), 0, fadeHeightDist, width/500, width/1500);
       strokeWeight(sW);
       stroke(v1.collidedR, v1.collidedG, v1.collidedB, 255);
       beginShape();
@@ -190,6 +196,21 @@ updateRays() {
       k++;
     }
   }
+  this.povAngle1 = this.angle-(this.pov/2); //start of cone
+  this.povAngle2 = this.angle+(this.pov/2); //end of cone
+
+  //create pov rays and set their angle
+  this.parentRay[k].x = this.x;
+  this.parentRay[k].y = this.y;
+  this.parentRay[k].calculateThisTargetBasedOnAngle(this.povAngle1);
+  this.parentRay[k].update();
+
+  //create pov rays and set their angle
+  this.parentRay[k+1].x = this.x;
+  this.parentRay[k+1].y = this.y;
+  this.parentRay[k+1].calculateThisTargetBasedOnAngle(this.povAngle2);
+  this.parentRay[k+1].update();
+
 }
 input() {
   if (keyIsDown(this.upKey)) {

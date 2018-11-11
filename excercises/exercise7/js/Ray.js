@@ -173,6 +173,12 @@ class Ray {
     this.children[index].targetY = (-sin(angle) * radius) + this.y;
   }
 
+  calculateThisTargetBasedOnAngle(angle) { //polar-->Cartesian
+    let radius = 1;
+    this.targetX = (-cos(angle) * radius) + this.x;
+    this.targetY = (-sin(angle) * radius) + this.y;
+  }
+
   display() {
     //if debug mode is on display draws the lines on the rays, colors them
     //according to their angle, and highlights point where the ray collided
