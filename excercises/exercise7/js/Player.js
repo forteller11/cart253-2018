@@ -6,6 +6,7 @@ class Player {
     this.rightKey = 68;
     this.x = x;
     this.y = y;
+    this.k = 0;
 
     this.angle = angle;
     this.angularIncrement = PI / 30;
@@ -50,8 +51,14 @@ class Player {
     let wHist = 0;
     let angleDiffNet = 0;
     noStroke();
-    rectMode(CORNERS)
-    for (let i = 0; i < this.parentRay.length - 1; i++) {
+    rectMode(CORNERS);
+
+    // print(this.angle);
+
+    this.k = abs(round((mouseX/width)*this.parentRay.length-1));
+    print(this.k);
+    for (let i = this.k; i < this.parentRay.length - 1; i++) {
+
       let v0 = this.parentRay[i].children[0];
       let v1 = this.parentRay[i];
       let v2 = this.parentRay[i].children[1];
@@ -81,7 +88,6 @@ class Player {
       let w0 = map(aDiff0, 0, TWO_PI, 0, width);
       let w1 = map(aDiff1, 0, TWO_PI, 0, width);
       let w2 = map(aDiff2, 0, TWO_PI, 0, width);
-      print(hOff1);
       // rect(wHist, hBase+hOff1, wHist + w, hBase-hOff1);
       fill(v1.collidedR,v1.collidedG,v1.collidedB,opacityFill)
       beginShape();
@@ -95,6 +101,56 @@ class Player {
       vertex(wHist,hBase+hOff0); //botleft
       endShape();
       wHist += w0 +w1+w2;
+    }
+    if (this.k < this.parentRay.length-1){
+
+      for (let i = 0; i < this.parentRay.length - 1; i++) {
+
+        let v0 = this.parentRay[i].children[0];
+        let v1 = this.parentRay[i];
+        let v2 = this.parentRay[i].children[1];
+        let v3 = this.parentRay[i + 1].children[0];
+
+        let aDiff0 = v1.angle - v0.angle;
+        let aDiff1 = v2.angle - v1.angle;
+        let aDiff2 = v3.angle - v2.angle;
+
+        let hBase = height/2;
+        let hTune = 1;
+        let dist0 = map(v0.collidedRad,0,width,height/2,0);
+        dist0 = constrain(dist0,0,height);
+        let dist1 = map(v1.collidedRad,0,width,height/2,0);
+        dist1 = constrain(dist1,0,height);
+        let dist2 = map(v2.collidedRad,0,width,height/2,0);
+        dist2 = constrain(dist2,0,height);
+        let dist3 = map(v3.collidedRad,0,width,height/2,0);
+        dist3 = constrain(dist3,0,height);
+
+        let hOff0 = (dist0*v1.collidedH)*hTune;
+        let hOff1 = (dist1*v1.collidedH)*hTune;
+        let hOff2 = (dist2*v1.collidedH)*hTune;
+        let hOff3 = (dist3*v1.collidedH)*hTune;
+
+        let opacityFill = map((v1.collidedRad),0,width,255,0);
+        let w0 = map(aDiff0, 0, TWO_PI, 0, width);
+        let w1 = map(aDiff1, 0, TWO_PI, 0, width);
+        let w2 = map(aDiff2, 0, TWO_PI, 0, width);
+        // rect(wHist, hBase+hOff1, wHist + w, hBase-hOff1);
+        fill(v1.collidedR,v1.collidedG,v1.collidedB,opacityFill)
+        beginShape();
+        vertex(wHist,hBase-hOff0); //topleft
+        vertex(wHist+w0,hBase-hOff1);
+        vertex(wHist+w0+w1,hBase-hOff2);
+        vertex(wHist+w0+w1+w2,hBase-hOff3); //topright
+        vertex(wHist+w0+w1+w2,hBase+hOff3); //botright
+        vertex(wHist+w0+w1,hBase+hOff2);
+        vertex(wHist+w0,hBase+hOff1);
+        vertex(wHist,hBase+hOff0); //botleft
+        endShape();
+        wHist += w0 +w1+w2;
+      }
+    } else{
+      this.k = 0;
     }
     //connect last to first
     // let v1 = this.parentRay[0];
@@ -144,8 +200,8 @@ class Player {
 
   }
   changeAngle() {
-    this.angle = atan2(mouseY - this.y, mouseX - this.x);
-    // this.angle = map(mouseX,0,width,0,TWO_PI);
+    // this.angle = atan2(mouseY - this.y, mouseX - this.x);
+    this.angle = map(mouseX,0,width,0,TWO_PI);
   }
   changePos() {
     this.velX = this.velX * this.drag;
