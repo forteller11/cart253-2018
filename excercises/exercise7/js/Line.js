@@ -20,7 +20,7 @@ class Line {
 
   display(){ //draw line from start/end points of line
     strokeWeight(2);
-    stroke(this.r,this.g,this.b);
+    stroke(this.r,this.g,this.b,50);
     line(this.x1,this.y1,this.x2,this.y2);
   }
 }

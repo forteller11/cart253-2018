@@ -54,8 +54,10 @@ class Player {
     rectMode(CORNERS);
 
     // print(this.angle);
-
-    this.k = abs(round((mouseX/width)*this.parentRay.length-1));
+    //this.k is basically what controls rotations now, and it determines the starting point of i;
+    //it should be determined based on width, and then should visually wrap over i think
+    this.k = round(map(this.angle,-PI,PI,0,this.parentRay.length - 1));
+    // if (this.k =)
     print(this.k);
     for (let i = this.k; i < this.parentRay.length - 1; i++) {
 
@@ -200,8 +202,20 @@ class Player {
 
   }
   changeAngle() {
+    if (keyIsDown(LEFT_ARROW)) {
+      this.angle -= this.angularIncrement;
+    }
+    if (keyIsDown(RIGHT_ARROW)) {
+      this.angle += this.angularIncrement;
+    }
+    if (this.angle < -PI){
+      this.angle += TWO_PI;
+    }
+    if (this.angle > PI){
+      this.angle -= TWO_PI;
+    }
     // this.angle = atan2(mouseY - this.y, mouseX - this.x);
-    this.angle = map(mouseX,0,width,0,TWO_PI);
+    // this.angle = map(mouseX,0,width,0,TWO_PI);
   }
   changePos() {
     this.velX = this.velX * this.drag;
