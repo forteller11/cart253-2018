@@ -53,9 +53,19 @@ class Player {
       let v1 = this.parentRay[i];
       let v2 = this.parentRay[i + 1];
       let aDiff = v2.angle - v1.angle;
-      print(aDiff);
+      let hBase = height/2;
+      let hTune = 1;
+      let dist1 = map(v1.collidedR,0,width,height/8,0);
+      dist1 = constrain(dist1,0,height);
+      let hOff1 = (dist1*v1.collidedH)*hTune;
+      let hOff2 = ((1/v1.collidedR)*v1.collidedH)*hTune;
+      let fillOpacity = 500*(1/(v1.collidedR));
+      print(round(v1.collidedR));
+
+      // print(aDiff);
       let w = map(aDiff, 0, TWO_PI, 0, width);
-      rect(wHist, 50, wHist + w, 100);
+      print(hOff1);
+      rect(wHist, hBase+hOff1, wHist + w, hBase-hOff1);
 
       // beginShape();
       // vertex(wHist,distHeight);//upleft
@@ -69,7 +79,7 @@ class Player {
     let v1 = this.parentRay[0];
     let v2 = this.parentRay[this.parentRay.length - 1];
     let aDiff = TWO_PI - (v2.angle - v1.angle);
-    print("heyy" + aDiff);
+    // print("heyy" + aDiff);
     let w = map(aDiff, 0, TWO_PI, 0, width);
     rectMode(CORNERS);
     fill(0);
