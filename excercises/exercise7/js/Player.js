@@ -197,9 +197,15 @@ updateRays() {
     }
   }
   this.povAngle1 = this.angle-(this.pov/2); //start of cone;
+  if (this.povAngle1 < 0){ //make PI from -pi,pi to 0,two_pi
+    this.povAngle1 = TWO_PI + this.povAngle1;
+  }
+  if (this.povAngle1 > TWO_PI){ //make PI from -pi,pi to 0,two_pi
+    this.povAngle1 = this.povAngle1-TWO_PI;
+  }
   // this.povAngle1 = map(this.povAngle1,-PI-(this.pov/2),PI-(this.pov/2),0,TWO_PI);
   // print(this.angle);
-  // print(this.povAngle1);
+
   // if (this.povAngle1 > PI){
   //   this.povAngle1 -= TWO_PI;
   // }
@@ -207,6 +213,13 @@ updateRays() {
   //   this.povAngle1 += TWO_PI;
   // }
   this.povAngle2 = this.angle+(this.pov/2); //end of cone
+  if (this.povAngle2 < 0){ //make PI from -pi,pi to 0,two_pi
+    this.povAngle2 = TWO_PI + this.povAngle2;
+  }
+  if (this.povAngle2 > TWO_PI){ //make PI from -pi,pi to 0,two_pi
+    this.povAngle2 = this.povAngle2-TWO_PI;
+  }
+    print(this.povAngle2);
   // this.povAngle2 = map(this.povAngle2,-PI+(this.pov/2),PI+(this.pov/2),0,TWO_PI);
   //create pov rays and set their angle
   this.parentRay[k].x = this.x;
@@ -258,7 +271,7 @@ changeAngle() {
   if (this.angle < 0){ //make PI from -pi,pi to 0,two_pi
     this.angle = TWO_PI + this.angle;
   }
-  print(this.angle);
+  // print(this.angle);
   // this.angle = atan2(mouseY - this.y, mouseX - this.x);
   // this.angle = map(mouseX,0,width,0,TWO_PI);
 }
