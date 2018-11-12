@@ -65,9 +65,15 @@ class Shape {
       }
     }
     for (let i = 0; i < this.vertNumber; i++) {
-      this.lines[i].r = this.r;
-      this.lines[i].g = this.g;
-      this.lines[i].b = this.b;
+      //shades the lines lighter with their slope
+      //making it look like their are two light sources in the scene
+      let l = this.lines[i];
+      let slope = abs((l.y2-l.y1)/(l.x2-l.x1));
+      let shade = map(slope,0,10,.75,1.25);
+      shade = constrain(shade,.75,1.25);
+      this.lines[i].r = this.r * shade;
+      this.lines[i].g = this.g * shade;
+      this.lines[i].b = this.b * shade;
     }
   }
 

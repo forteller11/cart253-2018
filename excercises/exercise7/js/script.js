@@ -2,12 +2,13 @@ let player;
 let shape = [];
 let debugDisplay = true;
 let twoDisplay = true; //display 2 perspective?
+let threeDisplay = true;
 let bgR = 255;
 let bgG = 190;
 let bgB = 135;
-bgR = 51;
-bgG = 51;
-bgB = 51;
+// bgR = 51;
+// bgG = 51;
+// bgB = 51;
 
 function setup() {
   createCanvas(windowWidth / 1.1, windowHeight / 1.1);
@@ -23,12 +24,12 @@ function setup() {
     shape[0].b = random(0);
   }
   //randomshapes
-  for (let i = 1; i < 7; i++) {
-    shape[i] = new Shape(random(width), random(height), random(TWO_PI), round(random(3, 9)));
+  for (let i = 1; i < 15; i++) {
+    shape[i] = new Shape(random(-width*.5,width*1.5), random(-height*.5,1.5*height), random(TWO_PI), round(random(3, 9)));
     for (let j = 0; j < shape[i].vertNumber; j++) {
       shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;
-      shape[i].vertR[j] = 100;
-      shape[i].vertH[j] = 1;
+      shape[i].vertR[j] = random(100,300);
+      shape[i].vertH[j] = .7;
       shape[i].r = random(255);
       shape[i].g = random(255);
       shape[i].b = random(255);
@@ -61,15 +62,15 @@ text ("pov:"+round(player.pov*100)/100,64,64);
       debugDisplay = true;
     }
   }
-  if (keyCode === 69) {
-    if (player.threeDisplay === true){
-      player.threeDisplay = false;
+  if (keyCode === 82) {
+    if (threeDisplay === true){
+      threeDisplay = false;
     } else {
-      player.threeDisplay = true;
+      threeDisplay = true;
     }
   }
 
-  if (keyCode === 82) { //R
+  if (keyCode === 69) { //R
     if (twoDisplay === true){
       twoDisplay = false;
     } else {

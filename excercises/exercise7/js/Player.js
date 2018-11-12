@@ -4,7 +4,7 @@ class Player {
     this.downKey = 83;
     this.leftKey = 65;
     this.rightKey = 68;
-    this.threeDisplay = true; //whether to visualize pseudo3D
+ //whether to visualize pseudo3D
     this.x = x;
     this.y = y;
     this.k = 0;
@@ -44,7 +44,7 @@ class Player {
 
     this.updateRays();
     this.selectionSort();
-    if (this.threeDisplay === true) {
+    if (threeDisplay === true) {
       this.visualizeRays();
     }
     this.display();
@@ -60,11 +60,6 @@ class Player {
     let fadeHeightDist = width; //dist from player to wall at which wall is height 0
     let maxHeight = height / 2; //what height is wall when player is on top of wall
 
-    // let wHist = round(map(this.angle, -PI, PI, width, 0));
-    // wHist = wHist + width / 2;
-    // if (wHist > width) {
-    //   wHist = wHist - width;
-    // }
     let wHist = 0;
     let index = 0;
     // print(this.parentRay);
@@ -77,7 +72,6 @@ class Player {
     let minStroke = width/3000;
 
     while (this.parentRay[index].povAngle2 === false)  {
-
       // print("loop:" + index);
       let v0;
       let v1;
@@ -139,12 +133,12 @@ class Player {
       let hOff2 = (dist2 * v1.collidedH) * hTune;
       let hOff3 = (dist3 * v1.collidedH) * hTune;
 
-      let opacityFill = map((v1.collidedRad), 0, fadeHeightDist, 255, 0);
+      let opacityFill = map((v1.collidedRad), 0, fadeHeightDist, 1.5, 0);
       let w0 = map(aDiff0, 0, this.pov, 0, width);
       let w1 = map(aDiff1, 0, this.pov, 0, width);
       let w2 = map(aDiff2, 0, this.pov, 0, width);
       // rect(wHist, hBase+hOff1, wHist + w, hBase-hOff1);
-      fill(v1.collidedR, v1.collidedG, v1.collidedB, opacityFill);
+      fill(v1.collidedR*opacityFill, v1.collidedG*opacityFill, v1.collidedB*opacityFill, 255);
       let sW = map((v1.collidedRad), 0, fadeHeightDist, maxStroke, minStroke);
       strokeWeight(sW);
       stroke(v1.collidedR, v1.collidedG, v1.collidedB, 255);
@@ -161,8 +155,8 @@ class Player {
       sW = map((v3.collidedRad), 0, fadeHeightDist, maxStroke, minStroke);
       strokeWeight(sW);
       stroke(v3.collidedR, v3.collidedG, v3.collidedB, 255);
-      opacityFill = map((v3.collidedRad), 0, fadeHeightDist, 255, 0)
-      fill(v3.collidedR, v3.collidedG, v3.collidedB, opacityFill);
+      opacityFill = map((v3.collidedRad), 0, fadeHeightDist, 1.5, 0)
+      fill(v3.collidedR*opacityFill, v3.collidedG*opacityFill, v3.collidedB*opacityFill, 255);
       beginShape();
       vertex(wHist + w0 + w1, hBase - hOff2);
       vertex(wHist + w0 + w1 + w2, hBase - hOff3); //topright
