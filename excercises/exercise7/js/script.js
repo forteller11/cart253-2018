@@ -22,11 +22,11 @@ function setup() {
     shape[0].b = random(0);
   }
   //randomshapes
-  for (let i = 1; i < 2; i++) {
-    shape[i] = new Shape(random(width), random(height), random(TWO_PI), round(random(3, 8)));
+  for (let i = 1; i < 4; i++) {
+    shape[i] = new Shape(random(width), random(height), random(TWO_PI), round(random(4, 4)));
     for (let j = 0; j < shape[i].vertNumber; j++) {
       shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;
-      shape[i].vertR[j] = 100;
+      shape[i].vertR[j] = 300;
       shape[i].vertH[j] = 1;
       shape[i].r = random(255);
       shape[i].g = random(255);

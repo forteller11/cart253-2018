@@ -16,9 +16,10 @@ class Player {
     this.velY = 0;
     this.drag = 0.95;
     this.velIncrement = 1;
-    this.pov = PI; //angle of perspective
+    this.pov = HALF_PI; //angle of perspective
+    this.povIncrement = 0.08;
     this.povAngle1 = this.angle-(this.pov/2); //start of cone
-    this.povAngle2 = this.angle-(this.pov/2); //end of cone
+    this.povAngle2 = this.angle+(this.pov/2); //end of cone
     this.radius = 20;
 
     this.parentRay = [];
@@ -63,15 +64,34 @@ class Player {
 
     //this.k is basically what controls rotations now, and it determines the starting point of i;
     //it should be determined based on width, and then should visually wrap over i think
-    let wHist = round(map(this.angle, -PI, PI, width, 0));
-    wHist = wHist + width/2;
-    if (wHist > width){
-      wHist = wHist-width;
+    // let wHist = round(map(this.angle, -PI, PI, width, 0));
+    // wHist = wHist + width/2;
+    // if (wHist > width){
+    //   wHist = wHist-width;
+    // }
+    let wHist = 0;
+    //set starting i to povAngle1
+    let i = 0;
+    let b = 0.00000001 //buffer
+    let bb = 10000;
+    while (! (round(this.parentRay[i].angle*bb) === round(this.povAngle1*bb)) ){
+      print(i);
+      print(round(this.parentRay[i].angle*bb));
+      print(round(this.povAngle1*bb))
+      i++;
     }
-
-    // if (this.k =)
-
-    for (let i = 0; i < this.parentRay.length - 1; i++) {
+    // print(i);
+    //itterate through until povAngle2, looping
+    let safeGuard = 0;
+    while ((! (round(this.parentRay[i].angle*bb) === round(this.povAngle2*bb)) ) && (safeGuard < 80)){
+      safeGuard++;
+      print(i);
+      print(round(this.parentRay[i].angle*bb));
+      print(round(this.povAngle2*bb))
+      i++;
+      if(i === this.parentRay.length-1){
+        i = 0;
+      }
       if (wHist > width) {
         wHist = wHist-width;
       }
@@ -79,10 +99,7 @@ class Player {
       let v1 = this.parentRay[i];
       let v2 = this.parentRay[i].children[1];
       let v3 = this.parentRay[i + 1].children[0];
-let b = 1;
-      if ((v1.angle > this.povAngle1 - b) && (v1.angle < this.povAngle1 + b)){
-        // print("pov1");
-      }
+
       let aDiff0 = v1.angle - v0.angle;
       let aDiff1 = v2.angle - v1.angle;
       let aDiff2 = v3.angle - v2.angle;
@@ -104,9 +121,9 @@ let b = 1;
       let hOff3 = (dist3 * v1.collidedH) * hTune;
 
       let opacityFill = map((v1.collidedRad), 0, fadeHeightDist, 255, 0);
-      let w0 = map(aDiff0, 0, TWO_PI, 0, width);
-      let w1 = map(aDiff1, 0, TWO_PI, 0, width);
-      let w2 = map(aDiff2, 0, TWO_PI, 0, width);
+      let w0 = map(aDiff0, 0, this.pov, 0, width);
+      let w1 = map(aDiff1, 0, this.pov, 0, width);
+      let w2 = map(aDiff2, 0, this.pov, 0, width);
       // rect(wHist, hBase+hOff1, wHist + w, hBase-hOff1);
       fill(v1.collidedR, v1.collidedG, v1.collidedB, opacityFill);
       let sW = map((v1.collidedRad), 0, fadeHeightDist, width/500, width/1500);
@@ -123,6 +140,7 @@ let b = 1;
       vertex(wHist, hBase + hOff0); //botleft
       endShape();
       wHist += w0 + w1 + w2;
+
 
     }
     let iFinal = this.parentRay.length -1;
@@ -203,15 +221,7 @@ updateRays() {
   if (this.povAngle1 > TWO_PI){ //make PI from -pi,pi to 0,two_pi
     this.povAngle1 = this.povAngle1-TWO_PI;
   }
-  // this.povAngle1 = map(this.povAngle1,-PI-(this.pov/2),PI-(this.pov/2),0,TWO_PI);
-  // print(this.angle);
 
-  // if (this.povAngle1 > PI){
-  //   this.povAngle1 -= TWO_PI;
-  // }
-  // if (this.povAngle1 < -PI){
-  //   this.povAngle1 += TWO_PI;
-  // }
   this.povAngle2 = this.angle+(this.pov/2); //end of cone
   if (this.povAngle2 < 0){ //make PI from -pi,pi to 0,two_pi
     this.povAngle2 = TWO_PI + this.povAngle2;
@@ -219,15 +229,12 @@ updateRays() {
   if (this.povAngle2 > TWO_PI){ //make PI from -pi,pi to 0,two_pi
     this.povAngle2 = this.povAngle2-TWO_PI;
   }
-    print(this.povAngle2);
-  // this.povAngle2 = map(this.povAngle2,-PI+(this.pov/2),PI+(this.pov/2),0,TWO_PI);
+
   //create pov rays and set their angle
   this.parentRay[k].x = this.x;
   this.parentRay[k].y = this.y;
   this.parentRay[k].calculateThisTargetBasedOnAngle(this.povAngle1);
   this.parentRay[k].update();
-  // print(this.parentRay[k].angle);
-  // print(this.povAngle1);
 
   //create pov rays and set their angle
   this.parentRay[k+1].x = this.x;
@@ -271,6 +278,14 @@ changeAngle() {
   if (this.angle < 0){ //make PI from -pi,pi to 0,two_pi
     this.angle = TWO_PI + this.angle;
   }
+
+  if (keyIsDown(UP_ARROW)) {
+    this.pov -= this.povIncrement;
+  }
+  if (keyIsDown(DOWN_ARROW)) {
+    this.pov += this.povIncrement;
+  }
+  this.pov = constrain(this.pov,.01,10000);
   // print(this.angle);
   // this.angle = atan2(mouseY - this.y, mouseX - this.x);
   // this.angle = map(mouseX,0,width,0,TWO_PI);
