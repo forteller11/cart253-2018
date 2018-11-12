@@ -4,6 +4,7 @@ class Player {
     this.downKey = 83;
     this.leftKey = 65;
     this.rightKey = 68;
+    this.threeDisplay = true; //whether to visualize pseudo3D
     this.x = x;
     this.y = y;
     this.k = 0;
@@ -16,10 +17,10 @@ class Player {
     this.velY = 0;
     this.drag = 0.95;
     this.velIncrement = 1;
-    this.pov = HALF_PI; //angle of perspective
+    this.pov = TWO_PI; //angle of perspective
     this.povIncrement = 0.08;
-    this.povAngle1 = this.angle-(this.pov/2); //start of cone
-    this.povAngle2 = this.angle+(this.pov/2); //end of cone
+    this.povAngle1 = this.angle - (this.pov / 2); //start of cone
+    this.povAngle2 = this.angle + (this.pov / 2); //end of cone
     this.radius = 20;
 
     this.parentRay = [];
@@ -33,7 +34,7 @@ class Player {
     }
     //create pov rays
     this.parentRay[k] = new Ray(1, 1, true);
-    this.parentRay[k+1] = new Ray(1, 1, true);
+    this.parentRay[k + 1] = new Ray(1, 1, true);
 
   }
   update() {
@@ -43,7 +44,9 @@ class Player {
 
     this.updateRays();
     this.selectionSort();
-    this.visualizeRays();
+    if (this.threeDisplay === true) {
+      this.visualizeRays();
+    }
     this.display();
 
   }
@@ -60,45 +63,33 @@ class Player {
     // stroke(255);
     rectMode(CORNERS);
     let fadeHeightDist = width; //dist from player to wall at which wall is height 0
-    let maxHeight = height/2; //what height is wall when player is on top of wall
+    let maxHeight = height / 2; //what height is wall when player is on top of wall
 
     //this.k is basically what controls rotations now, and it determines the starting point of i;
     //it should be determined based on width, and then should visually wrap over i think
-    // let wHist = round(map(this.angle, -PI, PI, width, 0));
-    // wHist = wHist + width/2;
-    // if (wHist > width){
-    //   wHist = wHist-width;
-    // }
-    let wHist = 0;
-    //set starting i to povAngle1
-    let i = 0;
-    let b = 0.00000001 //buffer
-    let bb = 10000;
-    while (! (round(this.parentRay[i].angle*bb) === round(this.povAngle1*bb)) ){
-      print(i);
-      print(round(this.parentRay[i].angle*bb));
-      print(round(this.povAngle1*bb))
-      i++;
+
+    let wHist = round(map(this.angle, -PI, PI, width, 0));
+    wHist = wHist + width / 2;
+    if (wHist > width) {
+      wHist = wHist - width;
     }
+    // let wHist = 0;
+    //set starting i to povAngle1
+
     // print(i);
     //itterate through until povAngle2, looping
-    let safeGuard = 0;
-    while ((! (round(this.parentRay[i].angle*bb) === round(this.povAngle2*bb)) ) && (safeGuard < 80)){
-      safeGuard++;
-      print(i);
-      print(round(this.parentRay[i].angle*bb));
-      print(round(this.povAngle2*bb))
-      i++;
-      if(i === this.parentRay.length-1){
-        i = 0;
-      }
+
+    for (let i = 0; i < this.parentRay.length - 1; i++) {
       if (wHist > width) {
-        wHist = wHist-width;
+        wHist = wHist - width;
       }
       let v0 = this.parentRay[i].children[0];
       let v1 = this.parentRay[i];
       let v2 = this.parentRay[i].children[1];
       let v3 = this.parentRay[i + 1].children[0];
+
+      // stroke(255,0,0); //what has being draw
+      // line(v1.x,v1.y,v1.targetX,v1.targetY);
 
       let aDiff0 = v1.angle - v0.angle;
       let aDiff1 = v2.angle - v1.angle;
@@ -126,7 +117,7 @@ class Player {
       let w2 = map(aDiff2, 0, this.pov, 0, width);
       // rect(wHist, hBase+hOff1, wHist + w, hBase-hOff1);
       fill(v1.collidedR, v1.collidedG, v1.collidedB, opacityFill);
-      let sW = map((v1.collidedRad), 0, fadeHeightDist, width/500, width/1500);
+      let sW = map((v1.collidedRad), 0, fadeHeightDist, width / 500, width / 1500);
       strokeWeight(sW);
       stroke(v1.collidedR, v1.collidedG, v1.collidedB, 255);
       beginShape();
@@ -143,7 +134,7 @@ class Player {
 
 
     }
-    let iFinal = this.parentRay.length -1;
+    let iFinal = this.parentRay.length - 1;
     let v0 = this.parentRay[iFinal].children[0];
     let v1 = this.parentRay[iFinal];
     let v2 = this.parentRay[iFinal].children[1];
@@ -151,7 +142,7 @@ class Player {
 
     let aDiff0 = v1.angle - v0.angle;
     let aDiff1 = v2.angle - v1.angle;
-    let aDiff2 = (v3.angle+TWO_PI) - v2.angle;
+    let aDiff2 = (v3.angle + TWO_PI) - v2.angle;
 
     let hBase = height / 2;
     let hTune = 1;
@@ -174,7 +165,7 @@ class Player {
     let w1 = map(aDiff1, 0, TWO_PI, 0, width);
     let w2 = map(aDiff2, 0, TWO_PI, 0, width);
     // rect(wHist, hBase+hOff1, wHist + w, hBase-hOff1);
-    fill(v1.collidedR,v1.collidedG,v1.collidedB, opacityFill)
+    fill(v1.collidedR, v1.collidedG, v1.collidedB, opacityFill)
     beginShape();
 
     vertex(wHist, hBase - hOff0); //topleft
@@ -187,149 +178,150 @@ class Player {
     vertex(wHist, hBase + hOff0); //botleft
     endShape();
     wHist += w0 + w1 + w2;
-  //connect last to first
-  // let v1 = this.parentRay[0];
-  // let v2 = this.parentRay[this.parentRay.length - 1];
-  // let aDiff = TWO_PI - (v2.angle - v1.angle);
-  // // print("heyy" + aDiff);
-  // let w = map(aDiff, 0, TWO_PI, 0, width);
-  // rectMode(CORNERS);
-  // fill(0);
-  // rect(wHist, 50, wHist + w, 100);
-  // print("angleDif: w" + angleDiffNet);
+    //connect last to first
+    // let v1 = this.parentRay[0];
+    // let v2 = this.parentRay[this.parentRay.length - 1];
+    // let aDiff = TWO_PI - (v2.angle - v1.angle);
+    // // print("heyy" + aDiff);
+    // let w = map(aDiff, 0, TWO_PI, 0, width);
+    // rectMode(CORNERS);
+    // fill(0);
+    // rect(wHist, 50, wHist + w, 100);
+    // print("angleDif: w" + angleDiffNet);
 
 
-}
-updateRays() {
-  /* set every parentRay (ray with children) target to a unique vertex in the scene,
-  set its origin to the light's origin, update the ray */
-  let k = 0;
-  for (let i = 0; i < shape.length; i++) {
-    for (let j = 0; j < shape[i].vertNumber; j++) {
-      this.parentRay[k].x = this.x;
-      this.parentRay[k].y = this.y;
-      this.parentRay[k].targetX = shape[i].vertX[j];
-      this.parentRay[k].targetY = shape[i].vertY[j];
-      this.parentRay[k].update();
-      k++;
+  }
+  updateRays() {
+    /* set every parentRay (ray with children) target to a unique vertex in the scene,
+    set its origin to the light's origin, update the ray */
+    let k = 0;
+    for (let i = 0; i < shape.length; i++) {
+      for (let j = 0; j < shape[i].vertNumber; j++) {
+        this.parentRay[k].x = this.x;
+        this.parentRay[k].y = this.y;
+        this.parentRay[k].targetX = shape[i].vertX[j];
+        this.parentRay[k].targetY = shape[i].vertY[j];
+        this.parentRay[k].update();
+        k++;
+      }
+    }
+    this.povAngle1 = this.angle - (this.pov / 2) + PI; //start of cone;
+    if (this.povAngle1 < 0) { //make PI from -pi,pi to 0,two_pi
+      this.povAngle1 = TWO_PI + this.povAngle1;
+    }
+    if (this.povAngle1 > TWO_PI) { //make PI from -pi,pi to 0,two_pi
+      this.povAngle1 = this.povAngle1 - TWO_PI;
+    }
+
+    this.povAngle2 = this.angle + (this.pov / 2) + PI; //end of cone
+    if (this.povAngle2 < 0) { //make PI from -pi,pi to 0,two_pi
+      this.povAngle2 = TWO_PI + this.povAngle2;
+    }
+    if (this.povAngle2 > TWO_PI) { //make PI from -pi,pi to 0,two_pi
+      this.povAngle2 = this.povAngle2 - TWO_PI;
+    }
+
+    //create pov rays and set their angle
+    this.parentRay[k].x = this.x;
+    this.parentRay[k].y = this.y;
+    this.parentRay[k].calculateThisTargetBasedOnAngle(this.povAngle1);
+    this.parentRay[k].update();
+
+    //create pov rays and set their angle
+    this.parentRay[k + 1].x = this.x;
+    this.parentRay[k + 1].y = this.y;
+    this.parentRay[k + 1].calculateThisTargetBasedOnAngle(this.povAngle2);
+    this.parentRay[k + 1].update();
+
+  }
+  input() {
+    if (keyIsDown(this.upKey)) {
+      this.velX += cos(this.angle) * this.velIncrement;
+      this.velY += sin(this.angle) * this.velIncrement;
+    }
+    if (keyIsDown(this.downKey)) {
+      this.velX += cos(this.angle + PI) * this.velIncrement;
+      this.velY += sin(this.angle + PI) * this.velIncrement;
+    }
+    if (keyIsDown(this.leftKey)) {
+      this.velX += cos(this.angle - HALF_PI) * this.velIncrement;
+      this.velY += sin(this.angle - HALF_PI) * this.velIncrement;
+    }
+    if (keyIsDown(this.rightKey)) {
+      this.velX += cos(this.angle + HALF_PI) * this.velIncrement;
+      this.velY += sin(this.angle + HALF_PI) * this.velIncrement;
+    }
+
+
+  }
+  changeAngle() {
+    if (keyIsDown(LEFT_ARROW)) {
+      this.angle -= this.angularIncrement;
+    }
+    if (keyIsDown(RIGHT_ARROW)) {
+      this.angle += this.angularIncrement;
+    }
+    if (this.angle < -PI) { //make pi stay within a range of two_pi
+      this.angle += TWO_PI;
+    }
+    if (this.angle > PI) { //make pi stay within a range of two_pi
+      this.angle -= TWO_PI;
+    }
+    if (this.angle < 0) { //make PI from -pi,pi to 0,two_pi
+      this.angle = TWO_PI + this.angle;
+    }
+
+    if (keyIsDown(UP_ARROW)) {
+      this.pov -= this.povIncrement;
+    }
+    if (keyIsDown(DOWN_ARROW)) {
+      this.pov += this.povIncrement;
+    }
+    this.pov = constrain(this.pov, .01, 10000);
+    // print(this.angle);
+    // this.angle = atan2(mouseY - this.y, mouseX - this.x);
+    // this.angle = map(mouseX,0,width,0,TWO_PI);
+  }
+  changePos() {
+    this.velX = this.velX * this.drag;
+    this.velY = this.velY * this.drag;
+
+    this.x += this.velX;
+    this.y += this.velY;
+  }
+  display() {
+    stroke(255);
+    fill(51);
+    strokeWeight(4);
+    ellipse(this.x, this.y, this.radius * 2);
+    line(this.x, this.y, this.x + (cos(this.angle) * this.radius), this.y + (sin(this.angle) * this.radius));
+  }
+  selectionSort() {
+    /*selectionSort parentRay array by their angles... It basically cycles through
+    the array and finds the smallest value and puts it at the start of the array, then
+    itterates through the array again but starts at index 1, finds the smallest value
+    and puts it at index one, now it starts at index 2....
+     (this really should be at least an insertion-sort algorithim because selection-sort
+     always takes the same amount of calculations even if the array is already sorted,
+      but it is slightly harder to implement) */
+    for (let i = 0; i < this.parentRay.length; i++) {
+      let smallestValue = Infinity;
+      let smallestValueIndex;
+      for (let j = i; j < this.parentRay.length; j++) {
+        //cycle through this.parentRay[], find index of smallest value
+        if (this.parentRay[j].angle < smallestValue) {
+          smallestValueIndex = j;
+          smallestValue = this.parentRay[j].angle;
+        }
+        //once at end of the arthis.parentRay, swap this.parentRay index i with smallest this.parentRay...
+        if (j === this.parentRay.length - 1) {
+          let parentRayStore = this.parentRay[i];
+          this.parentRay[i] = this.parentRay[smallestValueIndex];
+          this.parentRay[smallestValueIndex] = parentRayStore;
+        }
+        //then increment i and repeat until parentRay[] is sorted...
+      }
     }
   }
-  this.povAngle1 = this.angle-(this.pov/2); //start of cone;
-  if (this.povAngle1 < 0){ //make PI from -pi,pi to 0,two_pi
-    this.povAngle1 = TWO_PI + this.povAngle1;
-  }
-  if (this.povAngle1 > TWO_PI){ //make PI from -pi,pi to 0,two_pi
-    this.povAngle1 = this.povAngle1-TWO_PI;
-  }
-
-  this.povAngle2 = this.angle+(this.pov/2); //end of cone
-  if (this.povAngle2 < 0){ //make PI from -pi,pi to 0,two_pi
-    this.povAngle2 = TWO_PI + this.povAngle2;
-  }
-  if (this.povAngle2 > TWO_PI){ //make PI from -pi,pi to 0,two_pi
-    this.povAngle2 = this.povAngle2-TWO_PI;
-  }
-
-  //create pov rays and set their angle
-  this.parentRay[k].x = this.x;
-  this.parentRay[k].y = this.y;
-  this.parentRay[k].calculateThisTargetBasedOnAngle(this.povAngle1);
-  this.parentRay[k].update();
-
-  //create pov rays and set their angle
-  this.parentRay[k+1].x = this.x;
-  this.parentRay[k+1].y = this.y;
-  this.parentRay[k+1].calculateThisTargetBasedOnAngle(this.povAngle2);
-  this.parentRay[k+1].update();
-
-}
-input() {
-  if (keyIsDown(this.upKey)) {
-    this.velX += cos(this.angle) * this.velIncrement;
-    this.velY += sin(this.angle) * this.velIncrement;
-  }
-  if (keyIsDown(this.downKey)) {
-    this.velX += cos(this.angle + PI) * this.velIncrement;
-    this.velY += sin(this.angle + PI) * this.velIncrement;
-  }
-  if (keyIsDown(this.leftKey)) {
-    this.velX += cos(this.angle - HALF_PI) * this.velIncrement;
-    this.velY += sin(this.angle - HALF_PI) * this.velIncrement;
-  }
-  if (keyIsDown(this.rightKey)) {
-    this.velX += cos(this.angle + HALF_PI) * this.velIncrement;
-    this.velY += sin(this.angle + HALF_PI) * this.velIncrement;
-  }
-
-}
-changeAngle() {
-  if (keyIsDown(LEFT_ARROW)) {
-    this.angle -= this.angularIncrement;
-  }
-  if (keyIsDown(RIGHT_ARROW)) {
-    this.angle += this.angularIncrement;
-  }
-  if (this.angle < -PI) { //make pi stay within a range of two_pi
-    this.angle += TWO_PI;
-  }
-  if (this.angle > PI) { //make pi stay within a range of two_pi
-    this.angle -= TWO_PI;
-  }
-  if (this.angle < 0){ //make PI from -pi,pi to 0,two_pi
-    this.angle = TWO_PI + this.angle;
-  }
-
-  if (keyIsDown(UP_ARROW)) {
-    this.pov -= this.povIncrement;
-  }
-  if (keyIsDown(DOWN_ARROW)) {
-    this.pov += this.povIncrement;
-  }
-  this.pov = constrain(this.pov,.01,10000);
-  // print(this.angle);
-  // this.angle = atan2(mouseY - this.y, mouseX - this.x);
-  // this.angle = map(mouseX,0,width,0,TWO_PI);
-}
-changePos() {
-  this.velX = this.velX * this.drag;
-  this.velY = this.velY * this.drag;
-
-  this.x += this.velX;
-  this.y += this.velY;
-}
-display() {
-  stroke(255);
-  fill(51);
-  strokeWeight(4);
-  ellipse(this.x, this.y, this.radius * 2);
-  line(this.x, this.y, this.x + (cos(this.angle) * this.radius), this.y + (sin(this.angle) * this.radius));
-}
-selectionSort() {
-  /*selectionSort parentRay array by their angles... It basically cycles through
-  the array and finds the smallest value and puts it at the start of the array, then
-  itterates through the array again but starts at index 1, finds the smallest value
-  and puts it at index one, now it starts at index 2....
-   (this really should be at least an insertion-sort algorithim because selection-sort
-   always takes the same amount of calculations even if the array is already sorted,
-    but it is slightly harder to implement) */
-  for (let i = 0; i < this.parentRay.length; i++) {
-    let smallestValue = Infinity;
-    let smallestValueIndex;
-    for (let j = i; j < this.parentRay.length; j++) {
-      //cycle through this.parentRay[], find index of smallest value
-      if (this.parentRay[j].angle < smallestValue) {
-        smallestValueIndex = j;
-        smallestValue = this.parentRay[j].angle;
-      }
-      //once at end of the arthis.parentRay, swap this.parentRay index i with smallest this.parentRay...
-      if (j === this.parentRay.length - 1) {
-        let parentRayStore = this.parentRay[i];
-        this.parentRay[i] = this.parentRay[smallestValueIndex];
-        this.parentRay[smallestValueIndex] = parentRayStore;
-      }
-      //then increment i and repeat until parentRay[] is sorted...
-    }
-  }
-}
 
 }

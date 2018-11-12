@@ -201,7 +201,7 @@ class Ray {
 
         stroke(this.r, this.g, this.b, 200, 50);
       }
-      stroke(this.r, this.g, this.b,255);
+      // stroke(this.r, this.g, this.b,255);
       line(this.x, this.y, (this.collidedX), (this.collidedY));
       stroke(this.r, this.g, this.b,20);
       line(this.x, this.y, (this.targetX), (this.targetY));

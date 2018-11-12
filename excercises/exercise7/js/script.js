@@ -45,5 +45,26 @@ function draw() {
     shape[i].display();
   }
   player.update();
-// console.timeEnd();
+  noStroke();
+  fill(255);
+
+text ("pov:"+round(player.pov/TWO_PI*360),64,64);
+}
+
+
+  function keyPressed(){
+  if (keyCode === 81) {
+    if (debugDisplay === true){
+      debugDisplay = false;
+    } else {
+      debugDisplay = true;
+    }
+  }
+  if (keyCode === 69) {
+    if (player.threeDisplay === true){
+      player.threeDisplay = false;
+    } else {
+      player.threeDisplay = true;
+    }
+  }
 }
