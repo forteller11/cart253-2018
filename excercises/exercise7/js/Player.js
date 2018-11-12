@@ -153,11 +153,20 @@ class Player {
       vertex(wHist, hBase - hOff0); //topleft
       vertex(wHist + w0, hBase - hOff1);
       vertex(wHist + w0 + w1, hBase - hOff2);
-      vertex(wHist + w0 + w1 + w2, hBase - hOff3); //topright
-      vertex(wHist + w0 + w1 + w2, hBase + hOff3); //botright
+
       vertex(wHist + w0 + w1, hBase + hOff2);
       vertex(wHist + w0, hBase + hOff1);
       vertex(wHist, hBase + hOff0); //botleft
+      endShape();
+
+      stroke(v3.collidedR, v3.collidedG, v3.collidedB, 255);
+      opacityFill = map((v3.collidedRad), 0, fadeHeightDist, 255, 0)
+      fill(v3.collidedR, v3.collidedG, v3.collidedB, opacityFill);
+      beginShape();
+      vertex(wHist + w0 + w1, hBase - hOff2);
+      vertex(wHist + w0 + w1 + w2, hBase - hOff3); //topright
+      vertex(wHist + w0 + w1 + w2, hBase + hOff3); //botright
+      vertex(wHist + w0 + w1, hBase + hOff2);
       endShape();
       wHist += w0 + w1 + w2;
     }
