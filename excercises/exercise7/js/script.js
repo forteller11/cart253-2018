@@ -22,11 +22,11 @@ function setup() {
     shape[0].b = random(0);
   }
   //randomshapes
-  for (let i = 1; i < 4; i++) {
+  for (let i = 1; i < 7; i++) {
     shape[i] = new Shape(random(width), random(height), random(TWO_PI), round(random(4, 4)));
     for (let j = 0; j < shape[i].vertNumber; j++) {
       shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;
-      shape[i].vertR[j] = 300;
+      shape[i].vertR[j] = 100;
       shape[i].vertH[j] = 1;
       shape[i].r = random(255);
       shape[i].g = random(255);
@@ -48,7 +48,7 @@ function draw() {
   noStroke();
   fill(255);
 
-text ("pov:"+round(player.pov/TWO_PI*360),64,64);
+text ("pov:"+round(player.pov*100)/100,64,64);
 }
 
 
