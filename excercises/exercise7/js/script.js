@@ -1,6 +1,7 @@
 let player;
 let shape = [];
 let debugDisplay = true;
+let twoDisplay = true; //display 2 perspective?
 let bgR = 255;
 let bgG = 190;
 let bgB = 135;
@@ -23,7 +24,7 @@ function setup() {
   }
   //randomshapes
   for (let i = 1; i < 7; i++) {
-    shape[i] = new Shape(random(width), random(height), random(TWO_PI), round(random(4, 4)));
+    shape[i] = new Shape(random(width), random(height), random(TWO_PI), round(random(3, 9)));
     for (let j = 0; j < shape[i].vertNumber; j++) {
       shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;
       shape[i].vertR[j] = 100;
@@ -65,6 +66,14 @@ text ("pov:"+round(player.pov*100)/100,64,64);
       player.threeDisplay = false;
     } else {
       player.threeDisplay = true;
+    }
+  }
+
+  if (keyCode === 82) { //R
+    if (twoDisplay === true){
+      twoDisplay = false;
+    } else {
+      twoDisplay = true;
     }
   }
 }
