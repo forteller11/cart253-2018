@@ -32,6 +32,8 @@ class Ray {
     this.collidedG; //greebn
     this.collidedB; //blue
     this.angle; //angle
+    this.povAngle1;
+    this.povAngle2;
     this.hasChildren = createChildren; //true or false, does this ray have children?
     this.children = []; //the array where any children will be put
     //if set to create children create two rays who are set NOT to create children.
@@ -46,6 +48,7 @@ class Ray {
       this.checkIntersection(); //sees where the ray intersects with lines, and stores the closest collision
       this.calculateAngle(); //caluclates the angle of the ray (cartesian-->polar)
       this.updateChildren(); //sets offsets children's angle/targetx,y; updates chilldren
+      this.display();
     }
   }
   updateChildren() {
@@ -183,33 +186,31 @@ class Ray {
     //if debug mode is on display draws the lines on the rays, colors them
     //according to their angle, and highlights point where the ray collided
     if (debugDisplay === true){
-      strokeWeight(2);
       //calcs colour based on angle
       let mapColor = map(this.angle, 0, TWO_PI * 2, 0, 255);
       this.r = mapColor;
       this.g = 255-mapColor;
       this.b = 200;
-
       noStroke();
       fill(this.r, this.g, this.b);
       text(round(100 * this.angle)/100, 40, (100 * this.angle) + 50);
-      if (this.hasChildren == true) {
-        strokeWeight(1);
-        stroke(this.r, this.g, this.b, 255);
-      } else {
-        strokeWeight(1);
 
-        stroke(this.r, this.g, this.b, 200, 50);
+        strokeWeight(1);
+        stroke(this.r, this.g, this.b, 150);
+
+      if(this.povAngle1 === true){
+        strokeWeight(4)
+        stroke(0,255,0);
+      }
+      if(this.povAngle2 === true){
+        strokeWeight(4)
+        stroke(255,0,0);
       }
       // stroke(this.r, this.g, this.b,255);
       line(this.x, this.y, (this.collidedX), (this.collidedY));
+      //post collision stroke
       stroke(this.r, this.g, this.b,20);
       line(this.x, this.y, (this.targetX), (this.targetY));
-
-      //display children
-      for (let i = 0; i < this.children.length; i++) {
-        this.children[i].display();
-      }
     }
   }
 }

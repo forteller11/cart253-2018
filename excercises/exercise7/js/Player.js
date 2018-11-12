@@ -201,6 +201,8 @@ class Player {
         this.parentRay[k].y = this.y;
         this.parentRay[k].targetX = shape[i].vertX[j];
         this.parentRay[k].targetY = shape[i].vertY[j];
+        this.parentRay[k].povAngle1 = false;
+        this.parentRay[k].povAngle2 = false;
         this.parentRay[k].update();
         k++;
       }
@@ -224,12 +226,14 @@ class Player {
     //create pov rays and set their angle
     this.parentRay[k].x = this.x;
     this.parentRay[k].y = this.y;
+    this.parentRay[k].povAngle1 = true;
     this.parentRay[k].calculateThisTargetBasedOnAngle(this.povAngle1);
     this.parentRay[k].update();
 
     //create pov rays and set their angle
     this.parentRay[k + 1].x = this.x;
     this.parentRay[k + 1].y = this.y;
+    this.parentRay[k + 1].povAngle2 = true;
     this.parentRay[k + 1].calculateThisTargetBasedOnAngle(this.povAngle2);
     this.parentRay[k + 1].update();
 
