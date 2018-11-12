@@ -66,83 +66,148 @@ class Player {
     //   wHist = wHist - width;
     // }
     let wHist = 0;
-let index = 0;
-// print(this.parentRay);
-while (this.parentRay[index].povAngle1 === false){
-  index++;
-}
-  print("startingI: "+index);
-  print("length of array: "+this.parentRay.length);
+    let index = 0;
+    // print(this.parentRay);
+    while (this.parentRay[index].povAngle1 === false) {
+      index++;
+    }
+    print("startingI: " + index);
+    print("length of array: " + this.parentRay.length);
 
-        let safeGuard = 0;
-while ((this.parentRay[index].povAngle2 === false)&&(safeGuard < 40)){
-  safeGuard++;
-  if (safeGuard >= 40){
-    print("INFINITELOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP");
-  }
-  index++;
-  print("loop:"+index);
-  if(index >= this.parentRay.length){
-    index= 0;
-    print("overflow:");
-  }
-}
-print("out:"+index);
+    let safeGuard = 0;
+    while ((this.parentRay[index].povAngle2 === false) && (safeGuard < 40)) {
+      safeGuard++;
+      if (safeGuard >= 40) {
+        print("INFINITELOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP");
+      }
+      index++;
+      print("loop:" + index);
+      if (index >= this.parentRay.length) { //wrap
+        index = 0;
+        print("overflow:");
+      }
+      if (index < this.parentRay.length-1) { //wrap
+        let v1 = this.parentRay[index];
+        stroke(255, 150, 0, 90);
+        line(v1.x, v1.y, v1.targetX, v1.targetY);
+      }
 
-// if (index === this.parentRay.length - 1){
-//   print("if");
-//   let v0 = this.parentRay[index].children[0];
-//   let v1 = this.parentRay[index];
-//   let v2 = this.parentRay[index].children[1];
-//   let v3 = this.parentRay[0].children[0];
-// } else {
-//   print("else")
-//   let v0 = this.parentRay[index].children[0];
-//      let v1 = this.parentRay[index];
-//     let v2 = this.parentRay[index].children[1];
-//     let v3 = this.parentRay[index + 1].children[0];
-// }
-//
-//       let aDiff0 = v1.angle - v0.angle;
-//       let aDiff1 = v2.angle - v1.angle;
-//       let aDiff2 = v3.angle - v2.angle;
-//
-//       let hBase = height / 2;
-//       let hTune = 1;
-//       let dist0 = map(v0.collidedRad, 0, fadeHeightDist, maxHeight, 0);
-//       dist0 = constrain(dist0, 0, height);
-//       let dist1 = map(v1.collidedRad, 0, fadeHeightDist, maxHeight, 0);
-//       dist1 = constrain(dist1, 0, height);
-//       let dist2 = map(v2.collidedRad, 0, fadeHeightDist, maxHeight, 0);
-//       dist2 = constrain(dist2, 0, height);
-//       let dist3 = map(v3.collidedRad, 0, fadeHeightDist, maxHeight, 0);
-//       dist3 = constrain(dist3, 0, height);
-//
-//       let hOff0 = (dist0 * v1.collidedH) * hTune;
-//       let hOff1 = (dist1 * v1.collidedH) * hTune;
-//       let hOff2 = (dist2 * v1.collidedH) * hTune;
-//       let hOff3 = (dist3 * v1.collidedH) * hTune;
-//
-//       let opacityFill = map((v1.collidedRad), 0, fadeHeightDist, 255, 0);
-//       let w0 = map(aDiff0, 0, this.pov, 0, width);
-//       let w1 = map(aDiff1, 0, this.pov, 0, width);
-//       let w2 = map(aDiff2, 0, this.pov, 0, width);
-//       // rect(wHist, hBase+hOff1, wHist + w, hBase-hOff1);
-//       fill(v1.collidedR, v1.collidedG, v1.collidedB, opacityFill);
-//       let sW = map((v1.collidedRad), 0, fadeHeightDist, width / 500, width / 1500);
-//       strokeWeight(sW);
-//       stroke(v1.collidedR, v1.collidedG, v1.collidedB, 255);
-//       beginShape();
-//       vertex(wHist, hBase - hOff0); //topleft
-//       vertex(wHist + w0, hBase - hOff1);
-//       vertex(wHist + w0 + w1, hBase - hOff2);
-//       vertex(wHist + w0 + w1 + w2, hBase - hOff3); //topright
-//       vertex(wHist + w0 + w1 + w2, hBase + hOff3); //botright
-//       vertex(wHist + w0 + w1, hBase + hOff2);
-//       vertex(wHist + w0, hBase + hOff1);
-//       vertex(wHist, hBase + hOff0); //botleft
-//       endShape();
-//       wHist += w0 + w1 + w2;
+
+      // if (index < this.parentRay.length - 1) {
+      //   print('if');
+      //   let v0 = this.parentRay[index].children[0];
+      //   let v1 = this.parentRay[index];
+      //   let v2 = this.parentRay[index].children[1];
+      //   let v3 = this.parentRay[index + 1].children[0];
+      // } else {
+      //   print('else');
+      //   let v0 = this.parentRay[index].children[0];
+      //   let v1 = this.parentRay[index];
+      //   let v2 = this.parentRay[index].children[1];
+      //   let v3 = this.parentRay[0].children[0];
+      // }
+      // stroke(255, 150, 0, 90);
+      // line(v1.x, v1.y, v1.targetX, v1.targetY);
+      //
+      //
+      //
+      // let aDiff0 = v1.angle - v0.angle;
+      // let aDiff1 = v2.angle - v1.angle;
+      // let aDiff2 = v3.angle - v2.angle;
+      //
+      // let hBase = height / 2;
+      // let hTune = 1;
+      // let dist0 = map(v0.collidedRad, 0, fadeHeightDist, maxHeight, 0);
+      // dist0 = constrain(dist0, 0, height);
+      // let dist1 = map(v1.collidedRad, 0, fadeHeightDist, maxHeight, 0);
+      // dist1 = constrain(dist1, 0, height);
+      // let dist2 = map(v2.collidedRad, 0, fadeHeightDist, maxHeight, 0);
+      // dist2 = constrain(dist2, 0, height);
+      // let dist3 = map(v3.collidedRad, 0, fadeHeightDist, maxHeight, 0);
+      // dist3 = constrain(dist3, 0, height);
+      //
+      // let hOff0 = (dist0 * v1.collidedH) * hTune;
+      // let hOff1 = (dist1 * v1.collidedH) * hTune;
+      // let hOff2 = (dist2 * v1.collidedH) * hTune;
+      // let hOff3 = (dist3 * v1.collidedH) * hTune;
+      //
+      // let opacityFill = map((v1.collidedRad), 0, fadeHeightDist, 255, 0);
+      // let w0 = map(aDiff0, 0, this.pov, 0, width);
+      // let w1 = map(aDiff1, 0, this.pov, 0, width);
+      // let w2 = map(aDiff2, 0, this.pov, 0, width);
+      // // rect(wHist, hBase+hOff1, wHist + w, hBase-hOff1);
+      // fill(v1.collidedR, v1.collidedG, v1.collidedB, opacityFill);
+      // let sW = map((v1.collidedRad), 0, fadeHeightDist, width / 500, width / 1500);
+      // strokeWeight(sW);
+      // stroke(v1.collidedR, v1.collidedG, v1.collidedB, 255);
+      // beginShape();
+      // vertex(wHist, hBase - hOff0); //topleft
+      // vertex(wHist + w0, hBase - hOff1);
+      // vertex(wHist + w0 + w1, hBase - hOff2);
+      // vertex(wHist + w0 + w1 + w2, hBase - hOff3); //topright
+      // vertex(wHist + w0 + w1 + w2, hBase + hOff3); //botright
+      // vertex(wHist + w0 + w1, hBase + hOff2);
+      // vertex(wHist + w0, hBase + hOff1);
+      // vertex(wHist, hBase + hOff0); //botleft
+      // endShape();
+      // wHist += w0 + w1 + w2;
+    }
+    print("out:" + index);
+
+    // if (index === this.parentRay.length - 1){
+    //   print("if");
+    //   let v0 = this.parentRay[index].children[0];
+    //   let v1 = this.parentRay[index];
+    //   let v2 = this.parentRay[index].children[1];
+    //   let v3 = this.parentRay[0].children[0];
+    // } else {
+    //   print("else")
+    //   let v0 = this.parentRay[index].children[0];
+    //      let v1 = this.parentRay[index];
+    //     let v2 = this.parentRay[index].children[1];
+    //     let v3 = this.parentRay[index + 1].children[0];
+    // }
+    //
+    //       let aDiff0 = v1.angle - v0.angle;
+    //       let aDiff1 = v2.angle - v1.angle;
+    //       let aDiff2 = v3.angle - v2.angle;
+    //
+    //       let hBase = height / 2;
+    //       let hTune = 1;
+    //       let dist0 = map(v0.collidedRad, 0, fadeHeightDist, maxHeight, 0);
+    //       dist0 = constrain(dist0, 0, height);
+    //       let dist1 = map(v1.collidedRad, 0, fadeHeightDist, maxHeight, 0);
+    //       dist1 = constrain(dist1, 0, height);
+    //       let dist2 = map(v2.collidedRad, 0, fadeHeightDist, maxHeight, 0);
+    //       dist2 = constrain(dist2, 0, height);
+    //       let dist3 = map(v3.collidedRad, 0, fadeHeightDist, maxHeight, 0);
+    //       dist3 = constrain(dist3, 0, height);
+    //
+    //       let hOff0 = (dist0 * v1.collidedH) * hTune;
+    //       let hOff1 = (dist1 * v1.collidedH) * hTune;
+    //       let hOff2 = (dist2 * v1.collidedH) * hTune;
+    //       let hOff3 = (dist3 * v1.collidedH) * hTune;
+    //
+    //       let opacityFill = map((v1.collidedRad), 0, fadeHeightDist, 255, 0);
+    //       let w0 = map(aDiff0, 0, this.pov, 0, width);
+    //       let w1 = map(aDiff1, 0, this.pov, 0, width);
+    //       let w2 = map(aDiff2, 0, this.pov, 0, width);
+    //       // rect(wHist, hBase+hOff1, wHist + w, hBase-hOff1);
+    //       fill(v1.collidedR, v1.collidedG, v1.collidedB, opacityFill);
+    //       let sW = map((v1.collidedRad), 0, fadeHeightDist, width / 500, width / 1500);
+    //       strokeWeight(sW);
+    //       stroke(v1.collidedR, v1.collidedG, v1.collidedB, 255);
+    //       beginShape();
+    //       vertex(wHist, hBase - hOff0); //topleft
+    //       vertex(wHist + w0, hBase - hOff1);
+    //       vertex(wHist + w0 + w1, hBase - hOff2);
+    //       vertex(wHist + w0 + w1 + w2, hBase - hOff3); //topright
+    //       vertex(wHist + w0 + w1 + w2, hBase + hOff3); //botright
+    //       vertex(wHist + w0 + w1, hBase + hOff2);
+    //       vertex(wHist + w0, hBase + hOff1);
+    //       vertex(wHist, hBase + hOff0); //botleft
+    //       endShape();
+    //       wHist += w0 + w1 + w2;
 
     // }
     // print('OUT');
@@ -297,7 +362,7 @@ print("out:"+index);
     if (keyIsDown(DOWN_ARROW)) {
       this.pov += this.povIncrement;
     }
-    this.pov = constrain(this.pov, .01, TWO_PI);
+    this.pov = constrain(this.pov, .01, TWO_PI-.01);
     // print(this.angle);
     // this.angle = atan2(mouseY - this.y, mouseX - this.x);
     // this.angle = map(mouseX,0,width,0,TWO_PI);
