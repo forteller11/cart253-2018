@@ -177,7 +177,7 @@ class Ray {
   }
 
   calculateThisTargetBasedOnAngle(angle) { //polar-->Cartesian
-    let radius = 1;
+    let radius = width+(height/2);
     this.targetX = (-cos(angle) * radius) + this.x;
     this.targetY = (-sin(angle) * radius) + this.y;
   }
@@ -198,19 +198,23 @@ class Ray {
         strokeWeight(1);
         stroke(this.r, this.g, this.b, 150);
 
-      if(this.povAngle1 === true){
-        strokeWeight(4)
-        stroke(0,255,0);
-      }
-      if(this.povAngle2 === true){
-        strokeWeight(4)
-        stroke(255,0,0);
-      }
+        if(this.povAngle1 === true){
+          strokeWeight(4)
+          stroke(0,255,0);
+          line(this.x, this.y, (this.targetX), (this.targetY));
+        }
+        if(this.povAngle2 === true){
+          strokeWeight(4)
+          stroke(255,0,0);
+        line(this.x, this.y, (this.targetX), (this.targetY));
+        }
       // stroke(this.r, this.g, this.b,255);
       line(this.x, this.y, (this.collidedX), (this.collidedY));
       //post collision stroke
       stroke(this.r, this.g, this.b,20);
       line(this.x, this.y, (this.targetX), (this.targetY));
+
+
     }
   }
 }
