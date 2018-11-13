@@ -41,14 +41,14 @@ function draw(){
   background(0);
   stroke(255);
 
-//   for (let i = iIndex ; i*iInc < sampleNumber ; i++) {
-//
-//     let yy1 = generateSample(i*iInc)*height/30 + height/2;
-//     let yy2 = generateSample(i*iInc+iInc)*height/30 + height/2;
-//     line(i-iIndex,yy1,i+1-iIndex,yy2);
-// // print(yy1);
-//     // point(i-iIndex,(yy*height/2)+(height/2));
-//   }
+  for (let i = iIndex ; i*iInc < sampleNumber ; i++) {
+
+    let yy1 = generateSample(i*iInc)*height/30 + height/2;
+    let yy2 = generateSample(i*iInc+iInc)*height/30 + height/2;
+    line(i-iIndex,yy1,i+1-iIndex,yy2);
+// print(yy1);
+    // point(i-iIndex,(yy*height/2)+(height/2));
+  }
   // print(iInc/sampleNumber)
 iIndex += (iInc);
 }

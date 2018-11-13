@@ -18,7 +18,7 @@ Where I want this to go:
 I want to create some sort of walking sim with an interesting visual/audio ambience,
 once the tech is in place and if it still seems appropriate I had some abstract narrative elements
 (mostly via text) which I wanted to add which would probably imbue the whole experience with
-more meaning as players would begin to relate their more visceral experience to
+more meaning as players would begin to relate a more visceral experience to
 the narration and they would become more engaged interpretors and players and therefore
 the project would become more interesting by doing this.
 
@@ -30,14 +30,11 @@ tuning FOV: up and down arrow key
 "Q" turns debug visualization in which ray casting and FOV is visualized on or off.
 "E" turns 2D visualization on or off.
 "R" turns pseudo-3D visualization on or off.
-
-
-
 */
 let player;
 let shape = [];
-let debugDisplay = true;
-let twoDisplay = true; //display 2 perspective?
+let debugDisplay = false;
+let twoDisplay = false; //display 2 perspective?
 let threeDisplay = true;
 let bgR = 255;
 let bgG = 190;
