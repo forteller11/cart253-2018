@@ -31,6 +31,7 @@ class Shape {
   update() {
     //based on angleOffset+radius of vertex determine is cartesian coords
     this.updateVertCartesian();
+    this.updateVertHeight();
     this.updateLines(); //update the end/start points of each line
   }
 
@@ -38,6 +39,15 @@ class Shape {
     for (let i = 0; i < this.vertNumber; i++) {
       this.vertX[i] = (cos(this.vertAOff[i] + this.angle) * this.vertR[i]) + this.x;
       this.vertY[i] = (sin(this.vertAOff[i] + this.angle) * this.vertR[i]) + this.y;
+    }
+  }
+  updateVertHeight(){
+    for (let i = 0; i < this.vertHIncrement.length; i++) {
+      let distToPlayer = sqrt(sq(this.x-player.x)+sq(this.y-player.y));
+      let heightChange = map(distToPlayer,0,width*2,.02,.002);
+      heightChange = constrain(heightChange,0,100);
+      this.vertHIncrement[i] += heightChange;
+      this.vertH[i] =  noise(this.vertHIncrement[i]);
     }
   }
 

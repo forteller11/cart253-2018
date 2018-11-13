@@ -19,6 +19,7 @@ function setup() {
     shape[0].vertAOff[j] = (TWO_PI / shape[0].vertNumber) * j + QUARTER_PI;
     shape[0].vertR[j] = 10000;
     shape[0].vertH[j] = 1;
+    shape[0].vertHIncrement = random(1000);
     shape[0].r = random(0);
     shape[0].g = random(0);
     shape[0].b = random(0);
@@ -46,12 +47,6 @@ function draw() {
   for (let i = 0; i < shape.length; i++) {
     shape[i].update();
     shape[i].display();
-    for (let j = 0; j < shape[i].vertNumber; j++) {
-      shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;
-      shape[i].vertHIncrement[j] += 0.01;
-      shape[i].vertH[j] = noise(shape[i].vertHIncrement[j]);
-
-    }
   }
   player.update();
   noStroke();
