@@ -28,10 +28,10 @@ class Ray {
     this.collidedY; //closest point of y intersection
     this.collidedRad; //distance to closest point of intersection
     this.collidedH; //h of wall on collision
-    this.collidedR; //red
-    this.collidedG; //greebn
-    this.collidedB; //blue
-    this.collidedAlpha;
+    this.collidedR; //red of wall on collision
+    this.collidedG; //greeb of wall on collision
+    this.collidedB; //blue of wall on collision
+    this.collidedAlpha; //alpha of wall on collision
     this.angle; //angle
     this.fovAngle1;
     this.fovAngle2;

@@ -7,7 +7,6 @@ class Player {
     //whether to visualize pseudo3D
     this.x = x;
     this.y = y;
-    this.k = 0;
 
     this.angle = angle;
     this.angularIncrement = (this.fov / 30) + (PI / 60);
@@ -15,13 +14,13 @@ class Player {
     this.vel = 0;
     this.velX = 0;
     this.velY = 0;
-    this.drag = 0.95;
-    this.velIncrement = 1;
-    this.fov = PI + 0.0001; //angle of perspective
+    this.drag = 0.95; //multiplies velocities by drag every frame
+    this.velIncrement = .5; //the magnitude of the vector to add to the x,y componenets (velx,velly) on input
+    this.fov = PI + 0.0001; //field of view
     this.fovIncrement = 0.08;
-    this.fovAngle1 = this.angle - (this.fov / 2); //start of cone
-    this.fovAngle2 = this.angle + (this.fov / 2); //end of cone
-    this.radius = 20;
+    this.fovAngle1; //starting angle of fov
+    this.fovAngle2; //end angle of fov
+    this.radius = 20; //for display purposes only
 
     this.parentRay = [];
     //create one parentRay for every vertex in the scene
@@ -32,7 +31,7 @@ class Player {
         k++;
       }
     }
-    //create fov rays
+    //create two extra rays to be used to designate the beginning and end of the FOV.
     this.parentRay[k] = new Ray(100, 100, true);
     this.parentRay[k + 1] = new Ray(100, 100, true);
 
@@ -255,7 +254,7 @@ class Player {
         line(ray1.x, ray1.y, ray1.targetX, ray1.targetY);
       }
 
-      //base height of wall
+      //base height of wall, ramps from min height to max height depending on ray's collision's dist from player.
       let baseH0 = map(ray0.collidedRad, 0, fadeHeightDist, maxHeight, 0);
       baseH0 = constrain(baseH0, minHeight, height);
       let baseH1 = map(ray1.collidedRad, 0, fadeHeightDist, maxHeight, 0);
@@ -264,28 +263,32 @@ class Player {
       baseH2 = constrain(baseH2, minHeight, height);
       let baseH3 = map(ray3.collidedRad, 0, fadeHeightDist, maxHeight, 0);
       baseH3 = constrain(baseH3, minHeight, height);
-      //ceiling height of wall
+      //ceiling height of wall is the base height * the dynamic height of the line on collision
       let ceilH0 = (baseH0 * ray0.collidedH);
       let ceilH1 = (baseH1 * ray1.collidedH);
       let ceilH2 = (baseH2 * ray2.collidedH);
       let ceilH3 = (baseH3 * ray3.collidedH);
-
-      let opacityFill = map((ray1.collidedRad), 0, fadeHeightDist, 1.5, 0);
+      //is 0 when the player is at fadeHeightDist, multiplying the colors, creating pure black sillhouettes
+      let colorMultiplier = map((ray1.collidedRad), 0, fadeHeightDist, 1.5, 0);
+      //calcs horizontal width that should be given between each ray so that the rays and in the fov
+      //are drawn to take up exactly the canvas width;
       let w0 = map(angleDiff0, 0, this.fov, 0, width);
-      let w1 = map(angleDiff1, 0, this.fov, 0, width);
-      let w2 = map(angleDiff2, 0, this.fov, 0, width);
-      fill(ray1.collidedR * opacityFill, ray1.collidedG * opacityFill, ray1.collidedB * opacityFill, ray1.collidedAlpha);
+      let w1 = map(angleDiff1, 0, this.fov, 0, width) + w0;
+      let w2 = map(angleDiff2, 0, this.fov, 0, width) + w1;
+      //take on color of the line which the ray collided with, also fill it with black as the ray is furthur away from the player
+      fill(ray1.collidedR * colorMultiplier, ray1.collidedG * colorMultiplier, ray1.collidedB * colorMultiplier, ray1.collidedAlpha);
       // let sW = map((ray1.collidedRad), 0, fadeHeightDist, maxStroke, minStroke);
       // strokeWeight(sW);
       // stroke(ray1.collidedR, ray1.collidedG, ray1.collidedB, 255);
+
+      //draw the shape from each vert using the differences in width
       noStroke();
       beginShape();
       vertex(wHist, horizon - ceilH0); //topleft
-      vertex(wHist + w0, horizon - ceilH1);
-      vertex(wHist + w0 + w1, horizon - ceilH2);
-
-      vertex(wHist + w0 + w1, horizon + baseH1);
-      vertex(wHist + w0, horizon + baseH2);
+      vertex(wHist + w0, horizon - ceilH1); //topmiddle
+      vertex(wHist + w1, horizon - ceilH2); //top right
+      vertex(wHist + w1, horizon + baseH1); //bot right
+      vertex(wHist + w0, horizon + baseH2); //bot middle
       vertex(wHist, horizon + baseH0); //botleft
       endShape();
 
@@ -293,13 +296,14 @@ class Player {
       // strokeWeight(sW);
       // stroke(ray3.collidedR, ray3.collidedG, ray3.collidedB, 255);
       noStroke();
-      opacityFill = map((ray3.collidedRad), 0, fadeHeightDist, 1.5, 0)
-      fill(ray3.collidedR * opacityFill, ray3.collidedG * opacityFill, ray3.collidedB * opacityFill, ray3.collidedAlpha);
+      //take on color of the line which the ray collided with, also fill it with black as the ray is furthur away from the player
+      colorMultiplier = map((ray3.collidedRad), 0, fadeHeightDist, 1.5, 0)
+      fill(ray3.collidedR * colorMultiplier, ray3.collidedG * colorMultiplier, ray3.collidedB * colorMultiplier, ray3.collidedAlpha);
       beginShape();
-      vertex(wHist + w0 + w1, horizon - ceilH2);
-      vertex(wHist + w0 + w1 + w2, horizon - ceilH3); //topright
-      vertex(wHist + w0 + w1 + w2, horizon + baseH3); //botright
-      vertex(wHist + w0 + w1, horizon + baseH2);
+      vertex(wHist + w1, horizon - ceilH2); //top left
+      vertex(wHist + w2, horizon - ceilH3); //topright
+      vertex(wHist + w2, horizon + baseH3); //bot right
+      vertex(wHist + w1, horizon + baseH2); //bot left
       endShape();
       wHist += w0 + w1 + w2;
     }
