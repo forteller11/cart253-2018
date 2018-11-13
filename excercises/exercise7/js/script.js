@@ -90,9 +90,8 @@ function draw() {
   noStroke();
   fill(255);
 
-text ("pov:"+round(player.pov*100)/100,64,64);
+text ("fov:"+round(player.fov*100)/100,64,64);
 }
-
 
   function keyPressed(){
   if (keyCode === 81) {

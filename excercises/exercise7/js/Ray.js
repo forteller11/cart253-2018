@@ -33,8 +33,8 @@ class Ray {
     this.collidedB; //blue
     this.collidedAlpha;
     this.angle; //angle
-    this.povAngle1;
-    this.povAngle2;
+    this.fovAngle1;
+    this.fovAngle2;
     this.hasChildren = createChildren; //true or false, does this ray have children?
     this.children = []; //the array where any children will be put
     //if set to create children create two rays who are set NOT to create children.
@@ -201,12 +201,12 @@ class Ray {
         strokeWeight(1);
         stroke(this.r, this.g, this.b, 150);
 
-        if(this.povAngle1 === true){
+        if(this.fovAngle1 === true){
           strokeWeight(4)
           stroke(0,255,0);
           line(this.x, this.y, (this.targetX), (this.targetY));
         }
-        if(this.povAngle2 === true){
+        if(this.fovAngle2 === true){
           strokeWeight(4)
           stroke(255,0,0);
         line(this.x, this.y, (this.targetX), (this.targetY));
