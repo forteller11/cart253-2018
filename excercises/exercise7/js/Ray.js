@@ -97,15 +97,10 @@ class Ray {
         let intersectionX = simplifyB / simplifySlope; //the x location where lines intersects
         let intersectionY = (raySlope * intersectionX) + rayB; //y where lines interesct
         let intersectionH = map(intersectionX,line.x1,line.x2,line.h1,line.h2);
-        let intR = line.r;
+        let intR = line.r; //store intersections r,g,b,a values
         let intG = line.g;
         let intB = line.b;
         let intAlpha = line.alpha;
-        // print("intersectionX:"+intersectionX);
-        // print("x1:"+line.x1);
-        // print("x2"+line.x2);
-        // print("intH:"+intersectionH);
-
 
         //make sure collision happened in front of the ray
         //(because ray is converted to slope form it becomes directionless meaning it will intersect with lines behind it)
@@ -146,6 +141,7 @@ class Ray {
   makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB,intAlpha) {
     //compares the dist between the ray origin and the intersectionX,Y and collidedX,Y
     //and if intersection is shorter then it changes collision,x,y to be the intersection
+    //also store its other properties like (r,g,b,a) color and height
     let collidedRad = sqrt(sq(this.collidedX - this.x) + sq(this.collidedY - this.y));
     let intersectionRad = sqrt(sq(intersectionX - this.x) + sq(intersectionY - this.y));
     if (intersectionRad < collidedRad) {

@@ -51,24 +51,26 @@ creates player
 function setup() {
   createCanvas(windowWidth / 1.1, windowHeight / 1.1);
 
-  //border
+  //create border shape with huge radius souuronding the player with alpha set to 0
+  //(ray casting always need to hit SOMETHING to not bu gout and therefore the
+  // player has to always be within a shape for sight to work properly)
   shape[0] = new Shape(width / 2, height / 2, 0.0001, 3);
   for (let j = 0; j < shape[0].vertNumber; j++) {
     shape[0].vertAOff[j] = (TWO_PI / shape[0].vertNumber) * j + QUARTER_PI;
     shape[0].vertR[j] = 10000;
     shape[0].vertH[j] = 1;
     shape[0].vertHIncrement = random(1000);
-    shape[0].r = random(0);
-    shape[0].g = random(0);
-    shape[0].b = random(0);
+    shape[0].r = 0;
+    shape[0].g = 0;
+    shape[0].b = 0;
     shape[0].alpha = 0;
   }
-  //randomshapes
+  //spawn random shapes with various geometries and colours
   for (let i = 1; i < 15; i++) {
-    shape[i] = new Shape(random(-width,width*2), random(-height,2*height), random(TWO_PI), round(random(3, 9)));
+    shape[i] = new Shape(random(-width, width * 2), random(-height, 2 * height), random(TWO_PI), round(random(3, 9)));
     for (let j = 0; j < shape[i].vertNumber; j++) {
       shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;
-      shape[i].vertR[j] = random(100,300);
+      shape[i].vertR[j] = random(100, 300);
       shape[i].vertH[j] = 1;
       shape[i].vertHIncrement[j] = random(100);
       shape[i].r = random(255);
@@ -77,43 +79,45 @@ function setup() {
       shape[i].alpha = 255;
     }
   }
+  //spawn player in middle of screen with an angle of 0
   player = new Player(width / 2, height / 2, 0);
 }
 
 function draw() {
-  background(bgR,bgG,bgB);
+  background(bgR, bgG, bgB);
+  //update shapes and lines
   for (let i = 0; i < shape.length; i++) {
     shape[i].update();
     shape[i].display();
   }
   player.update();
+
+  //draw fov
   noStroke();
   fill(255);
-
-text ("fov:"+round(player.fov*100)/100,64,64);
+  text("fov:" + round(player.fov * 100) / 100, 64, 64);
 }
 
-  function keyPressed(){
-  if (keyCode === 81) {
-    if (debugDisplay === true){
+function keyPressed() {
+  if (keyCode === 81) { //if you press Q turn switch debug display on/off
+    if (debugDisplay === true) {
       debugDisplay = false;
     } else {
       debugDisplay = true;
     }
   }
-  if (keyCode === 82) {
-    if (threeDisplay === true){
-      threeDisplay = false;
-    } else {
-      threeDisplay = true;
-    }
-  }
-
-  if (keyCode === 69) { //R
-    if (twoDisplay === true){
+  if (keyCode === 69) { //if you press E turn switch debug display on/off
+    if (twoDisplay === true) {
       twoDisplay = false;
     } else {
       twoDisplay = true;
+    }
+  }
+  if (keyCode === 82) { //if you press R turn switch debug display on/off
+    if (threeDisplay === true) {
+      threeDisplay = false;
+    } else {
+      threeDisplay = true;
     }
   }
 }
