@@ -17,6 +17,7 @@ class Shape {
     this.vertX = [];
     this.vertY = [];
     this.lines = []; //array which stores lines
+    this.vertHIncrement = [];
     this.r;
     this.b;
     this.g;

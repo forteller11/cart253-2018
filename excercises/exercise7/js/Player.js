@@ -57,8 +57,9 @@ class Player {
     and works its way up to the ray with the largest angle. */
 
     let angleDiffNet = 0;
-    let fadeHeightDist = width; //dist from player to wall at which wall is height 0
+    let fadeHeightDist = width*1.2; //dist from player to wall at which wall is height 0
     let maxHeight = height / 2; //what height is wall when player is on top of wall
+    let minHeight = 0;
 
     let wHist = 0;
     let index = 0;
@@ -118,20 +119,20 @@ class Player {
 
 
       let hBase = height / 2;
-      let hTune = 1;
+      //base height
       let dist0 = map(v0.collidedRad, 0, fadeHeightDist, maxHeight, 0);
-      dist0 = constrain(dist0, 0, height);
+      dist0 = constrain(dist0, minHeight, height);
       let dist1 = map(v1.collidedRad, 0, fadeHeightDist, maxHeight, 0);
-      dist1 = constrain(dist1, 0, height);
+      dist1 = constrain(dist1, minHeight, height);
       let dist2 = map(v2.collidedRad, 0, fadeHeightDist, maxHeight, 0);
-      dist2 = constrain(dist2, 0, height);
+      dist2 = constrain(dist2, minHeight, height);
       let dist3 = map(v3.collidedRad, 0, fadeHeightDist, maxHeight, 0);
-      dist3 = constrain(dist3, 0, height);
-
-      let hOff0 = (dist0 * v1.collidedH) * hTune;
-      let hOff1 = (dist1 * v1.collidedH) * hTune;
-      let hOff2 = (dist2 * v1.collidedH) * hTune;
-      let hOff3 = (dist3 * v1.collidedH) * hTune;
+      dist3 = constrain(dist3, minHeight, height);
+      //top height
+      let hOff0 = (dist0 * v0.collidedH);
+      let hOff1 = (dist1 * v1.collidedH);
+      let hOff2 = (dist2 * v2.collidedH);
+      let hOff3 = (dist3 * v3.collidedH);
 
       let opacityFill = map((v1.collidedRad), 0, fadeHeightDist, 1.5, 0);
       let w0 = map(aDiff0, 0, this.pov, 0, width);
@@ -142,26 +143,28 @@ class Player {
       let sW = map((v1.collidedRad), 0, fadeHeightDist, maxStroke, minStroke);
       strokeWeight(sW);
       stroke(v1.collidedR, v1.collidedG, v1.collidedB, 255);
+      noStroke();
       beginShape();
       vertex(wHist, hBase - hOff0); //topleft
       vertex(wHist + w0, hBase - hOff1);
       vertex(wHist + w0 + w1, hBase - hOff2);
 
-      vertex(wHist + w0 + w1, hBase + hOff2);
-      vertex(wHist + w0, hBase + hOff1);
-      vertex(wHist, hBase + hOff0); //botleft
+      vertex(wHist + w0 + w1, hBase + dist1);
+      vertex(wHist + w0, hBase + dist2);
+      vertex(wHist, hBase + dist0); //botleft
       endShape();
 
       sW = map((v3.collidedRad), 0, fadeHeightDist, maxStroke, minStroke);
       strokeWeight(sW);
       stroke(v3.collidedR, v3.collidedG, v3.collidedB, 255);
+      noStroke();
       opacityFill = map((v3.collidedRad), 0, fadeHeightDist, 1.5, 0)
       fill(v3.collidedR*opacityFill, v3.collidedG*opacityFill, v3.collidedB*opacityFill, 255);
       beginShape();
       vertex(wHist + w0 + w1, hBase - hOff2);
       vertex(wHist + w0 + w1 + w2, hBase - hOff3); //topright
-      vertex(wHist + w0 + w1 + w2, hBase + hOff3); //botright
-      vertex(wHist + w0 + w1, hBase + hOff2);
+      vertex(wHist + w0 + w1 + w2, hBase + dist3); //botright
+      vertex(wHist + w0 + w1, hBase + dist2);
       endShape();
       wHist += w0 + w1 + w2;
     }

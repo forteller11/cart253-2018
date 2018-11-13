@@ -29,7 +29,8 @@ function setup() {
     for (let j = 0; j < shape[i].vertNumber; j++) {
       shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;
       shape[i].vertR[j] = random(100,300);
-      shape[i].vertH[j] = .7;
+      shape[i].vertH[j] = 1;
+      shape[i].vertHIncrement[j] = random(100);
       shape[i].r = random(255);
       shape[i].g = random(255);
       shape[i].b = random(255);
@@ -45,6 +46,12 @@ function draw() {
   for (let i = 0; i < shape.length; i++) {
     shape[i].update();
     shape[i].display();
+    for (let j = 0; j < shape[i].vertNumber; j++) {
+      shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;
+      shape[i].vertHIncrement[j] += 0.01;
+      shape[i].vertH[j] = noise(shape[i].vertHIncrement[j]);
+
+    }
   }
   player.update();
   noStroke();
