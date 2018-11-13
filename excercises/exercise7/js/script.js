@@ -1,3 +1,39 @@
+/*
+Exercise 7
+Charly Yan Miller
+pseudo 3D -- visualizing 2D data in a manner that elludes to a third dimension
+
+Description -- what did I work on for this exercise
+Using ray casting tech from project2 to visualize 2D collision data to kind of look 3D;
+the program takes the nearest collision point of every Ray within the FOV and draws
+it with a vertical height corresponding to how close/far the vert is from the player.
+If the collision happened nearer to the player the verts are draw longer, if they
+happened far away the verts are draw shorter -- giving the illusion of perspective.
+
+Also added a solid polar movement system which feels pretty good, and ossilated the
+heights of the verts/walls according to perlin noise and how close the player was to them.
+(closer the player is to a vert, the more it ossilates according to perlin noise)
+
+Where I want this to go:
+I want to create some sort of walking sim with an interesting visual/audio ambience,
+once the tech is in place and if it still seems appropriate I had some abstract narrative elements
+(mostly via text) which I wanted to add which would probably imbue the whole experience with
+more meaning as players would begin to relate their more visceral experience to
+the narration and they would become more engaged interpretors and players and therefore
+the project would become more interesting by doing this.
+
+
+Controls:
+movement: wasd
+turning: left and right arrow key
+tuning FOV: up and down arrow key
+"Q" turns debug visualization in which ray casting and FOV is visualized on or off.
+"E" turns 2D visualization on or off.
+"R" turns pseudo-3D visualization on or off.
+
+
+
+*/
 let player;
 let shape = [];
 let debugDisplay = true;
@@ -6,15 +42,17 @@ let threeDisplay = true;
 let bgR = 255;
 let bgG = 190;
 let bgB = 135;
-// bgR = 51;
-// bgG = 51;
-// bgB = 51;
 
+/*
+function setup
+places shapes randomly on the scene with random gemoetries and heights,
+creates player
+*/
 function setup() {
   createCanvas(windowWidth / 1.1, windowHeight / 1.1);
 
   //border
-  shape[0] = new Shape(width / 2, height / 2, 0.0001, 4);
+  shape[0] = new Shape(width / 2, height / 2, 0.0001, 3);
   for (let j = 0; j < shape[0].vertNumber; j++) {
     shape[0].vertAOff[j] = (TWO_PI / shape[0].vertNumber) * j + QUARTER_PI;
     shape[0].vertR[j] = 10000;
@@ -26,7 +64,7 @@ function setup() {
   }
   //randomshapes
   for (let i = 1; i < 15; i++) {
-    shape[i] = new Shape(random(-width*.5,width*1.5), random(-height*.5,1.5*height), random(TWO_PI), round(random(3, 9)));
+    shape[i] = new Shape(random(-width,width*2), random(-height,2*height), random(TWO_PI), round(random(3, 9)));
     for (let j = 0; j < shape[i].vertNumber; j++) {
       shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;
       shape[i].vertR[j] = random(100,300);
@@ -37,12 +75,10 @@ function setup() {
       shape[i].b = random(255);
     }
   }
-
   player = new Player(width / 2, height / 2, 0);
 }
 
 function draw() {
-  // console.time();
   background(bgR,bgG,bgB);
   for (let i = 0; i < shape.length; i++) {
     shape[i].update();
