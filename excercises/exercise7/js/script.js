@@ -61,6 +61,7 @@ function setup() {
     shape[0].r = random(0);
     shape[0].g = random(0);
     shape[0].b = random(0);
+    shape[0].alpha = 0;
   }
   //randomshapes
   for (let i = 1; i < 15; i++) {
@@ -73,6 +74,7 @@ function setup() {
       shape[i].r = random(255);
       shape[i].g = random(255);
       shape[i].b = random(255);
+      shape[i].alpha = 255;
     }
   }
   player = new Player(width / 2, height / 2, 0);

@@ -59,8 +59,9 @@ class Player {
     let angleDiffNet = 0;
     let fadeHeightDist = width*1.2; //dist from player to wall at which wall is height 0
     let maxHeight = height / 2; //what height is wall when player is on top of wall
-    let minHeight = 0;
-
+    let minHeight = height/400;
+    let maxStroke = width/300;
+    let minStroke = width/300;
     let wHist = 0;
     let index = 0;
     // print(this.parentRay);
@@ -69,8 +70,7 @@ class Player {
     }
     // print("startingI: " + index);
     // print("length of array: " + this.parentRay.length);
-    let maxStroke = width/3000;
-    let minStroke = width/3000;
+
 
     while (this.parentRay[index].povAngle2 === false)  {
       // print("loop:" + index);
@@ -139,10 +139,10 @@ class Player {
       let w1 = map(aDiff1, 0, this.pov, 0, width);
       let w2 = map(aDiff2, 0, this.pov, 0, width);
       // rect(wHist, hBase+hOff1, wHist + w, hBase-hOff1);
-      fill(v1.collidedR*opacityFill, v1.collidedG*opacityFill, v1.collidedB*opacityFill, 255);
+      fill(v1.collidedR*opacityFill, v1.collidedG*opacityFill, v1.collidedB*opacityFill, v1.collidedAlpha);
       let sW = map((v1.collidedRad), 0, fadeHeightDist, maxStroke, minStroke);
       strokeWeight(sW);
-      stroke(v1.collidedR, v1.collidedG, v1.collidedB, 255);
+      // stroke(v1.collidedR, v1.collidedG, v1.collidedB, 255);
       noStroke();
       beginShape();
       vertex(wHist, hBase - hOff0); //topleft
@@ -156,10 +156,10 @@ class Player {
 
       sW = map((v3.collidedRad), 0, fadeHeightDist, maxStroke, minStroke);
       strokeWeight(sW);
-      stroke(v3.collidedR, v3.collidedG, v3.collidedB, 255);
+      // stroke(v3.collidedR, v3.collidedG, v3.collidedB, 255);
       noStroke();
       opacityFill = map((v3.collidedRad), 0, fadeHeightDist, 1.5, 0)
-      fill(v3.collidedR*opacityFill, v3.collidedG*opacityFill, v3.collidedB*opacityFill, 255);
+      fill(v3.collidedR*opacityFill, v3.collidedG*opacityFill, v3.collidedB*opacityFill, v3.collidedAlpha);
       beginShape();
       vertex(wHist + w0 + w1, hBase - hOff2);
       vertex(wHist + w0 + w1 + w2, hBase - hOff3); //topright

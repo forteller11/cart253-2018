@@ -21,6 +21,7 @@ class Shape {
     this.r;
     this.b;
     this.g;
+    this.alpha;
 
     //create one line for every vertex
     for (let i = 0; i < this.vertNumber; i++) {
@@ -44,7 +45,7 @@ class Shape {
   updateVertHeight(){
     for (let i = 0; i < this.vertHIncrement.length; i++) {
       let distToPlayer = sqrt(sq(this.x-player.x)+sq(this.y-player.y));
-      let heightChange = map(distToPlayer,0,width*2,.02,.002);
+      let heightChange = map(distToPlayer,0,width,.02,.002);
       heightChange = constrain(heightChange,0,100);
       this.vertHIncrement[i] += heightChange;
       this.vertH[i] =  noise(this.vertHIncrement[i]);
@@ -85,6 +86,7 @@ class Shape {
       this.lines[i].r = this.r * shade;
       this.lines[i].g = this.g * shade;
       this.lines[i].b = this.b * shade;
+      this.lines[i].alpha = this.alpha;
     }
   }
 

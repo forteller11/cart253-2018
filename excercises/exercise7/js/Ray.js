@@ -31,6 +31,7 @@ class Ray {
     this.collidedR; //red
     this.collidedG; //greebn
     this.collidedB; //blue
+    this.collidedAlpha;
     this.angle; //angle
     this.povAngle1;
     this.povAngle2;
@@ -99,6 +100,7 @@ class Ray {
         let intR = line.r;
         let intG = line.g;
         let intB = line.b;
+        let intAlpha = line.alpha;
         // print("intersectionX:"+intersectionX);
         // print("x1:"+line.x1);
         // print("x2"+line.x2);
@@ -122,7 +124,7 @@ class Ray {
               }
               //if intersection happend closer than current stored closest collision
               //change collisionX,Y to this be the points of this intersection
-              this.makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB);
+              this.makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB,intAlpha);
             }
           } else if (line.x1 > line.x2) {
             if ((intersectionX - c <= line.x1) && (intersectionX + c >= line.x2)) {
@@ -133,7 +135,7 @@ class Ray {
               }
               //if intersection happend closer than current stored closest collision
               //change collisionX,Y to this be the points of this intersection
-              this.makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB);
+              this.makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB,intAlpha);
             }
           }
         }
@@ -141,7 +143,7 @@ class Ray {
       }
     }
   }
-  makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB) {
+  makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB,intAlpha) {
     //compares the dist between the ray origin and the intersectionX,Y and collidedX,Y
     //and if intersection is shorter then it changes collision,x,y to be the intersection
     let collidedRad = sqrt(sq(this.collidedX - this.x) + sq(this.collidedY - this.y));
@@ -154,6 +156,7 @@ class Ray {
       this.collidedR = intR;
       this.collidedG = intG;
       this.collidedB = intB;
+      this.collidedAlpha = intAlpha;
     }
   }
   calculateAngle() {
