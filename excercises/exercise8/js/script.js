@@ -42,7 +42,7 @@ let bgB = 135;
 let audioCtx = new window.AudioContext();
 let sampleRate = 44100;
 let testSpeaker;
-
+let masterGain = audioCtx.createGain();
 /*
 function setup
 places shapes randomly on the scene with random gemoetries and heights,
@@ -81,7 +81,8 @@ function setup() {
   }
   //spawn player in middle of screen with an angle of 0
   player = new Player(width / 2, height / 2, 0);
-  testSpeaker = new Speaker();
+  testSpeaker = new Source();
+  masterGain.connect(audioCtx.destination); //takes output from all sources and applys a master gain
 }
 
 function draw() {
