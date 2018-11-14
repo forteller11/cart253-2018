@@ -27,6 +27,7 @@ class Shape {
     for (let i = 0; i < this.vertNumber; i++) {
       this.lines[i] = new Line();
     }
+    this.source = new Source(this.x,this.y);
   }
 
   update() {
@@ -34,6 +35,12 @@ class Shape {
     this.updateVertCartesian();
     this.updateVertHeight();
     this.updateLines(); //update the end/start points of each line
+    this.updateSource();
+  }
+  updateSource(){
+    this.source.x = this.x;
+    this.source.y = this.y;
+    this.source.update();
   }
 
   updateVertCartesian() { //updates x,y of verts based on angleOffset, shape's angle, and verts' radius

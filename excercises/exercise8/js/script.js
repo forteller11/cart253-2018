@@ -41,7 +41,7 @@ let bgG = 190;
 let bgB = 135;
 let audioCtx = new window.AudioContext();
 let sampleRate = 44100;
-let testSpeaker;
+// let testSpeaker;
 let masterGain = audioCtx.createGain();
 /*
 function setup
@@ -66,7 +66,7 @@ function setup() {
     shape[0].alpha = 0;
   }
   //spawn random shapes with various geometries and colours
-  for (let i = 1; i < 15; i++) {
+  for (let i = 1; i < 20; i++) {
     shape[i] = new Shape(random(-width, width * 2), random(-height, 2 * height), random(TWO_PI), round(random(3, 9)));
     for (let j = 0; j < shape[i].vertNumber; j++) {
       shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;
@@ -81,13 +81,13 @@ function setup() {
   }
   //spawn player in middle of screen with an angle of 0
   player = new Player(width / 2, height / 2, 0);
-  testSpeaker = new Source();
+  // testSpeaker = new Source();
   masterGain.connect(audioCtx.destination); //takes output from all sources and applys a master gain
 }
 
 function draw() {
   background(bgR, bgG, bgB);
-  testSpeaker.update();
+  // testSpeaker.update();
   //update shapes and lines
   for (let i = 0; i < shape.length; i++) {
     shape[i].update();
