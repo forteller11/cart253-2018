@@ -1,7 +1,7 @@
 
-let context = new AudioContext();
+let context = new window.AudioContext();
 let sampleRate = 4096;
-let sampleNumber = sampleRate/60;
+let sampleNumber = sampleRate/58;
 let node = context.createBufferSource();
 
 buffer = context.createBuffer(1,sampleNumber,sampleRate);
@@ -13,11 +13,13 @@ node.buffer = buffer;
 node.loop = true;
 node.connect(context.destination);
 node.start(0);
+
 let t = 0;
 let t2 = 0;
 function setup(){
   createCanvas(50,50);
 }
+
 function draw(){
   background(51);
   for (let i = 0; i < sampleNumber; i++){

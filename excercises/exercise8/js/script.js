@@ -39,6 +39,9 @@ let threeDisplay = true;
 let bgR = 255;
 let bgG = 190;
 let bgB = 135;
+let audioCtx = new window.AudioContext();
+let sampleRate = 44100;
+let testSpeaker;
 
 /*
 function setup
@@ -78,10 +81,12 @@ function setup() {
   }
   //spawn player in middle of screen with an angle of 0
   player = new Player(width / 2, height / 2, 0);
+  testSpeaker = new Speaker();
 }
 
 function draw() {
   background(bgR, bgG, bgB);
+  testSpeaker.update();
   //update shapes and lines
   for (let i = 0; i < shape.length; i++) {
     shape[i].update();
