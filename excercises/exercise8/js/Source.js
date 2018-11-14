@@ -15,31 +15,40 @@ class Source {
     this.audioPlayer = audioCtx.createBufferSource();
     this.audioPlayer.buffer = this.buffer; //make the audioPlayer use the data from the buffer to play
     this.audioPlayer.loop = true;
-    this.audioPlayer.connect(this.gainNode); //make the audioPlayer player output through a personal gain
+    this.panner = audioCtx.createPanner();
+    this.panner.panningModel = "HRTF";
+    this.audioPlayer.connect(this.panner); //make the audioPlayer player output through a personal gain
+    this.panner.connect(this.gainNode);
     this.gainNode.connect(masterGain); //make the personal gain controlled by a master gain (which connects to system sound in the main script)
-    this.gainNode.gain.value = .3;
+
+
+
+    this.gainNode.gain.value = .1;
     this.audioPlayer.start(0); //start at element one in the array buffer
 
   }
   update() {
+    this.updatePanner();
     this.changeGain();
     this.changeData();
     // if (this.gain > 0) {
     //   //play
     // }
   }
+  updatePanner(){
+    this.panner.positionX.value = this.x;
+    this.panner.positionZ.value = this.y;
+    this.panner.positionY.value = zPlane;
+    // this.panner.upX.value = this.angle;
+    // this.listener.upY.value = 1;
+    // this.listener.upZ.value = 0;
+  }
   changeGain() {
     let distToPlayer = sqrt(sq(this.x-player.x)+sq(this.y-player.y));
-    print("this.x:"+this.x);
-    print("this.y:"+this.y);
-    print('disttoPlayer:'+distToPlayer);
     let gain = map(distToPlayer,0,height,this.maxGain,0);
     gain = constrain(gain,0,this.maxGain);
-    print(gain);
-    let gainSafe = parseFloat(gain);
     this.gainNode.gain.value = gain;
 
-    //gain depends on distTOPlayer, don't
   }
   changeData() {
     const sampleNumber = sampleRate / this.frameRate;

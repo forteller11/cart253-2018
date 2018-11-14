@@ -41,7 +41,7 @@ let bgG = 190;
 let bgB = 135;
 let audioCtx = new window.AudioContext();
 let sampleRate = 44100;
-// let testSpeaker;
+let zPlane = 0;
 let masterGain = audioCtx.createGain();
 /*
 function setup
