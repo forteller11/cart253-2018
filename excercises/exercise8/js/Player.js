@@ -1,6 +1,6 @@
 class Player {
   constructor(x, y, angle) {
-    this.listener = audioCtx.listener();
+
     this.upKey = 87;
     this.downKey = 83;
     this.leftKey = 65;
@@ -8,8 +8,8 @@ class Player {
     //whether to visualize pseudo3D
     this.x = x;
     this.y = y;
-    this.updateListener();
     this.angle = angle;
+    this.updateListener();
     this.angularIncrement = (this.fov / 30) + (PI / 60);
 
     this.vel = 0;
@@ -49,7 +49,8 @@ class Player {
     if (twoDisplay === true) {
       this.display();
     }
-    updateListener();
+    this.updateListener();
+
   }
 
   changeAngle() {
@@ -312,12 +313,12 @@ class Player {
   }
 
   updateListener(){
-    this.listener.positionX.value = this.x;
-    this.listener.positionZ.value = this.y;
-    this.listener.positionY.value = zPlane;
-    this.listener.upX.value = this.angle;
-    this.listener.upY.value = 1;
-    this.listener.upZ.value = 0;
+    audioCtx.listener.positionX.value = this.x;
+    audioCtx.listener.positionZ.value = this.y;
+    audioCtx.listener.positionY.value = zPlane;
+    audioCtx.listener.upX.value = this.angle;
+    audioCtx.listener.upY.value = 0;
+    audioCtx.listener.upZ.value = 0;
   }
 
   display() { //display the player's position and direction (angle) on the canvas

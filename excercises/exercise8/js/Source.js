@@ -17,19 +17,23 @@ class Source {
     this.audioPlayer.loop = true;
     this.panner = audioCtx.createPanner();
     this.panner.panningModel = "HRTF";
+    this.panner.distanceModel = "linear";
+    this.updatePanner();
+    this.panner.maxDistance = 100;
+    this.updatePanner();
     this.audioPlayer.connect(this.panner); //make the audioPlayer player output through a personal gain
     this.panner.connect(this.gainNode);
     this.gainNode.connect(masterGain); //make the personal gain controlled by a master gain (which connects to system sound in the main script)
 
 
 
-    this.gainNode.gain.value = .1;
+    this.gainNode.gain.value = this.maxGain;
     this.audioPlayer.start(0); //start at element one in the array buffer
 
   }
   update() {
-    this.updatePanner();
-    this.changeGain();
+    // this.updatePanner();
+    // this.changeGain();
     this.changeData();
     // if (this.gain > 0) {
     //   //play
