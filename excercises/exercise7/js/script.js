@@ -4,13 +4,13 @@ Charly Yan Miller
 pseudo 3D -- visualizing 2D data in a manner that elludes to a third dimension
 
 Description -- what did I work on for this exercise
-Using ray casting tech from project2 to visualize 2D collision data to kind of look 3D;
+Using ray casting tech from project2 to visualize 2D collision data in a way that kind of looks 3D;
 the program takes the nearest collision point of every Ray within the FOV and draws
 it with a vertical height corresponding to how close/far the vert is from the player.
 If the collision happened nearer to the player the verts are draw longer, if they
 happened far away the verts are draw shorter -- giving the illusion of perspective.
 
-Also added a solid polar movement system which feels pretty good, and ossilated the
+Also added a solid polar movement system which feels pretty good, also i oscilated the
 heights of the verts/walls according to perlin noise and how close the player was to them.
 (closer the player is to a vert, the more it ossilates according to perlin noise)
 
