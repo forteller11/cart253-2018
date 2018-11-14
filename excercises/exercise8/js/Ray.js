@@ -28,12 +28,13 @@ class Ray {
     this.collidedY; //closest point of y intersection
     this.collidedRad; //distance to closest point of intersection
     this.collidedH; //h of wall on collision
-    this.collidedR; //red
-    this.collidedG; //greebn
-    this.collidedB; //blue
+    this.collidedR; //red of wall on collision
+    this.collidedG; //greeb of wall on collision
+    this.collidedB; //blue of wall on collision
+    this.collidedAlpha; //alpha of wall on collision
     this.angle; //angle
-    this.povAngle1;
-    this.povAngle2;
+    this.fovAngle1;
+    this.fovAngle2;
     this.hasChildren = createChildren; //true or false, does this ray have children?
     this.children = []; //the array where any children will be put
     //if set to create children create two rays who are set NOT to create children.
@@ -96,14 +97,10 @@ class Ray {
         let intersectionX = simplifyB / simplifySlope; //the x location where lines intersects
         let intersectionY = (raySlope * intersectionX) + rayB; //y where lines interesct
         let intersectionH = map(intersectionX,line.x1,line.x2,line.h1,line.h2);
-        let intR = line.r;
+        let intR = line.r; //store intersections r,g,b,a values
         let intG = line.g;
         let intB = line.b;
-        // print("intersectionX:"+intersectionX);
-        // print("x1:"+line.x1);
-        // print("x2"+line.x2);
-        // print("intH:"+intersectionH);
-
+        let intAlpha = line.alpha;
 
         //make sure collision happened in front of the ray
         //(because ray is converted to slope form it becomes directionless meaning it will intersect with lines behind it)
@@ -122,7 +119,7 @@ class Ray {
               }
               //if intersection happend closer than current stored closest collision
               //change collisionX,Y to this be the points of this intersection
-              this.makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB);
+              this.makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB,intAlpha);
             }
           } else if (line.x1 > line.x2) {
             if ((intersectionX - c <= line.x1) && (intersectionX + c >= line.x2)) {
@@ -133,7 +130,7 @@ class Ray {
               }
               //if intersection happend closer than current stored closest collision
               //change collisionX,Y to this be the points of this intersection
-              this.makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB);
+              this.makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB,intAlpha);
             }
           }
         }
@@ -141,9 +138,10 @@ class Ray {
       }
     }
   }
-  makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB) {
+  makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB,intAlpha) {
     //compares the dist between the ray origin and the intersectionX,Y and collidedX,Y
     //and if intersection is shorter then it changes collision,x,y to be the intersection
+    //also store its other properties like (r,g,b,a) color and height
     let collidedRad = sqrt(sq(this.collidedX - this.x) + sq(this.collidedY - this.y));
     let intersectionRad = sqrt(sq(intersectionX - this.x) + sq(intersectionY - this.y));
     if (intersectionRad < collidedRad) {
@@ -154,6 +152,7 @@ class Ray {
       this.collidedR = intR;
       this.collidedG = intG;
       this.collidedB = intB;
+      this.collidedAlpha = intAlpha;
     }
   }
   calculateAngle() {
@@ -198,12 +197,12 @@ class Ray {
         strokeWeight(1);
         stroke(this.r, this.g, this.b, 150);
 
-        if(this.povAngle1 === true){
+        if(this.fovAngle1 === true){
           strokeWeight(4)
           stroke(0,255,0);
           line(this.x, this.y, (this.targetX), (this.targetY));
         }
-        if(this.povAngle2 === true){
+        if(this.fovAngle2 === true){
           strokeWeight(4)
           stroke(255,0,0);
         line(this.x, this.y, (this.targetX), (this.targetY));

@@ -21,6 +21,7 @@ class Shape {
     this.r;
     this.b;
     this.g;
+    this.alpha;
 
     //create one line for every vertex
     for (let i = 0; i < this.vertNumber; i++) {
@@ -31,6 +32,7 @@ class Shape {
   update() {
     //based on angleOffset+radius of vertex determine is cartesian coords
     this.updateVertCartesian();
+    this.updateVertHeight();
     this.updateLines(); //update the end/start points of each line
   }
 
@@ -38,6 +40,15 @@ class Shape {
     for (let i = 0; i < this.vertNumber; i++) {
       this.vertX[i] = (cos(this.vertAOff[i] + this.angle) * this.vertR[i]) + this.x;
       this.vertY[i] = (sin(this.vertAOff[i] + this.angle) * this.vertR[i]) + this.y;
+    }
+  }
+  updateVertHeight(){
+    for (let i = 0; i < this.vertHIncrement.length; i++) {
+      let distToPlayer = sqrt(sq(this.x-player.x)+sq(this.y-player.y));
+      let heightChange = map(distToPlayer,0,width,.02,.002);
+      heightChange = constrain(heightChange,0,100);
+      this.vertHIncrement[i] += heightChange;
+      this.vertH[i] =  noise(this.vertHIncrement[i]);
     }
   }
 
@@ -66,15 +77,17 @@ class Shape {
       }
     }
     for (let i = 0; i < this.vertNumber; i++) {
-      //shades the lines lighter with their slope
+      //give the lines the color of the shape
+      //shade the lines according to their slope so that lines with large slopes appear to have more light.
       //making it look like their are two light sources in the scene
       let l = this.lines[i];
       let slope = abs((l.y2-l.y1)/(l.x2-l.x1));
-      let shade = map(slope,0,10,.75,1.25);
-      shade = constrain(shade,.75,1.25);
+      let shade = map(slope,0,10,.65,1.1);
+      shade = constrain(shade,.65,1.1);
       this.lines[i].r = this.r * shade;
       this.lines[i].g = this.g * shade;
       this.lines[i].b = this.b * shade;
+      this.lines[i].alpha = this.alpha;
     }
   }
 

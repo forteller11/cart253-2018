@@ -16,12 +16,13 @@ class Line {
   this.r;
   this.g;
   this.b;
+  this.alpha;
   }
 
   display(){ //draw line from start/end points of line
     if (twoDisplay === true){
       strokeWeight(2);
-      stroke(this.r,this.g,this.b,100);
+      stroke(this.r,this.g,this.b,this.alpha);
       line(this.x1,this.y1,this.x2,this.y2);
     }
   }
