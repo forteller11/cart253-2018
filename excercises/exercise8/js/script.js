@@ -66,7 +66,7 @@ function setup() {
     shape[0].alpha = 0;
   }
   //spawn random shapes with various geometries and colours
-  for (let i = 1; i < 20; i++) {
+  for (let i = 1; i < 4; i++) {
     shape[i] = new Shape(random(-width, width * 2), random(-height, 2 * height), random(TWO_PI), round(random(3, 9)));
     for (let j = 0; j < shape[i].vertNumber; j++) {
       shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;

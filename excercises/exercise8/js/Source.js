@@ -2,7 +2,7 @@ class Source {
   constructor(x,y) {
     this.x = x;
     this.y = y;
-    this.maxGain = .05;
+    this.maxGain = .1;
     this.functions = [];
     // this.bufferData = [];
     this.frameRate = 60;
@@ -29,8 +29,10 @@ class Source {
     // }
   }
   changeGain() {
-    let distToPlayer = sqrt(sq(this.x-player.x)+(this.y-player.y));
-  
+    let distToPlayer = sqrt(sq(this.x-player.x)+sq(this.y-player.y));
+    print("this.x:"+this.x);
+    print("this.y:"+this.y);
+    print('disttoPlayer:'+distToPlayer);
     let gain = map(distToPlayer,0,height,this.maxGain,0);
     gain = constrain(gain,0,this.maxGain);
     print(gain);
