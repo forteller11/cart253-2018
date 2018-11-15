@@ -31,6 +31,7 @@ class Shape {
   }
 
   update() {
+    ellipse(this.x,this.y,20);
     //based on angleOffset+radius of vertex determine is cartesian coords
     this.updateVertCartesian();
     this.updateVertHeight();

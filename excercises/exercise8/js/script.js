@@ -71,10 +71,11 @@ function setup() {
     shape[0].g = 0;
     shape[0].b = 0;
     shape[0].alpha = 0;
+    shape[0].source.audioPlayer.stop(0);
   }
   //spawn random shapes with various geometries and colours
   for (let i = 1; i < 2; i++) {
-    shape[i] = new Shape(width, height/2, random(TWO_PI), round(random(3, 9)));
+    shape[i] = new Shape(random(-width, width * 2), random(-height, 2 * height), random(TWO_PI), round(random(3, 9)));
     for (let j = 0; j < shape[i].vertNumber; j++) {
       shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;
       shape[i].vertR[j] = random(100, 300);
@@ -84,6 +85,7 @@ function setup() {
       shape[i].g = random(255);
       shape[i].b = random(255);
       shape[i].alpha = 255;
+      // shape[i].source.audioPlayer.stop(0);
     }
   }
   //spawn player in middle of screen with an angle of 0

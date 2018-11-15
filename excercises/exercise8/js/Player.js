@@ -313,9 +313,15 @@ class Player {
   }
 
   updateListener(){
-    let orient = map(this.angle,0,TWO_PI,-1,1);
-    audioCtx.listener.setPosition(this.y,this.x,zPlane);
-    audioCtx.listener.setOrientation(0, 1, 0, 0, 0, 1);
+    // let orient = map(this.angle,0,TWO_PI,-1,1);
+    const ang = this.angle;
+    let orient1 = sin(ang);
+    let orient2 = cos(ang);
+    console.log("angle:"+round(this.angle*100)/100);
+    // console.log("orient1:"+round(orient1*100)/100);
+    // console.log("orient2:"+round(orient2*100)/100);
+    audioCtx.listener.setPosition(this.x,this.y,zPlane);
+    audioCtx.listener.setOrientation(-orient2, -orient1, 0, 0, 0, 1);
     // audioCtx.listener.positionX.value = this.x;
     // audioCtx.listener.positionZ.value = this.y;
     // audioCtx.listener.positionY.value = zPlane;

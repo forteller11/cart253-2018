@@ -41,7 +41,7 @@ class Source {
     // }
   }
   updatePanner(){
-    this.panner.setPosition(this.y,this.x,zPlane);
+    this.panner.setPosition(this.x,this.y,zPlane);
     // this.panner.positionX.value = this.x;
     // this.panner.positionZ.value = this.y;
     // this.panner.positionY.value = zPlane;

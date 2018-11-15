@@ -16,6 +16,7 @@ node.start(0);
 
 let t = 0;
 let t2 = 0;
+let p = 0;
 function setup(){
   createCanvas(50,50);
 }
@@ -23,6 +24,7 @@ function setup(){
 function draw(){
   background(51);
   for (let i = 0; i < sampleNumber; i++){
+    // p = i/30;
     t+= .3/sampleRate;
     let t3 = Math.sin(t/3)*Math.PI*2;
     let t4 = Math.cos(t/1)*Math.PI*2;
@@ -43,6 +45,10 @@ function draw(){
     let f2c = Math.sin(10*t*Math.pow(Math.PI,4));
     let f3c = f2c * Math.pow(t3,2);
     let f4c = 1*Math.cos(f3c);
-    data[i] = f5a+f4c;
+    data[i] = (f5a+f4c);
+
+    // data[i] = map(noise(p),0,1,-1,1)*noise(i/00);
+
+
   }
 }
