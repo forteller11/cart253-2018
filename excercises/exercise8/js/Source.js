@@ -20,7 +20,7 @@ class Source {
     this.panner = audioCtx.createPanner();
     this.panner.panningModel = "HRTF";
     this.panner.distanceModel = "linear";
-    this.panner.maxDistance = width*1.2;
+    this.panner.maxDistance = fadeHeightDist+(fadeHeightDist/3);
 
     this.updatePanner();
     this.audioPlayer.connect(this.panner); //make the audioPlayer player output through a personal gain
@@ -89,7 +89,7 @@ let netAmplitude = 0;
     let newAvgAmp = netAmplitude/sampleNumber;
     let avgAmpDiff = newAvgAmp - this.avgAmplitudeStore;
     this.avgAmplitudeStore += avgAmpDiff*.5;
-    print(this.avgAmplitudeStore);
+    // print(this.avgAmplitudeStore);
   }
 
 

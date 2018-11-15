@@ -50,6 +50,7 @@ let audioCtx = new window.AudioContext();
 let sampleRate = 44100;
 let zPlane = 0;
 let masterGain = audioCtx.createGain();
+let fadeHeightDist;
 /*
 function setup
 places shapes randomly on the scene with random gemoetries and heights,
@@ -57,7 +58,7 @@ creates player
 */
 function setup() {
   createCanvas(windowWidth / 1.1, windowHeight / 1.1);
-
+  fadeHeightDist = width * 2;
   //create border shape with huge radius souuronding the player with alpha set to 0
   //(ray casting always need to hit SOMETHING to not bu gout and therefore the
   // player has to always be within a shape for sight to work properly)
@@ -75,10 +76,12 @@ function setup() {
   }
   //spawn random shapes with various geometries and colours
   for (let i = 1; i < 5; i++) {
-    shape[i] = new Shape(random(-width, width * 2), random(-height, 2 * height), random(TWO_PI), round(random(3, 9)));
+    let spawnBoundary1 = -width * 2;
+    let spawnBoundary2 = width * 3;
+    shape[i] = new Shape(random(spawnBoundary1, spawnBoundary2), random(spawnBoundary1, spawnBoundary2), random(TWO_PI), round(random(3, 9)));
     for (let j = 0; j < shape[i].vertNumber; j++) {
       shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;
-      shape[i].vertR[j] = random(100, 300);
+      shape[i].vertR[j] = random(20, fadeHeightDist / 3);
       shape[i].vertH[j] = 1;
       shape[i].vertHIncrement[j] = random(100);
       shape[i].r = random(255);
@@ -95,13 +98,26 @@ function setup() {
 }
 
 function draw() {
-  background(bgR, bgG, bgB,175);
+  background(bgR, bgG, bgB, 175);
   // testSpeaker.update();
   //update shapes and lines
   for (let i = 0; i < shape.length; i++) {
     shape[i].update();
-    shape[i].display();
+    shape[i].display()
+    if (i > 0) {
+      for (let j = 0; j < shape[i].vertNumber; j++) {
+        let angleMaxChange = .005;
+        shape[i].vertAOff[j] += map(noise(shape[i].vertHIncrement[j]),0,1,-angleMaxChange,angleMaxChange);
+        let radiusMaxChange = .5;
+        shape[i].vertR[j] += map(noise(shape[i].vertHIncrement[j]),0,1,-radiusMaxChange,radiusMaxChange);
+        // shape[i].vertR[j] = random(20, fadeHeightDist/3);
+        // shape[i].vertH[j] = 1;
+        // shape[i].vertHIncrement[j] = random(100);
+        // shape[i].source.audioPlayer.stop(0);
+      }
+    }
   }
+
   player.update();
 
   //draw fov

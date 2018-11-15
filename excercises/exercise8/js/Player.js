@@ -197,7 +197,7 @@ class Player {
     and works its way up to the ray with the largest angle. */
 
 
-    let fadeHeightDist = width * 1.2; //dist from player to wall at which wall is minHeight
+    //dist from player to wall at which wall is minHeight
     let maxHeight = height / 1.9; //what height is wall when player is on top of wall
     let minHeight = height / 400; //min height of wall when player dist from wall is larger than fadeHeightDist
     let horizon = height / 2; //where the horizon line is on the screen
