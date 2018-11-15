@@ -2,7 +2,8 @@ class Source {
   constructor(x,y) {
     this.x = x;
     this.y = y;
-    this.t = 0;
+    this.t = random(1000);
+    this.avgAmplitudeStore = 0; //stores avg amplitude of all samples every frame
     this.maxGain = .1;
     this.functions = [];
     // this.bufferData = [];
@@ -19,7 +20,7 @@ class Source {
     this.panner = audioCtx.createPanner();
     this.panner.panningModel = "HRTF";
     this.panner.distanceModel = "linear";
-    this.panner.maxDistance = width*2;
+    this.panner.maxDistance = width*1.2;
 
     this.updatePanner();
     this.audioPlayer.connect(this.panner); //make the audioPlayer player output through a personal gain
@@ -57,7 +58,8 @@ class Source {
 
   }
   changeData() {
-
+this.avgAmplitudeStore = 0;
+let netAmplitude = 0;
     const sampleNumber = sampleRate / this.frameRate;
     for (let i = 0; i < sampleNumber; i++) {
       // p = i/30;
@@ -74,16 +76,20 @@ class Source {
       let f3 = Math.sin(f0*10);
       // f3 = constrain(f3,0,1);
       let f4 = Math.cos(f1*30);
-      let f5a = (f3+(f4*t4)+f2)/3;
+      let f5a = (f3+(f4*t4)+f2)/4;
 
 
       // return (f3+f4)*.5;
-      let f2c = Math.sin(10*t*Math.pow(Math.PI,4));
+      let f2c = Math.sin(4*t*Math.pow(Math.PI,4));
       let f3c = f2c * Math.pow(t3,2);
       let f4c = 1*Math.cos(f3c);
       this.bufferData[i] = (f5a+f4c);
+      netAmplitude+= this.bufferData[i];
     }
-
+    let newAvgAmp = netAmplitude/sampleNumber;
+    let avgAmpDiff = newAvgAmp - this.avgAmplitudeStore;
+    this.avgAmplitudeStore += avgAmpDiff*.5;
+    print(this.avgAmplitudeStore);
   }
 
 

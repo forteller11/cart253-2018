@@ -74,7 +74,7 @@ function setup() {
     shape[0].source.audioPlayer.stop(0);
   }
   //spawn random shapes with various geometries and colours
-  for (let i = 1; i < 2; i++) {
+  for (let i = 1; i < 5; i++) {
     shape[i] = new Shape(random(-width, width * 2), random(-height, 2 * height), random(TWO_PI), round(random(3, 9)));
     for (let j = 0; j < shape[i].vertNumber; j++) {
       shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;
@@ -95,7 +95,7 @@ function setup() {
 }
 
 function draw() {
-  background(bgR, bgG, bgB);
+  background(bgR, bgG, bgB,175);
   // testSpeaker.update();
   //update shapes and lines
   for (let i = 0; i < shape.length; i++) {

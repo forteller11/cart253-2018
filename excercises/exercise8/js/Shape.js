@@ -31,7 +31,7 @@ class Shape {
   }
 
   update() {
-    ellipse(this.x,this.y,20);
+    // ellipse(this.x,this.y,20);
     //based on angleOffset+radius of vertex determine is cartesian coords
     this.updateVertCartesian();
     this.updateVertHeight();
@@ -55,8 +55,11 @@ class Shape {
       let distToPlayer = sqrt(sq(this.x-player.x)+sq(this.y-player.y));
       let heightChange = map(distToPlayer,0,width,.02,.002);
       heightChange = constrain(heightChange,0,100);
+      // this.vertH[i] = map(this.source.netAmplitudeStore,-1,1,0,1);
       this.vertHIncrement[i] += heightChange;
-      this.vertH[i] =  noise(this.vertHIncrement[i]);
+      let heightChangeNoise =  noise(this.vertHIncrement[i]);
+      let heightChangeSound = map(this.source.avgAmplitudeStore,-1,1,0,1);
+      this.vertH[i] = (.5*heightChangeNoise)+(.5*heightChangeSound);
     }
   }
 
