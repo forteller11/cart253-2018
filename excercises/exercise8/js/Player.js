@@ -313,12 +313,15 @@ class Player {
   }
 
   updateListener(){
-    audioCtx.listener.positionX.value = this.x;
-    audioCtx.listener.positionZ.value = this.y;
-    audioCtx.listener.positionY.value = zPlane;
-    audioCtx.listener.upX.value = this.angle;
-    audioCtx.listener.upY.value = 0;
-    audioCtx.listener.upZ.value = 0;
+    let orient = map(this.angle,0,TWO_PI,-1,1);
+    audioCtx.listener.setPosition(this.y,this.x,zPlane);
+    audioCtx.listener.setOrientation(0, 1, 0, 0, 0, 1);
+    // audioCtx.listener.positionX.value = this.x;
+    // audioCtx.listener.positionZ.value = this.y;
+    // audioCtx.listener.positionY.value = zPlane;
+    // audioCtx.listener.upX.value = 0;
+    // audioCtx.listener.upY.value = this.angle;
+    // audioCtx.listener.upZ.value = 0;
   }
 
   display() { //display the player's position and direction (angle) on the canvas

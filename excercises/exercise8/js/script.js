@@ -30,6 +30,13 @@ tuning FOV: up and down arrow key
 "Q" turns debug visualization in which ray casting and FOV is visualized on or off.
 "E" turns 2D visualization on or off.
 "R" turns pseudo-3D visualization on or off.
+
+https://webdesign.tutsplus.com/tutorials/web-audio-and-3d-soundscapes-introduction--cms-22650
+https://github.com/tutsplus/Web-Audio-and-3D-Soundscapes-Implementation/blob/master/demo.audio.js
+https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Web_audio_spatialization_basics
+https://teropa.info/blog/2016/08/04/sine-waves.html
+http://www.justgoscha.com/programming/2014/04/08/creating-dynamic-audiobuffers-with-webaudio.html
+https://medium.com/creative-technology-concepts-code/recording-syncing-and-exporting-web-audio-1e1a1e35ef08
 */
 let player;
 let shape = [];
@@ -66,8 +73,8 @@ function setup() {
     shape[0].alpha = 0;
   }
   //spawn random shapes with various geometries and colours
-  for (let i = 1; i < 4; i++) {
-    shape[i] = new Shape(random(-width, width * 2), random(-height, 2 * height), random(TWO_PI), round(random(3, 9)));
+  for (let i = 1; i < 2; i++) {
+    shape[i] = new Shape(width, height/2, random(TWO_PI), round(random(3, 9)));
     for (let j = 0; j < shape[i].vertNumber; j++) {
       shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;
       shape[i].vertR[j] = random(100, 300);

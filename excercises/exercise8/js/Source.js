@@ -18,8 +18,9 @@ class Source {
     this.panner = audioCtx.createPanner();
     this.panner.panningModel = "HRTF";
     this.panner.distanceModel = "linear";
-    this.updatePanner();
-    this.panner.maxDistance = 100;
+    this.panner.maxDistance = width*2;
+      this.panner.coneAngle = 360;
+
     this.updatePanner();
     this.audioPlayer.connect(this.panner); //make the audioPlayer player output through a personal gain
     this.panner.connect(this.gainNode);
@@ -40,9 +41,10 @@ class Source {
     // }
   }
   updatePanner(){
-    this.panner.positionX.value = this.x;
-    this.panner.positionZ.value = this.y;
-    this.panner.positionY.value = zPlane;
+    this.panner.setPosition(this.y,this.x,zPlane);
+    // this.panner.positionX.value = this.x;
+    // this.panner.positionZ.value = this.y;
+    // this.panner.positionY.value = zPlane;
     // this.panner.upX.value = this.angle;
     // this.listener.upY.value = 1;
     // this.listener.upZ.value = 0;
@@ -57,7 +59,7 @@ class Source {
   changeData() {
     const sampleNumber = sampleRate / this.frameRate;
     for (let i = 0; i < sampleNumber; i++) {
-      this.bufferData[i] = random(1);
+      this.bufferData[i] = sin(i/30);
     }
   }
 
