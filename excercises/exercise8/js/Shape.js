@@ -22,12 +22,13 @@ class Shape {
     this.b;
     this.g;
     this.alpha;
+    this.source = [];
 
     //create one line for every vertex
     for (let i = 0; i < this.vertNumber; i++) {
       this.lines[i] = new Line();
+      this.source[i] = new Source(this.x,this.y);
     }
-    this.source = new Source(this.x,this.y);
   }
 
   update() {
@@ -39,9 +40,11 @@ class Shape {
     this.updateSource();
   }
   updateSource(){
-    this.source.x = this.x;
-    this.source.y = this.y;
-    this.source.update();
+    for (let i = 0; i < this.vertNumber; i++) {
+      this.source[i].x = this.vertX[i];
+      this.source[i].y = this.vertY[i];
+      this.source[i].update();
+    }
   }
 
   updateVertCartesian() { //updates x,y of verts based on angleOffset, shape's angle, and verts' radius
@@ -58,8 +61,8 @@ class Shape {
       // this.vertH[i] = map(this.source.netAmplitudeStore,-1,1,0,1);
       this.vertHIncrement[i] += heightChange;
       let heightChangeNoise =  noise(this.vertHIncrement[i]);
-      let heightChangeSound = map(this.source.avgAmplitudeStore,-1,1,0,1);
-      this.vertH[i] = (.5*heightChangeNoise)+(.5*heightChangeSound);
+      let heightChangeSound = map(this.source[i].avgAmplitudeStore,-1,1,0,1);
+      this.vertH[i] = (.0*heightChangeNoise)+(1*heightChangeSound);
     }
   }
 

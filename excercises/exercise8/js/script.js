@@ -72,10 +72,10 @@ function setup() {
     shape[0].g = 0;
     shape[0].b = 0;
     shape[0].alpha = 0;
-    shape[0].source.audioPlayer.stop(0);
+    shape[0].source[j].audioPlayer.stop(0);
   }
   //spawn random shapes with various geometries and colours
-  for (let i = 1; i < 5; i++) {
+  for (let i = 1; i < 3; i++) {
     let spawnBoundary1 = -width * 2;
     let spawnBoundary2 = width * 3;
     shape[i] = new Shape(random(spawnBoundary1, spawnBoundary2), random(spawnBoundary1, spawnBoundary2), random(TWO_PI), round(random(3, 9)));
@@ -106,9 +106,9 @@ function draw() {
     shape[i].display()
     if (i > 0) {
       for (let j = 0; j < shape[i].vertNumber; j++) {
-        let angleMaxChange = .005;
+        let angleMaxChange = .001;
         shape[i].vertAOff[j] += map(noise(shape[i].vertHIncrement[j]),0,1,-angleMaxChange,angleMaxChange);
-        let radiusMaxChange = .5;
+        let radiusMaxChange = .2;
         shape[i].vertR[j] += map(noise(shape[i].vertHIncrement[j]),0,1,-radiusMaxChange,radiusMaxChange);
         // shape[i].vertR[j] = random(20, fadeHeightDist/3);
         // shape[i].vertH[j] = 1;
