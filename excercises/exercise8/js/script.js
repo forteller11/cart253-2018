@@ -76,7 +76,7 @@ function setup() {
     shape[0].source[j].audioPlayer.stop(0);
   }
   //spawn random shapes with various geometries and colours
-  for (let i = 1; i < 3; i++) {
+  for (let i = 1; i < 6; i++) {
     let spawnBoundary1 = -width * 2;
     let spawnBoundary2 = width * 3;
     shape[i] = new Shape(random(spawnBoundary1, spawnBoundary2), random(spawnBoundary1, spawnBoundary2), random(TWO_PI), round(random(3, 5)));

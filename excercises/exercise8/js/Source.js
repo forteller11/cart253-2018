@@ -23,7 +23,7 @@ class Source {
     this.panner = audioCtx.createPanner();
     this.panner.panningModel = "HRTF";
     this.panner.distanceModel = "linear";
-    this.panner.maxDistance = fadeHeightDist+(fadeHeightDist/3);
+    this.panner.maxDistance = fadeHeightDist+(fadeHeightDist/5);
 
     this.updatePanner();
     this.audioPlayer.connect(this.panner); //make the audioPlayer player output through a personal gain
@@ -76,10 +76,15 @@ let netAmplitude = 0;
         type = sin(this.t);
       }
       if (type === 2){
-        type = sin(sin(this.t));
+        type = sin(sin(this.t*1.5));
       }
       if (type === 3){
-        type = sin(tan(this.t/20));
+        type = sin(tan(this.t));
+      }
+      if (type === 4){ //change t
+      const f2c = Math.pow(sin(this.t/1.5),5);
+      type =f2c;
+
       }
       this.bufferData[i] = type;
       netAmplitude+= abs(this.bufferData[i]);
