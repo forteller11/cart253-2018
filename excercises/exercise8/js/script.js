@@ -51,6 +51,7 @@ let sampleRate = 44100;
 let zPlane = 0;
 let masterGain = audioCtx.createGain();
 let fadeHeightDist;
+let frameRate = 60;
 /*
 function setup
 places shapes randomly on the scene with random gemoetries and heights,
@@ -78,7 +79,7 @@ function setup() {
   for (let i = 1; i < 3; i++) {
     let spawnBoundary1 = -width * 2;
     let spawnBoundary2 = width * 3;
-    shape[i] = new Shape(random(spawnBoundary1, spawnBoundary2), random(spawnBoundary1, spawnBoundary2), random(TWO_PI), round(random(3, 9)));
+    shape[i] = new Shape(random(spawnBoundary1, spawnBoundary2), random(spawnBoundary1, spawnBoundary2), random(TWO_PI), round(random(3, 5)));
     for (let j = 0; j < shape[i].vertNumber; j++) {
       shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;
       shape[i].vertR[j] = random(20, fadeHeightDist / 3);

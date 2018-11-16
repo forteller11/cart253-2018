@@ -2,14 +2,17 @@ class Source {
   constructor(x,y) {
     this.x = x;
     this.y = y;
-    this.t = random(1000);
+    this.t = random(100000);
+    this.tIncrement = random(600,2700)/sampleRate;
+    this.soundType = round(random(3)); //what type of function i used
+
+
     this.avgAmplitudeStore = 0; //stores avg amplitude of all samples every frame
-    this.maxGain = .1;
+    this.maxGain = random(.2);
     this.functions = [];
     // this.bufferData = [];
-    this.frameRate = 60;
     this.gainNode = audioCtx.createGain();
-    this.buffer = audioCtx.createBuffer(1, sampleRate / this.frameRate, sampleRate);
+    this.buffer = audioCtx.createBuffer(1, sampleRate / frameRate, sampleRate);
 
     //make buffer data the array containing raw audio data of the first (and only) channel of buffer
     this.bufferData = this.buffer.getChannelData(0);
@@ -35,7 +38,7 @@ class Source {
   }
   update() {
     // this.updatePanner();
-    // this.changeGain();
+    this.changeGain();
     this.changeData();
     // if (this.gain > 0) {
     //   //play
@@ -58,37 +61,34 @@ class Source {
 
   }
   changeData() {
+    // this.soundType = 3;
 this.avgAmplitudeStore = 0;
 let netAmplitude = 0;
-    const sampleNumber = sampleRate / this.frameRate;
+    const sampleNumber = sampleRate / frameRate;
     for (let i = 0; i < sampleNumber; i++) {
-      // p = i/30;
-      this.t += .3/sampleRate;
-      const t = this.t;
-      let t3 = Math.sin(t/3)*Math.PI*2;
-      let t4 = Math.cos(t/1)*Math.PI*2;
-      let sampleTime = i / sampleRate;
-      let sampleAngle = sampleTime * 2*Math.PI;
-      // print(sampleAngle);
-      let f0 = Math.sin(sampleAngle * 20);
-      let f1 = Math.sin(sampleAngle *7);
-      let f2 = Math.cos(Math.pow(sampleAngle*.8,f1));
-      let f3 = Math.sin(f0*10);
-      // f3 = constrain(f3,0,1);
-      let f4 = Math.cos(f1*30);
-      let f5a = (f3+(f4*t4)+f2)/4;
-
-
-      // return (f3+f4)*.5;
-      let f2c = Math.sin(4*t*Math.pow(Math.PI,4));
-      let f3c = f2c * Math.pow(t3,2);
-      let f4c = 1*Math.cos(f3c);
-      this.bufferData[i] = (f5a+f4c);
-      netAmplitude+= this.bufferData[i];
+      this.t += this.tIncrement;
+      let type = this.soundType;
+      let addValue;
+      if (type === 0){
+        type = random(-1,1);
+      }
+      if (type === 1){
+        type = sin(this.t);
+      }
+      if (type === 2){
+        type = sin(sin(this.t));
+      }
+      if (type === 3){
+        type = sin(tan(this.t/20));
+      }
+      this.bufferData[i] = type;
+      netAmplitude+= abs(this.bufferData[i]);
     }
+
     let newAvgAmp = netAmplitude/sampleNumber;
     let avgAmpDiff = newAvgAmp - this.avgAmplitudeStore;
-    this.avgAmplitudeStore += avgAmpDiff*.5;
+    // print(newAvgAmp);
+    this.avgAmplitudeStore += avgAmpDiff*1;
     // print(this.avgAmplitudeStore);
   }
 

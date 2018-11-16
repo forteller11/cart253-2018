@@ -61,8 +61,10 @@ class Shape {
       // this.vertH[i] = map(this.source.netAmplitudeStore,-1,1,0,1);
       this.vertHIncrement[i] += heightChange;
       let heightChangeNoise =  noise(this.vertHIncrement[i]);
-      let heightChangeSound = map(this.source[i].avgAmplitudeStore,-1,1,0,1);
+      let heightChangeSound = map(this.source[i].avgAmplitudeStore,0,1,0,1);
+      heightChangeSound = constrain(heightChangeSound,0,1);
       this.vertH[i] = (.0*heightChangeNoise)+(1*heightChangeSound);
+      print(heightChangeSound);
     }
   }
 
