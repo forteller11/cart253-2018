@@ -26,7 +26,7 @@ class Source {
     this.panner = audioCtx.createPanner();
     this.panner.panningModel = "HRTF";
     this.panner.distanceModel = "linear";
-    this.panner.maxDistance = fadeHeightDist+(fadeHeightDist/5);
+    this.panner.maxDistance = fadeHeightDist-(fadeHeightDist/6);
 
     this.updatePanner();
     this.audioPlayer.connect(this.panner); //make the audioPlayer player output through a personal gain
@@ -41,7 +41,7 @@ class Source {
   }
   update() {
     // this.updatePanner();
-    this.changeGain();
+    // this.changeGain();
     this.changeData();
     // if (this.gain > 0) {
     //   //play

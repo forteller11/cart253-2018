@@ -66,7 +66,7 @@ function setup() {
   shape[0] = new Shape(width / 2, height / 2, 0.0001, 3);
   for (let j = 0; j < shape[0].vertNumber; j++) {
     shape[0].vertAOff[j] = (TWO_PI / shape[0].vertNumber) * j + QUARTER_PI;
-    shape[0].vertR[j] = 10000;
+    shape[0].vertR[j] = 100000;
     shape[0].vertH[j] = 1;
     shape[0].vertHIncrement = random(1000);
     shape[0].r = 0;
@@ -105,18 +105,18 @@ function draw() {
   for (let i = 0; i < shape.length; i++) {
     shape[i].update();
     shape[i].display()
-    if (i > 0) {
-      for (let j = 0; j < shape[i].vertNumber; j++) {
-        let angleMaxChange = .001;
-        shape[i].vertAOff[j] += map(noise(shape[i].vertHIncrement[j]),0,1,-angleMaxChange,angleMaxChange);
-        let radiusMaxChange = .2;
-        shape[i].vertR[j] += map(noise(shape[i].vertHIncrement[j]),0,1,-radiusMaxChange,radiusMaxChange);
+    // if (i > 0) {
+      // for (let j = 0; j < shape[i].vertNumber; j++) {
+      //   let angleMaxChange = .001;
+      //   shape[i].vertAOff[j] += map(noise(shape[i].vertHIncrement[j]),0,1,-angleMaxChange,angleMaxChange);
+      //   let radiusMaxChange = .2;
+      //   shape[i].vertR[j] += map(noise(shape[i].vertHIncrement[j]),0,1,-radiusMaxChange,radiusMaxChange);
         // shape[i].vertR[j] = random(20, fadeHeightDist/3);
         // shape[i].vertH[j] = 1;
         // shape[i].vertHIncrement[j] = random(100);
         // shape[i].source.audioPlayer.stop(0);
-      }
-    }
+      // }
+    // }
   }
 
   player.update();
