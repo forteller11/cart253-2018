@@ -2,13 +2,16 @@ class Source {
   constructor(x,y) {
     this.x = x;
     this.y = y;
-    this.t = random(100000);
-    this.tIncrement = random(600,2700)/sampleRate;
-    this.soundType = round(random(3)); //what type of function i used
-
+    this.t1 = random(100000);
+    this.t2 = random(100000);
+    this.t1Increment = random(200,2400)/sampleRate;
+    this.t2Increment = random(1)/sampleRate;
+    this.soundType = round(random(4)); //what type of function i used
+    this.fadeType = round(random(2)); //what type of function i used
+    noiseDetail(16, 0.65);
 
     this.avgAmplitudeStore = 0; //stores avg amplitude of all samples every frame
-    this.maxGain = random(.2);
+    this.maxGain = random(.1);
     this.functions = [];
     // this.bufferData = [];
     this.gainNode = audioCtx.createGain();
@@ -66,30 +69,52 @@ this.avgAmplitudeStore = 0;
 let netAmplitude = 0;
     const sampleNumber = sampleRate / frameRate;
     for (let i = 0; i < sampleNumber; i++) {
-      this.t += this.tIncrement;
-      let type = this.soundType;
-      let addValue;
-      if (type === 0){
-        type = random(-1,1);
-      }
-      if (type === 1){
-        type = sin(this.t);
-      }
-      if (type === 2){
-        type = sin(sin(this.t*1.5));
-      }
-      if (type === 3){
-        type = sin(tan(this.t));
-      }
-      if (type === 4){ //change t
-      const f2c = Math.pow(sin(this.t/1.5),5);
-      type =f2c;
+      this.t1 += this.t1Increment;
+      this.t2 += this.t2Increment;
 
+      let waveValue;
+      let fadeValue;
+      // this.soundType = 0;
+      if (this.soundType === 0){ //static
+        waveValue = random(-1,1);
       }
-      this.bufferData[i] = type;
+      if (this.soundType === 1){ //sinwave
+        waveValue = sin(this.t1*.5);
+      }
+      if (this.soundType === 2){ //triangle
+        const period = 2.5;
+        const hOffset = period/2;
+        waveValue = ((abs(this.t1%period)/period)-.5);
+      }
+      if (this.soundType === 3){
+        waveValue = sin(tan(this.t1));
+      }
+      if (this.soundType === 4){ //change t
+      const f2c = Math.pow(sin(this.t1/1.5),5);
+      waveValue =f2c;
+      }
+
+      // this.fadeType = 2;
+      if (this.fadeType === 0){ //static
+        fadeValue = map(sin(this.t2*6),-1,1,0,1)*waveValue;
+      }
+      if (this.fadeType === 1){ //sinwave
+        fadeValue = noise(this.t2)*waveValue;
+      }
+      if (this.fadeType === 2){ //sinwave
+        fadeValue = map(sin(this.t2*6),-1,1,0,1)*noise(this.t2)*waveValue;
+      }
+      // if (this.soundType === 3){ //triangle
+      //   const period = 2.5;
+      //   const hOffset = period/2;
+      //   fadeValue = ((abs(this.t2%period)/period)-.5);
+      // }
+
+      this.bufferData[i] = fadeValue;
+
       netAmplitude+= abs(this.bufferData[i]);
+          // print(this.bufferData[i]);
     }
-
     let newAvgAmp = netAmplitude/sampleNumber;
     let avgAmpDiff = newAvgAmp - this.avgAmplitudeStore;
     // print(newAvgAmp);
