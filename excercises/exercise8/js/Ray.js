@@ -172,7 +172,7 @@ class Ray {
 
       for (let i = 0; i < this.intStripeH.length; i ++){
         this.collidedStripeH[i] = this.intStripeH[i];
-        this.collidedStripeW[i] = this.intStripeH[i];
+        this.collidedStripeW[i] = this.intStripeW[i];
       }
       // print(this.collidedStripeH);
     }

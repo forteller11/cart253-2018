@@ -34,10 +34,10 @@ class Shape {
       this.source[i] = new Source(this.x,this.y);
     }
 
-    const stripeNumber = round(random(10));
+    const stripeNumber = round(5);
     for (let i = 0; i < stripeNumber; i ++){
       this.stripeH[i] = random(1);
-      this.stripeW[i] = random(2,6);
+      this.stripeW[i] = random(10);
 
     }
   }

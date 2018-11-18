@@ -311,22 +311,21 @@ class Player {
       endShape();
 
 
-      stroke(bgR* colorMultiplier,bgG* colorMultiplier,bgB* colorMultiplier,ray3.collidedAlpha);
+      stroke(bgR* colorMultiplier,bgG* colorMultiplier,bgB* colorMultiplier,ray2.collidedAlpha);
       let strokeWidth = map(ray3.collidedRad, 0, fadeHeightDist, 3, 0);
       // strokeWidth = constrain(baseH3, 0, 6);
       let lerpAmount = .01;
       const stripeNumber = 15;
       // console.log(ray1.collidedH.length);
       // console.log(ray1.collidedStripeW);
-      for (let k = 0; k < ray1.collidedStripeH.length; k ++){
+      for (let k = 0; k < ray2.collidedStripeH.length; k ++){
         const c = 0;
-        lerpAmount *= stripeNumber*.093;
-
-        const h0 = lerp(horizon+baseH0,horizon-ceilH0,ray1.collidedStripeH)+c;
-        const h1 = lerp(horizon+baseH1,horizon-ceilH1,ray1.collidedStripeH)+c;
-        const h2 = lerp(horizon+baseH2,horizon-ceilH2,ray1.collidedStripeH)+c;
-        const h3 = lerp(horizon+baseH3,horizon-ceilH3,ray1.collidedStripeH)+c;
+        const strokeWidth = map(ray2.collidedRad, 0, fadeHeightDist, ray2.collidedStripeW[k], 0);
         strokeWeight(strokeWidth);
+        const h0 = lerp(horizon+baseH0,horizon-ceilH0,ray2.collidedStripeH[k])+c;
+        const h1 = lerp(horizon+baseH1,horizon-ceilH1,ray2.collidedStripeH[k])+c;
+        const h2 = lerp(horizon+baseH2,horizon-ceilH2,ray2.collidedStripeH[k])+c;
+        const h3 = lerp(horizon+baseH3,horizon-ceilH3,ray2.collidedStripeH[k])+c;
         // line(wHist+.0,h0,wHist+w0,h1);
         line(wHist+w0,h1,wHist+w1,h2);
         line(wHist+w1,h2,wHist+w2,h3);
