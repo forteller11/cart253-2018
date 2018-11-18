@@ -4,10 +4,11 @@ class Source {
     this.y = y;
     this.t1 = random(100000);
     this.t2 = random(100000);
-    this.t1MinIncrement = random(400,1500)/sampleRate;
-    this.t1MaxIncrement = random(this.t1MinIncrement,this.t1MinIncrement+2500)/sampleRate;
-    this.t1NoiseIncrement = random(1)/sampleRate;
+    this.t1MinIncrement = random(175,500)/sampleRate;
+    this.t1MaxIncrement = random(this.t1MinIncrement,this.t1MinIncrement+2000)/sampleRate;
+    this.t1NoiseIncrement = random(1.5)/sampleRate;
     this.t1NoiseIndex = random(100000);
+    this.t1IncStore = 0;
 //0.000000001//
     this.t2Increment = random(1)/sampleRate;
     this.soundType = round(random(5)); //what type of function i used
@@ -77,6 +78,7 @@ let netAmplitude = 0;
       const lerpAmount = noise(this.t1NoiseIndex);
       noiseDetail(6, 0.75);
       const t1Inc = lerp(this.t1MinIncrement,this.t1MaxIncrement,lerpAmount);
+
       this.t1 += t1Inc;
       this.t2 += this.t2Increment;
       // this.soundType = 1;
@@ -135,8 +137,9 @@ let netAmplitude = 0;
 
       this.bufferData[i] = fadeValue;
 
-      netAmplitude+= abs(this.bufferData[i])+t1Inc;
-          // print(this.bufferData[i]);
+          //one this.bufferData gives sense of amplitude, t1IncStore gives sense of frequency changes
+      netAmplitude+= abs(this.bufferData[i])+(abs(t1Inc-this.t1IncStore)*10000);
+      this.t1IncStore = t1Inc;
     }
     let newAvgAmp = netAmplitude/sampleNumber;
     let avgAmpDiff = newAvgAmp - this.avgAmplitudeStore;

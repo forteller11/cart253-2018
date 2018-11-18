@@ -25,7 +25,7 @@ class Line {
     if (twoDisplay === true){
       strokeWeight(2);
       stroke(this.r,this.g,this.b,this.alpha);
-      line(this.x1,this.y1,this.x2,this.y2);
+      line(this.x1-(player.x)+width/2,this.y1-(player.y)+height/2,this.x2-(player.x)+width/2,this.y2-(player.y)+height/2);
     }
   }
 }

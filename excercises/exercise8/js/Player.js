@@ -254,7 +254,7 @@ class Player {
       if (debugDisplay === true) { //draw all rays falling with the fov in red-orange
         stroke(255, 100, 0, 150);
         strokeWeight(3);
-        line(ray1.x, ray1.y, ray1.targetX, ray1.targetY);
+        line(ray1.x-(player.x)+width/2, ray1.y-player.y+(height/2), ray1.targetX-player.x+(width/2), ray1.targetY-player.y+(height/2));
       }
 
       //base height of wall, ramps from min height to max height depending on ray's collision's dist from player.
@@ -356,8 +356,8 @@ class Player {
     stroke(255);
     fill(51);
     strokeWeight(4);
-    ellipse(this.x, this.y, this.radius * 2);
+    ellipse(this.x-this.x+(width/2), this.y-this.y+(height/2), this.radius * 2);
     //line to show direction
-    line(this.x, this.y, this.x + (cos(this.angle) * this.radius), this.y + (sin(this.angle) * this.radius));
+    line(width/2, height/2, width/2+ (cos(this.angle) * this.radius), height/2 + (sin(this.angle) * this.radius));
   }
 }

@@ -222,18 +222,18 @@ class Ray {
         if(this.fovAngle1 === true){
           strokeWeight(4)
           stroke(0,255,0);
-          line(this.x, this.y, (this.targetX), (this.targetY));
+          line(this.x-(player.x)+width/2, this.y-player.y+(height/2), (this.targetX)-player.x+(width/2), (this.targetY)-player.y+(height/2));
         }
         if(this.fovAngle2 === true){
           strokeWeight(4)
           stroke(255,0,0);
-        line(this.x, this.y, (this.targetX), (this.targetY));
+        line(this.x-(player.x)+width/2, this.y-player.y+(height/2), (this.targetX)-player.x+(width/2), (this.targetY)-player.y+(height/2));
         }
       // stroke(this.r, this.g, this.b,255);
-      line(this.x, this.y, (this.collidedX), (this.collidedY));
+      line(this.x-(player.x)+width/2, this.y-player.y+(height/2), (this.collidedX)-player.x+(width/2), (this.collidedY)-player.y+(height/2));
       //post collision stroke
       stroke(this.r, this.g, this.b,20);
-      line(this.x, this.y, (this.targetX), (this.targetY));
+      line(this.x-(player.x)+width/2, this.y-player.y+(height/2), (this.targetX)-player.x+(width/2), (this.targetY)-player.y+(height/2));
 
 
     }
