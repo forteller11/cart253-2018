@@ -316,13 +316,15 @@ class Player {
       // strokeWidth = constrain(baseH3, 0, 6);
       let lerpAmount = .01;
       const stripeNumber = 15;
-      for (let k = 0; k < stripeNumber; k ++){
+      // console.log(ray1.collidedH.length);
+      for (let k = 0; k < ray1.collidedStripeH.length; k ++){
         const c = 0;
         lerpAmount *= stripeNumber*.093;
-        const h0 = lerp(horizon+baseH0,horizon-ceilH0,lerpAmount)+c;
-        const h1 = lerp(horizon+baseH1,horizon-ceilH1,lerpAmount)+c;
-        const h2 = lerp(horizon+baseH2,horizon-ceilH2,lerpAmount)+c;
-        const h3 = lerp(horizon+baseH3,horizon-ceilH3,lerpAmount)+c;
+        
+        const h0 = lerp(horizon+baseH0,horizon-ceilH0,ray1.collidedStripeH)+c;
+        const h1 = lerp(horizon+baseH1,horizon-ceilH1,ray1.collidedStripeH)+c;
+        const h2 = lerp(horizon+baseH2,horizon-ceilH2,ray1.collidedStripeH)+c;
+        const h3 = lerp(horizon+baseH3,horizon-ceilH3,ray1.collidedStripeH)+c;
         strokeWeight(strokeWidth);
         // line(wHist+.0,h0,wHist+w0,h1);
         line(wHist+w0,h1,wHist+w1,h2);

@@ -9,7 +9,6 @@ class Shape {
   constructor(x, y, angle, vertNumber) {
     this.x = x;
     this.y = y;
-    this.stripeNumber = 15;
     this.angle = angle;
     this.vertNumber = vertNumber;
     this.vertAOff = []; //angle offset of vertex
@@ -24,11 +23,22 @@ class Shape {
     this.g;
     this.alpha;
     this.source = [];
+    this.stripeH = []; //heigh tof a given stripe, from 0-1, 0 being located at base of shape and 1 at top
+    this.stripeW = []; //strokewidth of stripe
 
     //create one line for every vertex
     for (let i = 0; i < this.vertNumber; i++) {
       this.lines[i] = new Line();
+      this.lines[i].stripeH = [];
+      this.lines[i].stripeW = [];
       this.source[i] = new Source(this.x,this.y);
+    }
+
+    const stripeNumber = round(random(10));
+    for (let i = 0; i < stripeNumber; i ++){
+      this.stripeH[i] = random(1);
+      this.stripeW[i] = random(6);
+
     }
   }
 
@@ -105,7 +115,10 @@ class Shape {
       this.lines[i].g = this.g * shade;
       this.lines[i].b = this.b * shade;
       this.lines[i].alpha = this.alpha;
-      this.lines[i].stripeNumber = this.stripeNumber;
+      for (let j = 0; j < this.stripeH.length; j ++){
+        this.lines[i].stripeH[i] = this.stripeH[j];
+        this.lines[i].stripeW[i] = this.stripeW[j];
+      }
     }
   }
 

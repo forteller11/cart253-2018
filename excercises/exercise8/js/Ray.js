@@ -32,6 +32,10 @@ class Ray {
     this.collidedG; //greeb of wall on collision
     this.collidedB; //blue of wall on collision
     this.collidedAlpha; //alpha of wall on collision
+    this.intStripeH = [];
+    this.intStripeW  = [];
+    this.collidedStripeH = [];
+    this.collidedStripeW  = [];
     this.angle; //angle
     this.fovAngle1;
     this.fovAngle2;
@@ -101,7 +105,14 @@ class Ray {
         let intG = line.g;
         let intB = line.b;
         let intAlpha = line.alpha;
-        let intStripeNumber = line.stripeNumber;
+        //use for?
+        this.intStripeH.length = 0;
+        this.intStripeW.length = 0;
+        for (let i = 0; i < line.stripeH.length; i ++){
+          this.intStripeH[i] = line.stripeH[i];
+          this.intStripeW[i] = line.stripeW[i];
+          // console.log(line.stripeH[i]);
+        }
 
         //make sure collision happened in front of the ray
         //(because ray is converted to slope form it becomes directionless meaning it will intersect with lines behind it)
@@ -120,7 +131,7 @@ class Ray {
               }
               //if intersection happend closer than current stored closest collision
               //change collisionX,Y to this be the points of this intersection
-              this.makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB,intAlpha,intStripeNumber);
+              this.makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB,intAlpha);
             }
           } else if (line.x1 > line.x2) {
             if ((intersectionX - c <= line.x1) && (intersectionX + c >= line.x2)) {
@@ -131,7 +142,7 @@ class Ray {
               }
               //if intersection happend closer than current stored closest collision
               //change collisionX,Y to this be the points of this intersection
-              this.makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB,intAlpha,intStripeNumber);
+              this.makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB,intAlpha);
             }
           }
         }
@@ -154,7 +165,14 @@ class Ray {
       this.collidedG = intG;
       this.collidedB = intB;
       this.collidedAlpha = intAlpha;
-      this.collidedStripeNumber = intStripeNumber;
+      this.collidedStripeH.length = 0;
+      this.collidedStripeW.length = 0;
+      // print(this.intStripeH);
+
+      for (let i = 0; i < this.intStripeH.length; i ++){
+        this.collidedStripeH[i] = this.intStripeH[i];
+        this.collidedStripeW[i] = this.intStripeH[i];
+      }
     }
   }
   calculateAngle() {
