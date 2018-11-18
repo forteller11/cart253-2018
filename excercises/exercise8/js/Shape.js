@@ -9,6 +9,7 @@ class Shape {
   constructor(x, y, angle, vertNumber) {
     this.x = x;
     this.y = y;
+    this.stripeNumber = 15;
     this.angle = angle;
     this.vertNumber = vertNumber;
     this.vertAOff = []; //angle offset of vertex
@@ -104,6 +105,7 @@ class Shape {
       this.lines[i].g = this.g * shade;
       this.lines[i].b = this.b * shade;
       this.lines[i].alpha = this.alpha;
+      this.lines[i].stripeNumber = this.stripeNumber;
     }
   }
 

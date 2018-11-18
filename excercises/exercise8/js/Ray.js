@@ -101,6 +101,7 @@ class Ray {
         let intG = line.g;
         let intB = line.b;
         let intAlpha = line.alpha;
+        let intStripeNumber = line.stripeNumber;
 
         //make sure collision happened in front of the ray
         //(because ray is converted to slope form it becomes directionless meaning it will intersect with lines behind it)
@@ -119,7 +120,7 @@ class Ray {
               }
               //if intersection happend closer than current stored closest collision
               //change collisionX,Y to this be the points of this intersection
-              this.makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB,intAlpha);
+              this.makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB,intAlpha,intStripeNumber);
             }
           } else if (line.x1 > line.x2) {
             if ((intersectionX - c <= line.x1) && (intersectionX + c >= line.x2)) {
@@ -130,7 +131,7 @@ class Ray {
               }
               //if intersection happend closer than current stored closest collision
               //change collisionX,Y to this be the points of this intersection
-              this.makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB,intAlpha);
+              this.makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB,intAlpha,intStripeNumber);
             }
           }
         }
@@ -138,7 +139,7 @@ class Ray {
       }
     }
   }
-  makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB,intAlpha) {
+  makeCollidedShortestIntersection(intersectionX, intersectionY,intersectionH,intR,intG,intB,intAlpha,intStripeNumber) {
     //compares the dist between the ray origin and the intersectionX,Y and collidedX,Y
     //and if intersection is shorter then it changes collision,x,y to be the intersection
     //also store its other properties like (r,g,b,a) color and height
@@ -153,6 +154,7 @@ class Ray {
       this.collidedG = intG;
       this.collidedB = intB;
       this.collidedAlpha = intAlpha;
+      this.collidedStripeNumber = intStripeNumber;
     }
   }
   calculateAngle() {

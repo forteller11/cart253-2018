@@ -285,6 +285,7 @@ class Player {
       // stroke(ray1.collidedR, ray1.collidedG, ray1.collidedB, 255);
 
       //draw the shape from each vert using the differences in width
+
       noStroke();
       beginShape();
       vertex(wHist, horizon - ceilH0); //topleft
@@ -308,6 +309,27 @@ class Player {
       vertex(wHist + w2, horizon + baseH3); //bot right
       vertex(wHist + w1, horizon + baseH2); //bot left
       endShape();
+
+
+      stroke(bgR* colorMultiplier,bgG* colorMultiplier,bgB* colorMultiplier,ray3.collidedAlpha);
+      let strokeWidth = map(ray3.collidedRad, 0, fadeHeightDist, 3, 0);
+      // strokeWidth = constrain(baseH3, 0, 6);
+      let lerpAmount = .01;
+      const stripeNumber = 15;
+      for (let k = 0; k < stripeNumber; k ++){
+        const c = 0;
+        lerpAmount *= stripeNumber*.093;
+        const h0 = lerp(horizon+baseH0,horizon-ceilH0,lerpAmount)+c;
+        const h1 = lerp(horizon+baseH1,horizon-ceilH1,lerpAmount)+c;
+        const h2 = lerp(horizon+baseH2,horizon-ceilH2,lerpAmount)+c;
+        const h3 = lerp(horizon+baseH3,horizon-ceilH3,lerpAmount)+c;
+        strokeWeight(strokeWidth);
+        // line(wHist+.0,h0,wHist+w0,h1);
+        line(wHist+w0,h1,wHist+w1,h2);
+        line(wHist+w1,h2,wHist+w2,h3);
+      }
+      // line(wHist,horizon-ceilH1/3,wHist+w1,horizon-ceilH2/3);
+      // line(wHist+w1,horizon-ceilH2/3,wHist+w2,horizon-ceilH3/3);
       wHist += w0 + w1 + w2;
     }
   }

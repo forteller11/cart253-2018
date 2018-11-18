@@ -4,10 +4,10 @@ class Source {
     this.y = y;
     this.t1 = random(100000);
     this.t2 = random(100000);
-    this.t1Increment = random(200,2400)/sampleRate;
+    this.t1Increment = random(300,2600)/sampleRate;
     this.t2Increment = random(1)/sampleRate;
     this.soundType = round(random(4)); //what type of function i used
-    this.fadeType = round(random(2)); //what type of function i used
+    this.fadeType = round(random(3)); //what type of function i used
     noiseDetail(16, 0.65);
 
     this.avgAmplitudeStore = 0; //stores avg amplitude of all samples every frame
@@ -71,7 +71,7 @@ let netAmplitude = 0;
     for (let i = 0; i < sampleNumber; i++) {
       this.t1 += this.t1Increment;
       this.t2 += this.t2Increment;
-
+      // this.soundType = 1;
       let waveValue;
       let fadeValue;
       // this.soundType = 0;
@@ -94,7 +94,7 @@ let netAmplitude = 0;
       waveValue =f2c;
       }
 
-      // this.fadeType = 2;
+      // this.fadeType = 3;
       if (this.fadeType === 0){ //static
         fadeValue = map(sin(this.t2*6),-1,1,0,1)*waveValue;
       }
@@ -103,6 +103,9 @@ let netAmplitude = 0;
       }
       if (this.fadeType === 2){ //sinwave
         fadeValue = map(sin(this.t2*6),-1,1,0,1)*noise(this.t2)*waveValue;
+      }
+      if (this.fadeType === 3){ //sinwave
+        fadeValue = map(sin(this.t2*6),-1,1,0,1)*map(sin(this.t2*1.33),-1,1,0,1)*waveValue;
       }
       // if (this.soundType === 3){ //triangle
       //   const period = 2.5;

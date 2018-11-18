@@ -51,7 +51,7 @@ let sampleRate = 44100;
 let zPlane = 0;
 let masterGain = audioCtx.createGain();
 let fadeHeightDist;
-let frameRate = 60;
+let frameRate =60;
 /*
 function setup
 places shapes randomly on the scene with random gemoetries and heights,
