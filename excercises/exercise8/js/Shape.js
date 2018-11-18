@@ -36,7 +36,7 @@ class Shape {
 
     const stripeNumber = round(5);
     for (let i = 0; i < stripeNumber; i ++){
-      this.stripeH[i] = random(1);
+      this.stripeH[i] = random(1.5);
       this.stripeW[i] = random(10);
 
     }

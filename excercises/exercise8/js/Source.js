@@ -74,7 +74,7 @@ let netAmplitude = 0;
       // this.soundType = 1;
       let waveValue;
       let fadeValue;
-      // this.soundType = 0;
+      // this.soundType = 5;
       if (this.soundType === 0){ //static
         waveValue = random(-1,1);
       }
@@ -93,8 +93,12 @@ let netAmplitude = 0;
       const f2c = Math.pow(sin(this.t1/1.5),5);
       waveValue =f2c;
       }
+      if(this.soundType === 5){ //a function by Darren Turcotte
+        // waveValue=
+        // console.log(waveValue);
+      }
 
-      // this.fadeType = 3;
+      this.fadeType = 2;
       if (this.fadeType === 0){ //static
         fadeValue = map(sin(this.t2*6),-1,1,0,1)*waveValue;
       }
@@ -107,6 +111,7 @@ let netAmplitude = 0;
       if (this.fadeType === 3){ //sinwave
         fadeValue = map(sin(this.t2*6),-1,1,0,1)*map(sin(this.t2*1.33),-1,1,0,1)*waveValue;
       }
+
       // if (this.soundType === 3){ //triangle
       //   const period = 2.5;
       //   const hOffset = period/2;
