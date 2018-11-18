@@ -4,10 +4,14 @@ class Source {
     this.y = y;
     this.t1 = random(100000);
     this.t2 = random(100000);
-    this.t1Increment = random(300,2600)/sampleRate;
+    this.t1MinIncrement = random(400,1000)/sampleRate;
+    this.t1MaxIncrement = random(this.t1MinIncrement,this.t1MinIncrement+4000)/sampleRate;
+    this.t1NoiseIncrement = random(1)/sampleRate;
+    this.t1NoiseIndex = random(100000);
+//0.000000001//
     this.t2Increment = random(1)/sampleRate;
-    this.soundType = round(random(4)); //what type of function i used
-    this.fadeType = round(random(3)); //what type of function i used
+    this.soundType = round(random(5)); //what type of function i used
+    this.fadeType = round(random(4)); //what type of function i used
     noiseDetail(16, 0.65);
 
     this.avgAmplitudeStore = 0; //stores avg amplitude of all samples every frame
@@ -64,17 +68,21 @@ class Source {
 
   }
   changeData() {
-    // this.soundType = 3;
+
 this.avgAmplitudeStore = 0;
 let netAmplitude = 0;
     const sampleNumber = sampleRate / frameRate;
     for (let i = 0; i < sampleNumber; i++) {
-      this.t1 += this.t1Increment;
+      this.t1NoiseIndex += this.t1NoiseIncrement;
+      const lerpAmount = noise(this.t1NoiseIndex);
+      noiseDetail(4, 0.75);
+      const t1Inc = lerp(this.t1MinIncrement,this.t1MaxIncrement,lerpAmount);
+      this.t1 += t1Inc;
       this.t2 += this.t2Increment;
       // this.soundType = 1;
       let waveValue;
       let fadeValue;
-      // this.soundType = 5;
+      // this.soundType = 4;
       if (this.soundType === 0){ //static
         waveValue = random(-1,1);
       }
@@ -95,14 +103,18 @@ let netAmplitude = 0;
       }
       if(this.soundType === 5){ //a function by Darren Turcotte
         // waveValue=
+        waveValue =log(Math.pow(this.t1,-1))/sin(2*3.14159*this.t1);
+        waveValue = constrain(waveValue,-1,1);
         // console.log(waveValue);
       }
 
-      this.fadeType = 2;
+      // this.fadeType = 4;
       if (this.fadeType === 0){ //static
-        fadeValue = map(sin(this.t2*6),-1,1,0,1)*waveValue;
+        noiseDetail(8, 0.65);
+        fadeValue = noise(this.t2)*waveValue;
       }
       if (this.fadeType === 1){ //sinwave
+        noiseDetail(8, 0.65);
         fadeValue = noise(this.t2)*waveValue;
       }
       if (this.fadeType === 2){ //sinwave
@@ -110,6 +122,9 @@ let netAmplitude = 0;
       }
       if (this.fadeType === 3){ //sinwave
         fadeValue = map(sin(this.t2*6),-1,1,0,1)*map(sin(this.t2*1.33),-1,1,0,1)*waveValue;
+      }
+      if (this.fadeType === 4){ //sinwave
+        fadeValue = waveValue;
       }
 
       // if (this.soundType === 3){ //triangle
