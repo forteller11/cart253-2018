@@ -106,8 +106,9 @@ class Ray {
         let intB = line.b;
         let intAlpha = line.alpha;
         //use for?
-        this.intStripeH.length = 0;
-        this.intStripeW.length = 0;
+        this.intStripeH.splice(0,this.intStripeH.length);
+        this.intStripeW.splice(0,this.intStripeW.length);
+        // console.log(line.stripeH);
         for (let i = 0; i < line.stripeH.length; i ++){
           this.intStripeH[i] = line.stripeH[i];
           this.intStripeW[i] = line.stripeW[i];
@@ -165,14 +166,15 @@ class Ray {
       this.collidedG = intG;
       this.collidedB = intB;
       this.collidedAlpha = intAlpha;
-      this.collidedStripeH.length = 0;
-      this.collidedStripeW.length = 0;
-      // print(this.intStripeH);
+      this.collidedStripeH.splice(0,this.collidedStripeH.length);
+      this.collidedStripeW.splice(0,this.collidedStripeW.length);
+      // print(this.collidedStripeH);
 
       for (let i = 0; i < this.intStripeH.length; i ++){
         this.collidedStripeH[i] = this.intStripeH[i];
         this.collidedStripeW[i] = this.intStripeH[i];
       }
+      // print(this.collidedStripeH);
     }
   }
   calculateAngle() {

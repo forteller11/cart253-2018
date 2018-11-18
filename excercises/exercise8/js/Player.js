@@ -317,10 +317,11 @@ class Player {
       let lerpAmount = .01;
       const stripeNumber = 15;
       // console.log(ray1.collidedH.length);
+      // console.log(ray1.collidedStripeW);
       for (let k = 0; k < ray1.collidedStripeH.length; k ++){
         const c = 0;
         lerpAmount *= stripeNumber*.093;
-        
+
         const h0 = lerp(horizon+baseH0,horizon-ceilH0,ray1.collidedStripeH)+c;
         const h1 = lerp(horizon+baseH1,horizon-ceilH1,ray1.collidedStripeH)+c;
         const h2 = lerp(horizon+baseH2,horizon-ceilH2,ray1.collidedStripeH)+c;

@@ -17,6 +17,8 @@ class Line {
   this.g;
   this.b;
   this.alpha;
+  this.stripeH = [];
+  this.stripeW = [];
   }
 
   display(){ //draw line from start/end points of line

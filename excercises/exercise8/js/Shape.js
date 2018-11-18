@@ -37,7 +37,7 @@ class Shape {
     const stripeNumber = round(random(10));
     for (let i = 0; i < stripeNumber; i ++){
       this.stripeH[i] = random(1);
-      this.stripeW[i] = random(6);
+      this.stripeW[i] = random(2,6);
 
     }
   }
@@ -116,8 +116,9 @@ class Shape {
       this.lines[i].b = this.b * shade;
       this.lines[i].alpha = this.alpha;
       for (let j = 0; j < this.stripeH.length; j ++){
-        this.lines[i].stripeH[i] = this.stripeH[j];
-        this.lines[i].stripeW[i] = this.stripeW[j];
+        this.lines[i].stripeH[j] = this.stripeH[j];
+        this.lines[i].stripeW[j] = this.stripeW[j];
+        // console.log(this.lines[i].stripeW[i]);
       }
     }
   }
