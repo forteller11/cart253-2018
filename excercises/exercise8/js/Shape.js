@@ -34,7 +34,7 @@ class Shape {
       this.source[i] = new Source(this.x,this.y);
     }
 
-    const stripeNumber = round(5);
+    const stripeNumber = floor(8);
     for (let i = 0; i < stripeNumber; i ++){
       this.stripeH[i] = random(1.2);
       this.stripeW[i] = random(10);
