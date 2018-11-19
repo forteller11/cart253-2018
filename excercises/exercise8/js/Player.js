@@ -16,7 +16,7 @@ class Player {
     this.velX = 0;
     this.velY = 0;
     this.drag = 0.95; //multiplies velocities by drag every frame
-    this.velIncrement = 40; //the magnitude of the vector to add to the x,y componenets (velx,velly) on input
+    this.velIncrement = .65; //the magnitude of the vector to add to the x,y componenets (velx,velly) on input
     this.fov = PI + 0.0001; //field of view
     this.fovIncrement = 0.08;
     this.fovAngle1; //starting angle of fov
@@ -80,7 +80,7 @@ class Player {
     if (keyIsDown(DOWN_ARROW)) { //increase fov
       this.fov += this.fovIncrement;
     }
-     //make sure fov stays within 0 to two_pi, and that fov is never perfectly two_pi or 0 (because that would cause bugs)
+    //make sure fov stays within 0 to two_pi, and that fov is never perfectly two_pi or 0 (because that would cause bugs)
     this.fov = constrain(this.fov, .01, TWO_PI - .01);
   }
 
@@ -150,8 +150,8 @@ class Player {
 
     this.parentRay[k].x = this.x; //origin
     this.parentRay[k].y = this.y;
-      this.parentRay[k].calculateThisTargetBasedOnAngle(this.fovAngle1); //polar to cartesian determination of target
-    this.parentRay[k].fovAngle1 = true;//tell it that it's the start of the fov
+    this.parentRay[k].calculateThisTargetBasedOnAngle(this.fovAngle1); //polar to cartesian determination of target
+    this.parentRay[k].fovAngle1 = true; //tell it that it's the start of the fov
     this.parentRay[k].fovAngle2 = false;
     this.parentRay[k].update(); //check collision with all lines in the scene
     //set vars of ray representing end start of fov
@@ -232,7 +232,7 @@ class Player {
         angleDiff0 = ray1.angle - ray0.angle;
         angleDiff1 = ray2.angle - ray1.angle;
         angleDiff2 = ray3.angle - ray2.angle;
-      } else {  //will the loop wrap next itteration
+      } else { //will the loop wrap next itteration
         //set ids so that the ray with the largest angle (ray0,1,2) connect to the ray with the smallest angle (ray3)
         let iFinal = this.parentRay.length - 1;
         ray0 = this.parentRay[iFinal].children[0];
@@ -255,7 +255,7 @@ class Player {
       if (debugDisplay === true) { //draw all rays falling with the fov in red-orange
         stroke(255, 100, 0, 150);
         strokeWeight(3);
-        line(ray1.x-(player.x)+width/2, ray1.y-player.y+(height/2), ray1.targetX-player.x+(width/2), ray1.targetY-player.y+(height/2));
+        line(ray1.x - (player.x) + width / 2, ray1.y - player.y + (height / 2), ray1.targetX - player.x + (width / 2), ray1.targetY - player.y + (height / 2));
       }
 
       //base height of wall, ramps from min height to max height depending on ray's collision's dist from player.
@@ -274,15 +274,15 @@ class Player {
       let ceilH3 = (baseH3 * ray3.collidedH);
       //is 0 when the player is at fadeHeightDist, multiplying the colors, creating pure black sillhouettes
       let colorMultiplier = map((ray1.collidedRad), 0, fadeHeightDist, 1.5, 0);
-      let opacityFade = map(ray1.collidedRad, fadeHeightDist, despawnDist*.95, 1, 0);
-      opacityFade = constrain(opacityFade,0,255);
+      let opacityFade = map(ray1.collidedRad, fadeHeightDist, despawnDist * .95, 1, 0);
+      opacityFade = constrain(opacityFade, 0, 255);
       //calcs horizontal width that should be given between each ray so that the rays and in the fov
       //are drawn to take up exactly the canvas width;
       let w0 = map(angleDiff0, 0, this.fov, 0, width);
       let w1 = map(angleDiff1, 0, this.fov, 0, width) + w0;
       let w2 = map(angleDiff2, 0, this.fov, 0, width) + w1;
       //take on color of the line which the ray collided with, also fill it with black as the ray is furthur away from the player
-      fill(ray1.collidedR * colorMultiplier, ray1.collidedG * colorMultiplier, ray1.collidedB * colorMultiplier, ray1.collidedAlpha*opacityFade);
+      fill(ray1.collidedR * colorMultiplier, ray1.collidedG * colorMultiplier, ray1.collidedB * colorMultiplier, ray1.collidedAlpha * opacityFade);
       // let sW = map((ray1.collidedRad), 0, fadeHeightDist, maxStroke, minStroke);
       // strokeWeight(sW);
       // stroke(ray1.collidedR, ray1.collidedG, ray1.collidedB, 255);
@@ -305,7 +305,7 @@ class Player {
       noStroke();
       //take on color of the line which the ray collided with, also fill it with black as the ray is furthur away from the player
       colorMultiplier = map((ray3.collidedRad), 0, fadeHeightDist, 1.5, 0)
-      fill(ray2.collidedR * colorMultiplier, ray2.collidedG * colorMultiplier, ray2.collidedB * colorMultiplier, ray2.collidedAlpha*opacityFade);
+      fill(ray2.collidedR * colorMultiplier, ray2.collidedG * colorMultiplier, ray2.collidedB * colorMultiplier, ray2.collidedAlpha * opacityFade);
       beginShape();
       vertex(wHist + w1, horizon - ceilH2); //top left
       vertex(wHist + w2, horizon - ceilH3); //topright
@@ -313,31 +313,32 @@ class Player {
       vertex(wHist + w1, horizon + baseH2); //bot left
       endShape();
 
-
-      stroke(bgR* colorMultiplier,bgG* colorMultiplier,bgB* colorMultiplier,ray2.collidedAlpha*opacityFade);
-      let strokeWidth = map(ray3.collidedRad, 0, fadeHeightDist, 3, 0);
-      let lerpAmount = .01;
-      const stripeNumber = 15;
-      // console.log(ray1.collidedH.length);
-      // console.log(ray1.collidedStripeW);
-      for (let k = 0; k < ray2.collidedStripeH.length; k ++){
-        let strokeWidth = map(ray2.collidedRad, 0, fadeHeightDist, ray2.collidedStripeW[k], 0);
-        strokeWidth = constrain(strokeWidth,0,ray2.collidedStripeW[k]*opacityFade);
-        strokeWeight(strokeWidth);
-        const h0 = lerp(horizon+baseH0,horizon-ceilH0,ray2.collidedStripeH[k]);
-        const h1 = lerp(horizon+baseH1,horizon-ceilH1,ray2.collidedStripeH[k]);
-        const h2 = lerp(horizon+baseH2,horizon-ceilH2,ray2.collidedStripeH[k]);
-        const h3 = lerp(horizon+baseH3,horizon-ceilH3,ray2.collidedStripeH[k]);
-        // line(wHist+.0,h0,wHist+w0,h1);
-        // line(wHist+w0,h1,wHist+w1,h2);
-        line(wHist+w1,h2,wHist+w2,h3);
+      if (ray3.collidedRad < fadeHeightDist) { //only draw lines if not 100% a silloette (optimisation)
+        stroke(bgR * colorMultiplier, bgG * colorMultiplier, bgB * colorMultiplier, ray2.collidedAlpha * opacityFade);
+        let strokeWidth = map(ray3.collidedRad, 0, fadeHeightDist, 3, 0);
+        let lerpAmount = .01;
+        const stripeNumber = 15;
+        // console.log(ray1.collidedH.length);
+        // console.log(ray1.collidedStripeW);
+        for (let k = 0; k < ray2.collidedStripeH.length; k++) {
+          let strokeWidth = map(ray2.collidedRad, 0, fadeHeightDist, ray2.collidedStripeW[k], 0);
+          strokeWidth = constrain(strokeWidth, 0, ray2.collidedStripeW[k] * opacityFade);
+          strokeWeight(strokeWidth);
+          const h0 = lerp(horizon + baseH0, horizon - ceilH0, ray2.collidedStripeH[k]);
+          const h1 = lerp(horizon + baseH1, horizon - ceilH1, ray2.collidedStripeH[k]);
+          const h2 = lerp(horizon + baseH2, horizon - ceilH2, ray2.collidedStripeH[k]);
+          const h3 = lerp(horizon + baseH3, horizon - ceilH3, ray2.collidedStripeH[k]);
+          // line(wHist+.0,h0,wHist+w0,h1);
+          // line(wHist+w0,h1,wHist+w1,h2);
+          line(wHist + w1, h2, wHist + w2, h3);
+        }
       }
 
       wHist += w0 + w1 + w2;
     }
   }
 
-  updateListener(){
+  updateListener() {
     // let orient = map(this.angle,0,TWO_PI,-1,1);
     const ang = this.angle;
     let orient1 = sin(ang);
@@ -345,7 +346,7 @@ class Player {
     // console.log("angle:"+round(this.angle*100)/100);
     // console.log("orient1:"+round(orient1*100)/100);
     // console.log("orient2:"+round(orient2*100)/100);
-    audioCtx.listener.setPosition(this.x,this.y,zPlane);
+    audioCtx.listener.setPosition(this.x, this.y, zPlane);
     audioCtx.listener.setOrientation(-orient2, -orient1, 0, 0, 0, 1);
     // audioCtx.listener.positionX.value = this.x;
     // audioCtx.listener.positionZ.value = this.y;
@@ -359,8 +360,8 @@ class Player {
     stroke(255);
     fill(51);
     strokeWeight(4);
-    ellipse(this.x-this.x+(width/2), this.y-this.y+(height/2), this.radius * 2);
+    ellipse(this.x - this.x + (width / 2), this.y - this.y + (height / 2), this.radius * 2);
     //line to show direction
-    line(width/2, height/2, width/2+ (cos(this.angle) * this.radius), height/2 + (sin(this.angle) * this.radius));
+    line(width / 2, height / 2, width / 2 + (cos(this.angle) * this.radius), height / 2 + (sin(this.angle) * this.radius));
   }
 }

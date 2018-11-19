@@ -53,7 +53,7 @@ let masterGain = audioCtx.createGain();
 let fadeHeightDist;
 let despawnDist;
 let frameRate = 60;
-const shapePopulation = 6;
+const shapePopulation = 7;
 /*
 function setup
 places shapes randomly on the scene with random gemoetries and heights,
@@ -80,9 +80,11 @@ function setup() {
   }
   //spawn random shapes with various geometries and colours
   for (let i = 1; i < shapePopulation; i++) {
-    let spawnBoundary1 = -width * 2;
-    let spawnBoundary2 = width * 3;
-    shape[i] = new Shape(random(spawnBoundary1, spawnBoundary2), random(spawnBoundary1, spawnBoundary2), random(TWO_PI), round(random(3, 5)));
+    const spawnTheta = random(TWO_PI);
+    const spawnDist = random(despawnDist*.95);
+    const spawnX = (cos(spawnTheta)*spawnDist)+width/2;
+    const spawnY = (sin(spawnTheta)*spawnDist)+height/2;
+    shape[i] = new Shape(spawnX, spawnY, random(TWO_PI), round(random(3, 8)));
     for (let j = 0; j < shape[i].vertNumber; j++) {
       shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;
       shape[i].vertR[j] = random(20, fadeHeightDist / 3);
@@ -153,8 +155,7 @@ function spawnHandler() { //knows whether what shapes it should remove/spawn and
       const spawnRadius = despawnDist * 0.975;
       const xSpawn = (cos(angleToShapeFromPlayer + randomAngleOffset + PI) * spawnRadius) + player.x;
       const ySpawn = (sin(angleToShapeFromPlayer + randomAngleOffset + PI) * spawnRadius) + player.y;
-
-      spawnShape(xSpawn, ySpawn, vertNumberStore);
+      spawnShape(xSpawn, ySpawn, vertNumberStore); //spawns new shape with random attributes
 
 
     }
@@ -165,7 +166,7 @@ function spawnHandler() { //knows whether what shapes it should remove/spawn and
 function spawnShape(xSpawn, ySpawn, oldVertNumber) { //procedurally generates shape at specefified location
   // push to shape object
   //spawn rnadomly,
-  let newShape = new Shape(xSpawn, ySpawn, random(TWO_PI), round(random(3, 5)));
+  let newShape = new Shape(xSpawn, ySpawn, random(TWO_PI), round(random(3, 8)));
   shape.push(newShape);
 
   for (let j = 0; j < newShape.vertNumber; j++) {
@@ -184,13 +185,11 @@ function spawnShape(xSpawn, ySpawn, oldVertNumber) { //procedurally generates sh
     for (let i = 0; i < vertNumberDifference; i++) {
       let newRay = new Ray(100, 100, true);
       player.parentRay.push(newRay);
-      print("add")
     }
     player.parentRay
   }
   if (vertNumberDifference < 0) { //splice parentRays as not needed
       player.parentRay.splice(0,abs(vertNumberDifference));
-      print("splice");
   }
 
 
