@@ -146,8 +146,7 @@ class Player {
       this.fovAngle2 = this.fovAngle2 - TWO_PI;
     }
     //set vars of ray representing start of fov
-    print(this.parentRay);
-    // print(this.parentRay[k+1]);
+
 
     this.parentRay[k].x = this.x; //origin
     this.parentRay[k].y = this.y;
@@ -155,9 +154,7 @@ class Player {
     this.parentRay[k].fovAngle1 = true;//tell it that it's the start of the fov
     this.parentRay[k].fovAngle2 = false;
     this.parentRay[k].update(); //check collision with all lines in the scene
-    print(this.parentRay);
     //set vars of ray representing end start of fov
-    // print(abs(this.x));
     this.parentRay[k + 1].x = this.x; //origin
     this.parentRay[k + 1].y = this.y;
     this.parentRay[k + 1].calculateThisTargetBasedOnAngle(this.fovAngle2); //polar to cartesian determination of target

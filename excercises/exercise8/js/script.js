@@ -52,7 +52,7 @@ let zPlane = 0;
 let masterGain = audioCtx.createGain();
 let fadeHeightDist;
 let despawnDist;
-let frameRate =60;
+let frameRate = 60;
 const shapePopulation = 6;
 /*
 function setup
@@ -62,14 +62,14 @@ creates player
 function setup() {
   createCanvas(windowWidth / 1.1, windowHeight / 1.1);
   fadeHeightDist = width * 2;
-  despawnDist = fadeHeightDist *3;
+  despawnDist = fadeHeightDist * 3;
   //create border shape with huge radius souuronding the player with alpha set to 0
   //(ray casting always need to hit SOMETHING to not bu gout and therefore the
   // player has to always be within a shape for sight to work properly)
   shape[0] = new Shape(width / 2, height / 2, 0.0001, 3);
   for (let j = 0; j < shape[0].vertNumber; j++) {
     shape[0].vertAOff[j] = (TWO_PI / shape[0].vertNumber) * j + QUARTER_PI;
-    shape[0].vertR[j] = fadeHeightDist*10;
+    shape[0].vertR[j] = fadeHeightDist * 10;
     shape[0].vertH[j] = 1;
     shape[0].vertHIncrement = random(1000);
     shape[0].r = 0;
@@ -112,74 +112,90 @@ function draw() {
     shape[i].update();
     shape[i].display()
     // if (i > 0) {
-      // for (let j = 0; j < shape[i].vertNumber; j++) {
-      //   let angleMaxChange = .001;
-      //   shape[i].vertAOff[j] += map(noise(shape[i].vertHIncrement[j]),0,1,-angleMaxChange,angleMaxChange);
-      //   let radiusMaxChange = .2;
-      //   shape[i].vertR[j] += map(noise(shape[i].vertHIncrement[j]),0,1,-radiusMaxChange,radiusMaxChange);
-        // shape[i].vertR[j] = random(20, fadeHeightDist/3);
-        // shape[i].vertH[j] = 1;
-        // shape[i].vertHIncrement[j] = random(100);
-        // shape[i].source.audioPlayer.stop(0);
-      // }
+    // for (let j = 0; j < shape[i].vertNumber; j++) {
+    //   let angleMaxChange = .001;
+    //   shape[i].vertAOff[j] += map(noise(shape[i].vertHIncrement[j]),0,1,-angleMaxChange,angleMaxChange);
+    //   let radiusMaxChange = .2;
+    //   shape[i].vertR[j] += map(noise(shape[i].vertHIncrement[j]),0,1,-radiusMaxChange,radiusMaxChange);
+    // shape[i].vertR[j] = random(20, fadeHeightDist/3);
+    // shape[i].vertH[j] = 1;
+    // shape[i].vertHIncrement[j] = random(100);
+    // shape[i].source.audioPlayer.stop(0);
+    // }
     // }
   }
 
   player.update();
-spawnHandler();
+  spawnHandler();
   //draw fov
   noStroke();
   fill(255);
   text("fov:" + round(player.fov * 100) / 100, 64, 64);
 }
-function spawnHandler(){ //knows whether what shapes it should remove/spawn and where
-  for (let i = 0; i < shape.length; i ++){
-    const distToPlayer = sqrt(sq(player.x-shape[i].x)+sq(player.y-shape[i].y));
+
+function spawnHandler() { //knows whether what shapes it should remove/spawn and where
+  for (let i = 0; i < shape.length; i++) {
+    const distToPlayer = sqrt(sq(player.x - shape[i].x) + sq(player.y - shape[i].y));
     // print(distToPlayer);
     let yVec;
     let xVec;
     let angleOfPlayer;
-    if (distToPlayer > despawnDist){
-      yVec = shape[i].y-player.y;
-      xVec = shape[i].x-player.x;
-      angleToShapeFromPlayer = atan2(yVec,xVec);
-      print(shape.length);
-      shape.splice(i,1);
-      print(shape.length);
+    if (distToPlayer > despawnDist) {
+      yVec = shape[i].y - player.y;
+      xVec = shape[i].x - player.x;
+      angleToShapeFromPlayer = atan2(yVec, xVec);
+      // print(shape.length);
+      const vertNumberStore = shape[i].vertNumber;
+      shape.splice(i, 1);
+      // print(shape.length);
       const maxOffsetAmount = HALF_PI;
-      const randomAngleOffset = random(-maxOffsetAmount,maxOffsetAmount);;
-      const spawnRadius = despawnDist*0.975;
-      const xSpawn = (cos(angleToShapeFromPlayer+randomAngleOffset+PI)*spawnRadius)+player.x;
-      const ySpawn = (sin(angleToShapeFromPlayer+randomAngleOffset+PI)*spawnRadius)+player.y;
-      spawnShape(xSpawn,ySpawn);
+      const randomAngleOffset = random(-maxOffsetAmount, maxOffsetAmount);;
+      const spawnRadius = despawnDist * 0.975;
+      const xSpawn = (cos(angleToShapeFromPlayer + randomAngleOffset + PI) * spawnRadius) + player.x;
+      const ySpawn = (sin(angleToShapeFromPlayer + randomAngleOffset + PI) * spawnRadius) + player.y;
+
+      spawnShape(xSpawn, ySpawn, vertNumberStore);
+
+
     }
   }
-//once outside despawnDist, store angle and radius of despawn, spawn with angle offset of 90* in front
+  //once outside despawnDist, store angle and radius of despawn, spawn with angle offset of 90* in front
 }
-function spawnShape(xSpawn,ySpawn){ //procedurally generates shape at specefified location
-// push to shape object
-//spawn rnadomly,
-let newShape = new Shape(xSpawn, ySpawn, random(TWO_PI), round(random(3, 5)));
-shape.push(newShape);
-print("PUSH");
-print(shape.length);
-  print(shape);
-for (let j = 0; j < newShape.vertNumber; j++) {
-  newShape.vertAOff[j] = (TWO_PI / newShape.vertNumber) * j;
-  newShape.vertR[j] = random(20, fadeHeightDist / 3);
-  newShape.vertH[j] = 1;
-  newShape.vertHIncrement[j] = 1;
-  newShape.r = random(255);
-  newShape.g = random(255);
-  newShape.b = random(255);
-  newShape.alpha = 255;
-  // shape[i].source.audioPlayer.stop(0);
+
+function spawnShape(xSpawn, ySpawn, oldVertNumber) { //procedurally generates shape at specefified location
+  // push to shape object
+  //spawn rnadomly,
+  let newShape = new Shape(xSpawn, ySpawn, random(TWO_PI), round(random(3, 5)));
+  shape.push(newShape);
+
+  for (let j = 0; j < newShape.vertNumber; j++) {
+    newShape.vertAOff[j] = (TWO_PI / newShape.vertNumber) * j;
+    newShape.vertR[j] = random(20, fadeHeightDist / 3);
+    newShape.vertH[j] = 1;
+    newShape.vertHIncrement[j] = 1;
+    newShape.r = random(255);
+    newShape.g = random(255);
+    newShape.b = random(255);
+    newShape.alpha = 255;
+    // shape[i].source.audioPlayer.stop(0);
+  }
+  const vertNumberDifference = newShape.vertNumber - oldVertNumber;
+  if (vertNumberDifference > 0) { //give player as many new rays as needed
+    for (let i = 0; i < vertNumberDifference; i++) {
+      let newRay = new Ray(100, 100, true);
+      player.parentRay.push(newRay);
+      print("add")
+    }
+    player.parentRay
+  }
+  if (vertNumberDifference < 0) { //splice parentRays as not needed
+      player.parentRay.splice(0,abs(vertNumberDifference));
+      print("splice");
+  }
+
+
 }
-// newShape.update();
-// player.update();
-print(player.x);
-print(player.y);
-}
+
 function keyPressed() {
   if (keyCode === 81) { //if you press Q turn switch debug display on/off
     if (debugDisplay === true) {
