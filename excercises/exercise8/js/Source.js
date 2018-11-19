@@ -48,18 +48,9 @@ class Source {
     // this.updatePanner();
     // this.changeGain();
     this.changeData();
-    // if (this.gain > 0) {
-    //   //play
-    // }
   }
   updatePanner(){
     this.panner.setPosition(this.x,this.y,zPlane);
-    // this.panner.positionX.value = this.x;
-    // this.panner.positionZ.value = this.y;
-    // this.panner.positionY.value = zPlane;
-    // this.panner.upX.value = this.angle;
-    // this.listener.upY.value = 1;
-    // this.listener.upZ.value = 0;
   }
   changeGain() {
     let distToPlayer = sqrt(sq(this.x-player.x)+sq(this.y-player.y));
