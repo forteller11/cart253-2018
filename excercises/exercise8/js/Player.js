@@ -154,6 +154,7 @@ class Player {
     this.parentRay[k].update(); //check collision with all lines in the scene
 
     //set vars of ray representing end start of fov
+    // print(abs(this.x));
     this.parentRay[k + 1].x = this.x; //origin
     this.parentRay[k + 1].y = this.y;
     this.parentRay[k + 1].calculateThisTargetBasedOnAngle(this.fovAngle2); //polar to cartesian determination of target
@@ -273,7 +274,7 @@ class Player {
       let ceilH3 = (baseH3 * ray3.collidedH);
       //is 0 when the player is at fadeHeightDist, multiplying the colors, creating pure black sillhouettes
       let colorMultiplier = map((ray1.collidedRad), 0, fadeHeightDist, 1.5, 0);
-      let opacityFade = map(ray1.collidedRad, fadeHeightDist, despawnDist*.95, 1, 0);
+      let opacityFade = map(ray1.collidedRad, fadeHeightDist, despawnDist*.925, 1, 0);
       opacityFade = constrain(opacityFade,0,255);
       //calcs horizontal width that should be given between each ray so that the rays and in the fov
       //are drawn to take up exactly the canvas width;

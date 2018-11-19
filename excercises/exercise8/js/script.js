@@ -105,9 +105,9 @@ function draw() {
   background(bgR, bgG, bgB, 175);
   // testSpeaker.update();
   //update shapes and lines
+
   shape[0].x = player.x;
   shape[0].y = player.y;
-  spawnHandler();
   for (let i = 0; i < shape.length; i++) {
     shape[i].update();
     shape[i].display()
@@ -126,7 +126,7 @@ function draw() {
   }
 
   player.update();
-
+spawnHandler();
   //draw fov
   noStroke();
   fill(255);
@@ -135,26 +135,53 @@ function draw() {
 function spawnHandler(){ //knows whether what shapes it should remove/spawn and where
   for (let i = 0; i < shape.length; i ++){
     const distToPlayer = sqrt(sq(player.x-shape[i].x)+sq(player.y-shape[i].y));
-    print(distToPlayer);
+    // print(distToPlayer);
     let yVec;
     let xVec;
     let angleOfPlayer;
     if (distToPlayer > despawnDist){
+      print(shape);
+      print("Index = "+i);
       print("splice");
       yVec = shape[i].y-player.y;
       xVec = shape[i].x-player.x;
+      print("xShape:"+xVec+", yShape:"+yVec)
       angleToShapeFromPlayer = atan2(yVec,xVec);
+      print(shape.length);
       shape.splice(i,1);
-      //x spawn, yspawn
-      // spawnShape(xSpawn,ySpawn);
-
+      print(shape.length);
+      const maxOffsetAmount = QUARTER_PI;
+      const randomAngleOffset = random(-maxOffsetAmount,maxOffsetAmount);;
+      const spawnRadius = despawnDist*0.95;
+      const xSpawn = (cos(angleToShapeFromPlayer+randomAngleOffset+PI)*spawnRadius)+player.x;
+      const ySpawn = (sin(angleToShapeFromPlayer+randomAngleOffset+PI)*spawnRadius)+player.y;
+      print("xSpawn:"+xSpawn+", ySpawn:"+ySpawn);
+      spawnShape(xSpawn,ySpawn);
     }
   }
 //once outside despawnDist, store angle and radius of despawn, spawn with angle offset of 90* in front
 }
-function spawnShape(x,y){ //procedurally generates shape at specefified location
+function spawnShape(xSpawn,ySpawn){ //procedurally generates shape at specefified location
 // push to shape object
 //spawn rnadomly,
+let newShape = new Shape(xSpawn, ySpawn, random(TWO_PI), round(random(3, 5)));
+shape.push(newShape);
+print("PUSH");
+print(shape.length);
+  print(shape);
+for (let j = 0; j < newShape.vertNumber; j++) {
+  newShape.vertAOff[j] = (TWO_PI / newShape.vertNumber) * j;
+  newShape.vertR[j] = random(20, fadeHeightDist / 3);
+  newShape.vertH[j] = 1;
+  newShape.vertHIncrement[j] = 1;
+  newShape.r = random(255);
+  newShape.g = random(255);
+  newShape.b = random(255);
+  newShape.alpha = 255;
+  // shape[i].source.audioPlayer.stop(0);
+}
+newShape.update();
+player.update();
 }
 function keyPressed() {
   if (keyCode === 81) { //if you press Q turn switch debug display on/off
