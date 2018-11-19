@@ -273,13 +273,15 @@ class Player {
       let ceilH3 = (baseH3 * ray3.collidedH);
       //is 0 when the player is at fadeHeightDist, multiplying the colors, creating pure black sillhouettes
       let colorMultiplier = map((ray1.collidedRad), 0, fadeHeightDist, 1.5, 0);
+      let opacityFade = map(ray1.collidedRad, fadeHeightDist, despawnDist*.95, 1, 0);
+      opacityFade = constrain(opacityFade,0,255);
       //calcs horizontal width that should be given between each ray so that the rays and in the fov
       //are drawn to take up exactly the canvas width;
       let w0 = map(angleDiff0, 0, this.fov, 0, width);
       let w1 = map(angleDiff1, 0, this.fov, 0, width) + w0;
       let w2 = map(angleDiff2, 0, this.fov, 0, width) + w1;
       //take on color of the line which the ray collided with, also fill it with black as the ray is furthur away from the player
-      fill(ray1.collidedR * colorMultiplier, ray1.collidedG * colorMultiplier, ray1.collidedB * colorMultiplier, ray1.collidedAlpha);
+      fill(ray1.collidedR * colorMultiplier, ray1.collidedG * colorMultiplier, ray1.collidedB * colorMultiplier, ray1.collidedAlpha*opacityFade);
       // let sW = map((ray1.collidedRad), 0, fadeHeightDist, maxStroke, minStroke);
       // strokeWeight(sW);
       // stroke(ray1.collidedR, ray1.collidedG, ray1.collidedB, 255);
@@ -302,7 +304,7 @@ class Player {
       noStroke();
       //take on color of the line which the ray collided with, also fill it with black as the ray is furthur away from the player
       colorMultiplier = map((ray3.collidedRad), 0, fadeHeightDist, 1.5, 0)
-      fill(ray2.collidedR * colorMultiplier, ray2.collidedG * colorMultiplier, ray2.collidedB * colorMultiplier, ray2.collidedAlpha);
+      fill(ray2.collidedR * colorMultiplier, ray2.collidedG * colorMultiplier, ray2.collidedB * colorMultiplier, ray2.collidedAlpha*opacityFade);
       beginShape();
       vertex(wHist + w1, horizon - ceilH2); //top left
       vertex(wHist + w2, horizon - ceilH3); //topright
@@ -311,7 +313,7 @@ class Player {
       endShape();
 
 
-      stroke(bgR* colorMultiplier,bgG* colorMultiplier,bgB* colorMultiplier,ray2.collidedAlpha);
+      stroke(bgR* colorMultiplier,bgG* colorMultiplier,bgB* colorMultiplier,ray2.collidedAlpha*opacityFade);
       let strokeWidth = map(ray3.collidedRad, 0, fadeHeightDist, 3, 0);
       let lerpAmount = .01;
       const stripeNumber = 15;
@@ -319,7 +321,7 @@ class Player {
       // console.log(ray1.collidedStripeW);
       for (let k = 0; k < ray2.collidedStripeH.length; k ++){
         let strokeWidth = map(ray2.collidedRad, 0, fadeHeightDist, ray2.collidedStripeW[k], 0);
-        strokeWidth = constrain(strokeWidth,0,ray2.collidedStripeW[k]);
+        strokeWidth = constrain(strokeWidth,0,ray2.collidedStripeW[k]*opacityFade);
         strokeWeight(strokeWidth);
         const h0 = lerp(horizon+baseH0,horizon-ceilH0,ray2.collidedStripeH[k]);
         const h1 = lerp(horizon+baseH1,horizon-ceilH1,ray2.collidedStripeH[k]);

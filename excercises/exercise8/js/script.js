@@ -51,7 +51,9 @@ let sampleRate = 44100;
 let zPlane = 0;
 let masterGain = audioCtx.createGain();
 let fadeHeightDist;
+let despawnDist;
 let frameRate =60;
+const shapePopulation = 6;
 /*
 function setup
 places shapes randomly on the scene with random gemoetries and heights,
@@ -60,13 +62,14 @@ creates player
 function setup() {
   createCanvas(windowWidth / 1.1, windowHeight / 1.1);
   fadeHeightDist = width * 2;
+  despawnDist = fadeHeightDist *3;
   //create border shape with huge radius souuronding the player with alpha set to 0
   //(ray casting always need to hit SOMETHING to not bu gout and therefore the
   // player has to always be within a shape for sight to work properly)
   shape[0] = new Shape(width / 2, height / 2, 0.0001, 3);
   for (let j = 0; j < shape[0].vertNumber; j++) {
     shape[0].vertAOff[j] = (TWO_PI / shape[0].vertNumber) * j + QUARTER_PI;
-    shape[0].vertR[j] = 100000;
+    shape[0].vertR[j] = fadeHeightDist*10;
     shape[0].vertH[j] = 1;
     shape[0].vertHIncrement = random(1000);
     shape[0].r = 0;
@@ -76,7 +79,7 @@ function setup() {
     shape[0].source[j].audioPlayer.stop(0);
   }
   //spawn random shapes with various geometries and colours
-  for (let i = 1; i < 6; i++) {
+  for (let i = 1; i < shapePopulation; i++) {
     let spawnBoundary1 = -width * 2;
     let spawnBoundary2 = width * 3;
     shape[i] = new Shape(random(spawnBoundary1, spawnBoundary2), random(spawnBoundary1, spawnBoundary2), random(TWO_PI), round(random(3, 5)));
@@ -84,7 +87,7 @@ function setup() {
       shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;
       shape[i].vertR[j] = random(20, fadeHeightDist / 3);
       shape[i].vertH[j] = 1;
-      shape[i].vertHIncrement[j] = random(100);
+      shape[i].vertHIncrement[j] = 1;
       shape[i].r = random(255);
       shape[i].g = random(255);
       shape[i].b = random(255);
@@ -102,6 +105,9 @@ function draw() {
   background(bgR, bgG, bgB, 175);
   // testSpeaker.update();
   //update shapes and lines
+  shape[0].x = player.x;
+  shape[0].y = player.y;
+  spawnHandler();
   for (let i = 0; i < shape.length; i++) {
     shape[i].update();
     shape[i].display()
@@ -126,7 +132,30 @@ function draw() {
   fill(255);
   text("fov:" + round(player.fov * 100) / 100, 64, 64);
 }
+function spawnHandler(){ //knows whether what shapes it should remove/spawn and where
+  for (let i = 0; i < shape.length; i ++){
+    const distToPlayer = sqrt(sq(player.x-shape[i].x)+sq(player.y-shape[i].y));
+    print(distToPlayer);
+    let yVec;
+    let xVec;
+    let angleOfPlayer;
+    if (distToPlayer > despawnDist){
+      print("splice");
+      yVec = shape[i].y-player.y;
+      xVec = shape[i].x-player.x;
+      angleToShapeFromPlayer = atan2(yVec,xVec);
+      shape.splice(i,1);
+      //x spawn, yspawn
+      // spawnShape(xSpawn,ySpawn);
 
+    }
+  }
+//once outside despawnDist, store angle and radius of despawn, spawn with angle offset of 90* in front
+}
+function spawnShape(x,y){ //procedurally generates shape at specefified location
+// push to shape object
+//spawn rnadomly,
+}
 function keyPressed() {
   if (keyCode === 81) { //if you press Q turn switch debug display on/off
     if (debugDisplay === true) {

@@ -4,9 +4,9 @@ class Source {
     this.y = y;
     this.t1 = random(100000);
     this.t2 = random(100000);
-    this.t1MinIncrement = random(175,500)/sampleRate;
-    this.t1MaxIncrement = random(this.t1MinIncrement,this.t1MinIncrement+2000)/sampleRate;
-    this.t1NoiseIncrement = random(1.5)/sampleRate;
+    this.t1MinIncrement = random(175,400)/sampleRate;
+    this.t1MaxIncrement = random(this.t1MinIncrement,this.t1MinIncrement+1000)/sampleRate;
+    this.t1NoiseIncrement = random(1)/sampleRate;
     this.t1NoiseIndex = random(100000);
     this.t1IncStore = 0;
 //0.000000001//
@@ -31,7 +31,7 @@ class Source {
     this.panner = audioCtx.createPanner();
     this.panner.panningModel = "HRTF";
     this.panner.distanceModel = "linear";
-    this.panner.maxDistance = fadeHeightDist-(fadeHeightDist/6);
+    this.panner.maxDistance = fadeHeightDist;
 
     this.updatePanner();
     this.audioPlayer.connect(this.panner); //make the audioPlayer player output through a personal gain
@@ -110,7 +110,7 @@ let netAmplitude = 0;
         // console.log(waveValue);
       }
 
-      // this.fadeType = 3;
+      // this.fadeType = 1;
       if (this.fadeType === 0){ //static
         noiseDetail(8, 0.65);
         fadeValue = noise(this.t2)*waveValue;
@@ -120,10 +120,10 @@ let netAmplitude = 0;
         fadeValue = noise(this.t2*10)*waveValue;
       }
       if (this.fadeType === 2){ //sinwave
-        fadeValue = map(sin(this.t2*6),-1,1,0,1)*noise(this.t2)*waveValue;
+        fadeValue = map(sin(this.t2*3),-1,1,0,1)*noise(this.t2/5)*waveValue;
       }
       if (this.fadeType === 3){ //sinwave
-        fadeValue = map(sin(this.t2*6),-1,1,0,1)*map(sin(this.t2*1.33),-1,1,0,1)*waveValue;
+        fadeValue = map(sin(this.t2*3),-1,1,0,1)*map(sin(this.t2*.33),-1,1,0,1)*waveValue;
       }
       if (this.fadeType === 4){ //sinwave
         fadeValue = waveValue;
