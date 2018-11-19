@@ -140,22 +140,17 @@ function spawnHandler(){ //knows whether what shapes it should remove/spawn and 
     let xVec;
     let angleOfPlayer;
     if (distToPlayer > despawnDist){
-      print(shape);
-      print("Index = "+i);
-      print("splice");
       yVec = shape[i].y-player.y;
       xVec = shape[i].x-player.x;
-      print("xShape:"+xVec+", yShape:"+yVec)
       angleToShapeFromPlayer = atan2(yVec,xVec);
       print(shape.length);
       shape.splice(i,1);
       print(shape.length);
-      const maxOffsetAmount = QUARTER_PI;
+      const maxOffsetAmount = HALF_PI;
       const randomAngleOffset = random(-maxOffsetAmount,maxOffsetAmount);;
-      const spawnRadius = despawnDist*0.95;
+      const spawnRadius = despawnDist*0.975;
       const xSpawn = (cos(angleToShapeFromPlayer+randomAngleOffset+PI)*spawnRadius)+player.x;
       const ySpawn = (sin(angleToShapeFromPlayer+randomAngleOffset+PI)*spawnRadius)+player.y;
-      print("xSpawn:"+xSpawn+", ySpawn:"+ySpawn);
       spawnShape(xSpawn,ySpawn);
     }
   }
@@ -180,8 +175,10 @@ for (let j = 0; j < newShape.vertNumber; j++) {
   newShape.alpha = 255;
   // shape[i].source.audioPlayer.stop(0);
 }
-newShape.update();
-player.update();
+// newShape.update();
+// player.update();
+print(player.x);
+print(player.y);
 }
 function keyPressed() {
   if (keyCode === 81) { //if you press Q turn switch debug display on/off

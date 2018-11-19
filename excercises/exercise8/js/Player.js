@@ -16,7 +16,7 @@ class Player {
     this.velX = 0;
     this.velY = 0;
     this.drag = 0.95; //multiplies velocities by drag every frame
-    this.velIncrement = .5; //the magnitude of the vector to add to the x,y componenets (velx,velly) on input
+    this.velIncrement = 40; //the magnitude of the vector to add to the x,y componenets (velx,velly) on input
     this.fov = PI + 0.0001; //field of view
     this.fovIncrement = 0.08;
     this.fovAngle1; //starting angle of fov
@@ -146,13 +146,16 @@ class Player {
       this.fovAngle2 = this.fovAngle2 - TWO_PI;
     }
     //set vars of ray representing start of fov
+    print(this.parentRay);
+    // print(this.parentRay[k+1]);
+
     this.parentRay[k].x = this.x; //origin
     this.parentRay[k].y = this.y;
       this.parentRay[k].calculateThisTargetBasedOnAngle(this.fovAngle1); //polar to cartesian determination of target
     this.parentRay[k].fovAngle1 = true;//tell it that it's the start of the fov
     this.parentRay[k].fovAngle2 = false;
     this.parentRay[k].update(); //check collision with all lines in the scene
-
+    print(this.parentRay);
     //set vars of ray representing end start of fov
     // print(abs(this.x));
     this.parentRay[k + 1].x = this.x; //origin
@@ -274,7 +277,7 @@ class Player {
       let ceilH3 = (baseH3 * ray3.collidedH);
       //is 0 when the player is at fadeHeightDist, multiplying the colors, creating pure black sillhouettes
       let colorMultiplier = map((ray1.collidedRad), 0, fadeHeightDist, 1.5, 0);
-      let opacityFade = map(ray1.collidedRad, fadeHeightDist, despawnDist*.925, 1, 0);
+      let opacityFade = map(ray1.collidedRad, fadeHeightDist, despawnDist*.95, 1, 0);
       opacityFade = constrain(opacityFade,0,255);
       //calcs horizontal width that should be given between each ray so that the rays and in the fov
       //are drawn to take up exactly the canvas width;
