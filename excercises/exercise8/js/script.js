@@ -5,14 +5,14 @@ procedurally generating noises in digital space
 
 Description -- what did I work on for this exercise
 I gave each shape a unique set of sounds both in terms of tonal quality, pitch, and volume.
-I used javascripts listener-panner paradigm to put the audio in a 3D space around the player.
+I used javascript's listener-panner paradigm to put the dynamically generated audio in a 3D space around the player.
 (Creating a sense of sonic direction and depth).
 
 I mapped the sounds to the hieght of the shapes so they vibrate according to
 the sounds they're emitting.
-I gave each shape a random amount of randomly positioned and strokeWeighted stripes to offer the shapes more of a sense of depth
-to break up the large patches of solid colours, to give shapes more distinguishing features
-and just to add more visual interest.
+I gave each shape a random amount of randomly positioned and strokeWeighted stripes to
+give the shapes more of a sense of depth, to break up the large patches of solid colours,
+to give shapes more distinguishing features and just to add more visual interest.
 
 I created a spawning/despawning system so that the player can walk infinitely in any direction
 and always discover new shapes while not needing a infinitely powerful computer.
@@ -59,39 +59,42 @@ let frameRate = 60;
 
 
 function setup() {
-  createCanvas(windowWidth / 1.1, windowHeight / 1.1);
+  createCanvas(windowWidth, windowHeight);
   fadeHeightDist = width * 2;
   despawnDist = fadeHeightDist * 3;
   //create border shape with huge radius souuronding the player with alpha set to 0
   //(ray casting always need to hit SOMETHING to not break and therefore the
   // player has to always be within a shape for sight to work properly)
-  shape[0] = new Shape(width / 2, height / 2, 0.0001, 3);
+  const shapeSpawnX = width/2;
+  const shapeSpawnY = height/2;
+  const shapeAngle = 0.0001;
+  const shapeVertNumber = 3;
+  const shapeR = random(255);
+  const shapeG = random(255);
+  const shapeB = random(255);
+  const shapeAlpha = 0;
+
+  shape[0] = new Shape(shapeSpawnX, shapeSpawnY, shapeAngle, shapeVertNumber, shapeR,shapeG,shapeB, shapeAlpha);
   for (let j = 0; j < shape[0].vertNumber; j++) {
     shape[0].vertAOff[j] = (TWO_PI / shape[0].vertNumber) * j + QUARTER_PI;
     shape[0].vertR[j] = fadeHeightDist * 10;
     shape[0].vertH[j] = 1;
     shape[0].vertHIncrement = random(1000);
-    shape[0].r = 0;
-    shape[0].g = 0;
-    shape[0].b = 0;
-    shape[0].alpha = 0;
     shape[0].source[j].audioPlayer.stop(0);
   }
   //spawn random shapes with various geometries and colours
   for (let i = 1; i < shapePopulation; i++) {
-    const spawnTheta = random(TWO_PI);
-    const spawnDist = random(despawnDist*.95);
-    const spawnX = (cos(spawnTheta)*spawnDist)+width/2;
-    const spawnY = (sin(spawnTheta)*spawnDist)+height/2;
-    shape[i] = new Shape(spawnX, spawnY, random(TWO_PI), round(random(3, 8)));
+    const spawnDirectionFromPlayer = random(TWO_PI);
+    const spawnDistanceFromPlayer = random(despawnDist*.95);
+    const shapeSpawnX = (cos(spawnDirectionFromPlayer)*spawnDistanceFromPlayer)+width/2;
+    const shapeSpawnY = (sin(spawnDirectionFromPlayer)*spawnDistanceFromPlayer)+height/2;
+    shape[i] = spawnRandomShapeAtLocation(shapeSpawnX,shapeSpawnY,i);
+
     for (let j = 0; j < shape[i].vertNumber; j++) {
       shape[i].vertAOff[j] = (TWO_PI / shape[i].vertNumber) * j;
       shape[i].vertR[j] = random(20, fadeHeightDist / 3);
       shape[i].vertH[j] = 1;
       shape[i].vertHIncrement[j] = 1;
-      shape[i].r = random(255);
-      shape[i].g = random(255);
-      shape[i].b = random(255);
       shape[i].alpha = 255;
       // shape[i].source.audioPlayer.stop(0);
     }
@@ -101,6 +104,7 @@ function setup() {
 }
 
 function draw() {
+
   background(bgR, bgG, bgB, 175);
 
 
@@ -145,7 +149,7 @@ function spawnHandler() { //despawn/spawn shapes (and update the shape array acc
 //procedurally generates shape at specefified location
 //and deals with updating the player.parentRays to reflect the new shape's number of vertexes
 function spawnShape(xSpawn, ySpawn, oldVertNumber) {
-  let newShape = new Shape(xSpawn, ySpawn, random(TWO_PI), round(random(3, 8)));
+  let newShape = spawnRandomShapeAtLocation(xSpawn, ySpawn);
   shape.push(newShape); //add newly spawned shape to shape array
   //randomize values
   for (let j = 0; j < newShape.vertNumber; j++) {
@@ -153,11 +157,6 @@ function spawnShape(xSpawn, ySpawn, oldVertNumber) {
     newShape.vertR[j] = random(20, fadeHeightDist / 3);
     newShape.vertH[j] = 1;
     newShape.vertHIncrement[j] = 1;
-    newShape.r = random(255);
-    newShape.g = random(255);
-    newShape.b = random(255);
-    newShape.alpha = 255;
-    // shape[i].source.audioPlayer.stop(0);
   }
   //calculate the difference in vertexes between the new and previous (now deleted) shape;
   const vertNumberDifference = newShape.vertNumber - oldVertNumber;
@@ -171,9 +170,17 @@ function spawnShape(xSpawn, ySpawn, oldVertNumber) {
       player.parentRay.splice(0,abs(vertNumberDifference));
   }
 
-
 }
 
+function spawnRandomShapeAtLocation(spawnX,spawnY){
+  const shapeAngle = random(TWO_PI);
+  const shapeVertNumber = round(random(3, 8));
+  const shapeR = random(255);
+  const shapeG = random(255);
+  const shapeB = random(255);
+  const shapeAlpha = 255;
+  return new Shape(spawnX, spawnY, shapeAngle, shapeVertNumber, shapeR,shapeG,shapeB, shapeAlpha);
+}
 function keyPressed() {
   if (keyCode === 81) { //if you press Q turn switch debug display on/off
     if (debugDisplay === true) {

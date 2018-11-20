@@ -6,7 +6,7 @@ the lines start and end points.
 
 */
 class Shape {
-  constructor(x, y, angle, vertNumber) {
+  constructor(x, y, angle, vertNumber,r,g,b,alpha) {
     this.x = x;
     this.y = y;
     this.angle = angle;
@@ -18,10 +18,10 @@ class Shape {
     this.vertY = [];
     this.lines = []; //array which stores lines
     this.vertHIncrement = [];
-    this.r;
-    this.b;
-    this.g;
-    this.alpha;
+    this.r = r;
+    this.b = b;
+    this.g = g;
+    this.alpha = alpha;
     this.source = [];
     this.stripeH = []; //heigh tof a given stripe, from 0-1, 0 being located at base of shape and 1 at top
     this.stripeW = []; //strokewidth of stripe
@@ -29,9 +29,9 @@ class Shape {
     //create one line for every vertex
     for (let i = 0; i < this.vertNumber; i++) {
       this.lines[i] = new Line();
+      this.source[i] = new Source(this.x,this.y);
       this.lines[i].stripeH = [];
       this.lines[i].stripeW = [];
-      this.source[i] = new Source(this.x,this.y);
     }
 
     const stripeNumber = floor(8);

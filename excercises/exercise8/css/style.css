@@ -6,11 +6,11 @@ so the canvas is flush with the top left corner.
 
 **********************************************/
 
-body {
+* {
   padding: 0;
-  margin: 10;
-  text-align:center;
+  margin: 0;
 }
 canvas{
   border-radius: 0px;
+  display:block;
 }
