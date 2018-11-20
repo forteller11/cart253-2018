@@ -9,7 +9,6 @@ class Source {
     this.t1NoiseIncrement = random(1)/sampleRate;
     this.t1NoiseIndex = random(100000);
     this.t1IncStore = 0;
-//0.000000001//
     this.t2Increment = random(1)/sampleRate;
     this.soundType = round(random(5.49)); //what type of function i used
     this.fadeType = round(random(4.49)); //what type of function i used
@@ -18,7 +17,7 @@ class Source {
     this.avgAmplitudeStore = 0; //stores avg amplitude of all samples every frame
     this.maxGain = random(.1);
     this.functions = [];
-    // this.bufferData = [];
+
     this.gainNode = audioCtx.createGain();
     this.buffer = audioCtx.createBuffer(1, sampleRate / frameRate, sampleRate);
 
@@ -60,9 +59,8 @@ class Source {
 
   }
   changeData() {
-
-this.avgAmplitudeStore = 0;
-let netAmplitude = 0;
+    this.avgAmplitudeStore = 0;
+    let netAmplitude = 0;
     const sampleNumber = sampleRate / frameRate;
     for (let i = 0; i < sampleNumber; i++) {
       //first value is detail of noise (how many layers of random numbers to interpolate between)

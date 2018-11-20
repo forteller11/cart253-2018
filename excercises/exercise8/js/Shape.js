@@ -13,9 +13,9 @@ class Shape {
     this.vertNumber = vertNumber;
     this.vertAOff = []; //angle offset of vertex
     this.vertR = []; //radius of vertex (dist from origin (this.x,y))
-    this.vertH = [];
-    this.vertX = [];
-    this.vertY = [];
+    this.vertH = []; //height of vertex (for speudo-3D visualizer)
+    this.vertX = []; //x pos of vertex
+    this.vertY = []; //y pos of vertex
     this.lines = []; //array which stores lines
     this.vertHIncrement = [];
     this.r = r;
@@ -26,10 +26,18 @@ class Shape {
     this.stripeH = []; //heigh tof a given stripe, from 0-1, 0 being located at base of shape and 1 at top
     this.stripeW = []; //strokewidth of stripe
 
+    for (let j = 0; j < this.vertNumber; j++) {
+      this.vertAOff[j] = (TWO_PI / this.vertNumber) * j;
+      this.vertR[j] = random(20, fadeHeightDist / 3);
+      this.vertH[j] = 1;
+      this.vertHIncrement[j] = 1;
+    }
+    this.updateVertCartesian();
+
     //create one line for every vertex
     for (let i = 0; i < this.vertNumber; i++) {
       this.lines[i] = new Line();
-      this.source[i] = new Source(this.x,this.y);
+      this.source[i] = new Source(this.vertX[i],this.vertY[i]);
       this.lines[i].stripeH = [];
       this.lines[i].stripeW = [];
     }
@@ -52,8 +60,6 @@ class Shape {
   }
   updateSource(){
     for (let i = 0; i < this.vertNumber; i++) {
-      this.source[i].x = this.vertX[i];
-      this.source[i].y = this.vertY[i];
       this.source[i].update();
     }
   }
