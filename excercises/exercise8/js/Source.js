@@ -8,7 +8,6 @@ class Source {
     this.t1MaxIncrement = random(this.t1MinIncrement,this.t1MinIncrement+1000)/sampleRate;
     this.t1NoiseIncrement = random(1)/sampleRate;
     this.t1NoiseIndex = random(100000);
-    this.t1IncStore = 0;
     this.t2Increment = random(1)/sampleRate;
     this.soundType = round(random(5.49)); //what type of function i used
     this.fadeType = round(random(4.49)); //what type of function i used
@@ -19,7 +18,7 @@ class Source {
     this.functions = [];
 
     this.gainNode = audioCtx.createGain();
-    this.buffer = audioCtx.createBuffer(1, sampleRate / frameRate, sampleRate);
+    this.buffer = audioCtx.createBuffer(1, round(sampleRate / frameRate), sampleRate);
 
     //make buffer data the array containing raw audio data of the first (and only) channel of buffer
     this.bufferData = this.buffer.getChannelData(0);
@@ -49,7 +48,9 @@ class Source {
     this.changeData();
   }
   updatePanner(){
-    this.panner.setPosition(this.x,this.y,zPlane);
+    this.panner.positionX.value = this.x;
+    this.panner.positionY.value = this.y;
+    this.panner.positionZ.value = zPlane;
   }
   changeGain() {
     let distToPlayer = sqrt(sq(this.x-player.x)+sq(this.y-player.y));
@@ -119,9 +120,8 @@ class Source {
 
       this.bufferData[i] = fadeValue;
 
-        //one this.bufferData gives sense of amplitude, t1IncStore gives sense of frequency changes
-      netAmplitude+= abs(this.bufferData[i])+(abs(t1Inc-this.t1IncStore)*10000);
-      this.t1IncStore = t1Inc;
+        //one this.bufferData gives sense of amplitude;
+      netAmplitude+= abs(this.bufferData[i]);
     }
     let newAvgAmp = netAmplitude/sampleNumber;
     let avgAmpDiff = newAvgAmp - this.avgAmplitudeStore;

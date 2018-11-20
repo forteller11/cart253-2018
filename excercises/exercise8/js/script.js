@@ -41,39 +41,40 @@ https://medium.com/creative-technology-concepts-code/recording-syncing-and-expor
 */
 let player;
 let shape = []; //array containg shapes
-const shapePopulation = 5; //population of shapes
+const shapePopulation = 7; //population of shapes
 let debugDisplay = false; //desplays rays in 2D perspective
 let twoDisplay = false; //displays player and shapes in 2D perspective
 let threeDisplay = true; //dvisualizes shape in pseudo-3D
 //backgrund colour
-let bgR = 255;
-let bgG = 190;
-let bgB = 135;
+const bgR = 255;
+const bgG = 190;
+const bgB = 135;
 let audioCtx = new window.AudioContext();
 const sampleRate = 44100; //the amount of values (-1,1) used per second to create sound.
-let zPlane = 0; //where all objects sit on the z-axis (up-down relative to the player in this game)
+const zPlane = 0; //where all objects sit on the z-axis (up-down relative to the player in this game)
 const masterGain = audioCtx.createGain(); //tunes the volume of all sources
 let fadeHeightDist; //the distance at which a shape will have shrunk down to a pure black sillouette
 let despawnDist; //the distance at which a shape will despawn
-let frameRate = 60;
+let spawnRadius; //the radius within a shape will spawn within
+const frameRate = 60;
 
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   fadeHeightDist = width * 2;
   despawnDist = fadeHeightDist * 3;
+  spawnRadius = despawnDist * 0.975;
   //create border shape with huge radius souuronding the player with alpha set to 0
   //(ray casting always need to hit SOMETHING to not break and therefore the
   // player has to always be within a shape for sight to work properly)
   const shapeSpawnX = width/2;
   const shapeSpawnY = height/2;
-  const shapeAngle = 0.0001;
-  const shapeVertNumber = 3;
-  const shapeR = random(255);
-  const shapeG = random(255);
-  const shapeB = random(255);
-  const shapeAlpha = 0;
-
+  const shapeAngle = 0.0001; //can't be 0 because then line slopes will be 0 or infnite which creates bugs
+  const shapeVertNumber = 3; //number of verts this shape will have
+  const shapeR = random(255); //red color
+  const shapeG = random(255); //green color
+  const shapeB = random(255); //blue color
+  const shapeAlpha = 0; //0 opacity (0 alpha value)
   shape[0] = new Shape(shapeSpawnX, shapeSpawnY, shapeAngle, shapeVertNumber, shapeR,shapeG,shapeB, shapeAlpha);
   for (let j = 0; j < shape[0].vertNumber; j++) {
     shape[0].vertAOff[j] = (TWO_PI / shape[0].vertNumber) * j + QUARTER_PI;
@@ -82,24 +83,28 @@ function setup() {
     shape[0].vertHIncrement = random(1000);
     shape[0].source[j].audioPlayer.stop(0);
   }
-  //spawn random shapes with various geometries and colours
+
+  //spawn random shapes with random geometries and colours within the spawn distance of the player.
   for (let i = 1; i < shapePopulation; i++) {
-    const spawnDirectionFromPlayer = random(TWO_PI);
-    const spawnDistanceFromPlayer = random(despawnDist*.95);
-    const shapeSpawnX = (cos(spawnDirectionFromPlayer)*spawnDistanceFromPlayer)+width/2;
-    const shapeSpawnY = (sin(spawnDirectionFromPlayer)*spawnDistanceFromPlayer)+height/2;
-    shape[i] = spawnRandomShapeAtLocation(shapeSpawnX,shapeSpawnY,i);
+    const spawnDirectionFromPlayer = random(TWO_PI); //angle the shape will be spawned (using player as origin)
+    const spawnDistanceFromPlayer = random(spawnRadius); //radius is to be randomized with its maxiumum dist within the spawn dist.
+    const shapeSpawnX = (cos(spawnDirectionFromPlayer)*spawnDistanceFromPlayer)+width/2; //set x spawn using angle&radius
+    const shapeSpawnY = (sin(spawnDirectionFromPlayer)*spawnDistanceFromPlayer)+height/2; //set y spawn using angle&radius
+    shape[i] = spawnRandomShapeAtLocation(shapeSpawnX,shapeSpawnY,i); //randomizes the shape's color, vertex number, angle.
 
   }
+  masterGain.connect(audioCtx.destination); //routes output from all sources through a master gain
+  masterGain.gain.value = .4; //sets the master gain's value
+
   player = new Player(width / 2, height / 2, 0); //spawn player in middle of screen with an angle of 0
-  masterGain.connect(audioCtx.destination); //takes output from all sources and applys a master gain
+
 }
 
-function draw() {
 
+function draw() {
   background(bgR, bgG, bgB, 175);
 
-
+  //update shapes
   for (let i = 0; i < shape.length; i++) {
     shape[i].update();
     shape[i].display()
@@ -112,58 +117,57 @@ function draw() {
   spawnHandler(); //despawn/spawn shapes (and update the shape array according) as they cross the despawnDist threshold
 }
 
-function spawnHandler() { //despawn/spawn shapes (and update the shape array according) as they cross the despawnDist threshold
-  //check to see if shape is beyond despawnDist
+/*
+handles spawning/removing shapes. as shapes pass the threshold of the despawnDist
+(an imaginary circle/radius around the player) they get spliced out of the shape array,
+then a new shape is created (its spawn location is the old shapes location radially reflected
+about the player's position with a random offset). Then the player's parentRay is updated
+(added or removed from) to reflect the change in net vertexes resultant from the new shape
+being added to the scene
+*/
+function spawnHandler() {
+  //check to see if a shape is beyond despawnDist
   for (let i = 0; i < shape.length; i++) {
     //dist from shape to player
     const distToPlayer = sqrt(sq(player.x - shape[i].x) + sq(player.y - shape[i].y));
-    // print(distToPlayer);
-    let yVec;
-    let xVec;
-    let angleOfPlayer;
+
     if (distToPlayer > despawnDist) { //if shape IS beyond despawnDist
-      yVec = shape[i].y - player.y; //find y component of vector pointing from player to shape
-      xVec = shape[i].x - player.x; //find x componenet of vector pointing from player to shape
-      angleToShapeFromPlayer = atan2(yVec, xVec); //find angle of vector pointing towards shape from player
+      const yVec = shape[i].y - player.y; //find y component of vector pointing from player to shape
+      const xVec = shape[i].x - player.x; //find x componenet of vector pointing from player to shape
+      const angleToShapeFromPlayer = atan2(yVec, xVec); //find angle of vector pointing towards shape from player
       const vertNumberStore = shape[i].vertNumber; //remember the number of vertexes the shape had
-      for (let i = 0; i < shape.vertNumber; i++){
+      for (let i = 0; i < shape.vertNumber; i++){ //try to make sure no audioapi related obj's or nodes are left after the splice
         shape.source[i].audioPlayer.loop = false;
         shape.source[i].audioPlayer.dissconnect();
         shape.source[i].panner.dissconnect();
         shape.source[i].gainNode.dissconnect();
+        shape.source[i].audioPlayer.stop(0);
+        shape.source[i] = null;
       }
-
       shape.splice(i, 1); //remove the shape which has overstepped the despawnDist threshold from the shape array
       const maxOffsetAmount = HALF_PI;
       const randomAngleOffset = random(-maxOffsetAmount, maxOffsetAmount);
-      const spawnRadius = despawnDist * 0.975;
       //set x,y spawn to be a reflection of the previous shape's position (reflecting around the player) plus a random angle offset
       const xSpawn = (cos(angleToShapeFromPlayer + randomAngleOffset + PI) * spawnRadius) + player.x;
       const ySpawn = (sin(angleToShapeFromPlayer + randomAngleOffset + PI) * spawnRadius) + player.y;
-      //actually spawn the shape using all these values
-      spawnShape(xSpawn, ySpawn, vertNumberStore); //spawns new shape with random attributes
+      //actually spawn a new random using the calculated x/yspawn location
+      let newShape = spawnRandomShapeAtLocation(xSpawn, ySpawn);
+      shape.push(newShape); //add newly spawned shape to shape array
+
+      //calculate the difference in vertexes between the new and previous (now deleted) shape;
+      const vertNumberDifference = newShape.vertNumber - vertNumberStore;
+            //change the amount of parentRays in the player obj if need be to account for the change in vertexes
+      if (vertNumberDifference > 0) { //if the new shape has more vertexes give player as many new rays as needed
+        for (let i = 0; i < vertNumberDifference; i++) {
+          let newRay = new Ray(100, 100, true);
+          player.parentRay.push(newRay);
+        }
+      }
+      if (vertNumberDifference < 0) { //if the new shape has less vertexes remove parentRays from the player object as needed.
+          player.parentRay.splice(0,abs(vertNumberDifference));
+      }
     }
   }
-}
-//procedurally generates shape at specefified location
-//and deals with updating the player.parentRays to reflect the new shape's number of vertexes
-function spawnShape(xSpawn, ySpawn, oldVertNumber) {
-  let newShape = spawnRandomShapeAtLocation(xSpawn, ySpawn);
-  shape.push(newShape); //add newly spawned shape to shape array
-
-  //calculate the difference in vertexes between the new and previous (now deleted) shape;
-  const vertNumberDifference = newShape.vertNumber - oldVertNumber;
-  if (vertNumberDifference > 0) { //if the new shape has more vertexes give player as many new rays as needed
-    for (let i = 0; i < vertNumberDifference; i++) {
-      let newRay = new Ray(100, 100, true);
-      player.parentRay.push(newRay);
-    }
-  }
-  if (vertNumberDifference < 0) { //if the new shape has less vertexes remove parentRays from the player object as needed.
-      player.parentRay.splice(0,abs(vertNumberDifference));
-
-  }
-
 }
 
 function spawnRandomShapeAtLocation(spawnX,spawnY){
@@ -175,6 +179,7 @@ function spawnRandomShapeAtLocation(spawnX,spawnY){
   const shapeAlpha = 255;
   return new Shape(spawnX, spawnY, shapeAngle, shapeVertNumber, shapeR,shapeG,shapeB, shapeAlpha);
 }
+
 function keyPressed() {
   if (keyCode === 81) { //if you press Q turn switch debug display on/off
     if (debugDisplay === true) {

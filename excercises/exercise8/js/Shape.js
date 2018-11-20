@@ -51,12 +51,11 @@ class Shape {
   }
 
   update() {
-    // ellipse(this.x,this.y,20);
     //based on angleOffset+radius of vertex determine is cartesian coords
     this.updateVertCartesian();
-    this.updateVertHeight();
+    this.updateVertHeight(); //changes height of vert depending on distance to player (fake perspective)
     this.updateLines(); //update the end/start points of each line
-    this.updateSource();
+    this.updateSource(); //update all associated sources
   }
   updateSource(){
     for (let i = 0; i < this.vertNumber; i++) {

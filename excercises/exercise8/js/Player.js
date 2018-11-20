@@ -16,7 +16,7 @@ class Player {
     this.velX = 0;
     this.velY = 0;
     this.drag = 0.95; //multiplies velocities by drag every frame
-    this.velIncrement = 65; //the magnitude of the vector to add to the x,y componenets (velx,velly) on input
+    this.velIncrement = 6.5; //the magnitude of the vector to add to the x,y componenets (velx,velly) on input
     this.fov = PI + 0.0001; //field of view
     this.fovIncrement = 0.08;
     this.fovAngle1; //starting angle of fov
