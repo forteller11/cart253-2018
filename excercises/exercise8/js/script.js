@@ -35,6 +35,7 @@ https://webdesign.tutsplus.com/tutorials/web-audio-and-3d-soundscapes-introducti
 https://github.com/tutsplus/Web-Audio-and-3D-Soundscapes-Implementation/blob/master/demo.audio.js
 https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Web_audio_spatialization_basics
 https://teropa.info/blog/2016/08/04/sine-waves.html
+https://stackoverflow.com/questions/1073606/is-there-a-one-line-function-that-generates-a-triangle-wave
 http://www.justgoscha.com/programming/2014/04/08/creating-dynamic-audiobuffers-with-webaudio.html
 https://medium.com/creative-technology-concepts-code/recording-syncing-and-exporting-web-audio-1e1a1e35ef08
 */

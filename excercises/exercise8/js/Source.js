@@ -11,8 +11,8 @@ class Source {
     this.t1IncStore = 0;
 //0.000000001//
     this.t2Increment = random(1)/sampleRate;
-    this.soundType = round(random(5)); //what type of function i used
-    this.fadeType = round(random(4)); //what type of function i used
+    this.soundType = round(random(5.49)); //what type of function i used
+    this.fadeType = round(random(4.49)); //what type of function i used
     noiseDetail(16, 0.65);
 
     this.avgAmplitudeStore = 0; //stores avg amplitude of all samples every frame
@@ -65,40 +65,39 @@ this.avgAmplitudeStore = 0;
 let netAmplitude = 0;
     const sampleNumber = sampleRate / frameRate;
     for (let i = 0; i < sampleNumber; i++) {
+      //first value is detail of noise (how many layers of random numbers to interpolate between)
+      // second value determines how equally the layers of random value effects the noise final value (1 being totally equally)
+      noiseDetail(6, 0.45);
       this.t1NoiseIndex += this.t1NoiseIncrement;
       const lerpAmount = noise(this.t1NoiseIndex);
-      noiseDetail(6, 0.75);
+      //set increment of t1 to be between its min and max values, lerped accoridng to perlin noise
       const t1Inc = lerp(this.t1MinIncrement,this.t1MaxIncrement,lerpAmount);
-
       this.t1 += t1Inc;
       this.t2 += this.t2Increment;
-      // this.soundType = 1;
-      let waveValue;
-      let fadeValue;
-      // this.soundType = 4;
+
+      let waveValue; //y value of wavefunction (high frequency)
+      let fadeValue; //y value of fadefunction to multiply the wavefunction by (low frequency)
+
       if (this.soundType === 0){ //static
         waveValue = random(-1,1);
       }
       if (this.soundType === 1){ //sinwave
         waveValue = sin(this.t1*.5);
       }
-      if (this.soundType === 2){ //triangle
+      if (this.soundType === 2){ //triangle wave (https://stackoverflow.com/questions/1073606/is-there-a-one-line-function-that-generates-a-triangle-wave)
         const period = 2.5;
         const hOffset = period/2;
         waveValue = ((abs(this.t1%period)/period)-.5);
       }
-      if (this.soundType === 3){
-        waveValue = sin(tan(this.t1));
+      if (this.soundType === 3){ //tan in sin wave (slow ossilations --> infinite ossilations --> slow....)
+        waveValue = sin(tan(this.t1/4));
       }
-      if (this.soundType === 4){ //change t
-      const f2c = Math.pow(sin(this.t1/1.5),5);
-      waveValue =f2c;
+      if (this.soundType === 4){ //(sinx)^5, soft curves like sinwave but slightly less regular
+      waveValue = Math.pow(sin(this.t1*1.5),5);
       }
-      if(this.soundType === 5){ //a function by Darren Turcotte
-        // waveValue=
-        waveValue =log(Math.pow(this.t1,-1))/sin(2*3.14159*this.t1);
-        waveValue = constrain(waveValue,-1,1);
-        // console.log(waveValue);
+      if(this.soundType === 5){ //perlin noise wave
+          noiseDetail(6, 0.45);
+        waveValue = noise(this.t1/1.6);
       }
 
       // this.fadeType = 1;
@@ -120,23 +119,16 @@ let netAmplitude = 0;
         fadeValue = waveValue;
       }
 
-      // if (this.soundType === 3){ //triangle
-      //   const period = 2.5;
-      //   const hOffset = period/2;
-      //   fadeValue = ((abs(this.t2%period)/period)-.5);
-      // }
-
       this.bufferData[i] = fadeValue;
 
-          //one this.bufferData gives sense of amplitude, t1IncStore gives sense of frequency changes
+        //one this.bufferData gives sense of amplitude, t1IncStore gives sense of frequency changes
       netAmplitude+= abs(this.bufferData[i])+(abs(t1Inc-this.t1IncStore)*10000);
       this.t1IncStore = t1Inc;
     }
     let newAvgAmp = netAmplitude/sampleNumber;
     let avgAmpDiff = newAvgAmp - this.avgAmplitudeStore;
-    // print(newAvgAmp);
-    this.avgAmplitudeStore += avgAmpDiff*1;
-    // print(this.avgAmplitudeStore);
+    this.avgAmplitudeStore += avgAmpDiff; //avg amplitude change per frame of sound, used to control shapes' vertex height
+
   }
 
 
