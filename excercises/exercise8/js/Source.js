@@ -107,31 +107,30 @@ class Source {
       }
 
       // this.fadeType = 1;
-      if (this.fadeType === 0){ //static
+      if (this.fadeType === 0){ //fade according to perlin noise
         noiseDetail(8, 0.65);
-        fadeValue = noise(this.t2)*waveValue;
+        fadeValue = noise(this.t2);
       }
-      if (this.fadeType === 1){ //sinwave
+      if (this.fadeType === 1){ //fade according to perlin noise
         noiseDetail(6, 0.35);
-        fadeValue = noise(this.t2*10)*waveValue;
+        fadeValue = noise(this.t2*10);
       }
-      if (this.fadeType === 2){ //sinwave
-        fadeValue = map(sin(this.t2*3),-1,1,0,1)*noise(this.t2/5)*waveValue;
+      if (this.fadeType === 2){ //sin/cos fade
+        fadeValue = map(sin(this.t2*3),-1,1,0,1)*noise(this.t2/5);
       }
-      if (this.fadeType === 3){ //sinwave
-        fadeValue = map(sin(this.t2*3),-1,1,0,1)*map(sin(this.t2*.33),-1,1,0,1)*waveValue;
+      if (this.fadeType === 3){ //sin/cos fade
+        fadeValue = map(sin(this.t2*3),-1,1,0,1)*map(sin(this.t2*.33),-1,1,0,1);
       }
-      if (this.fadeType === 4){ //sinwave
-        fadeValue = waveValue;
+      if (this.fadeType === 4){ //no fade
+        fadeValue = 1;
       }
 
-      this.bufferData[i] = fadeValue; //actually inserts to calcualted value into the audioBuffer
-
-      netAmplitude+= (this.bufferData[i]); //storing
+      this.bufferData[i] = fadeValue*waveValue; //actually inserts to calcualted value into the audioBuffer
+      netAmplitude+= this.bufferData[i]; //storing
     }
-    let newAvgAmp = netAmplitude/sampleNumber;
+    let newAvgAmp = netAmplitude/(sampleNumber*2);
     let avgAmpDiff = newAvgAmp - this.avgAmplitudeStore;
-    this.avgAmplitudeStore += avgAmpDiff; //avg amplitude change per frame of sound, used to control shapes' vertex height
+    this.avgAmplitudeStore = avgAmpDiff; //avg amplitude change per frame of sound, used to control shapes' vertex height
   }
 
 
