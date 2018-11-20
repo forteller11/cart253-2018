@@ -14,32 +14,31 @@ class Source {
     noiseDetail(16, 0.65);
 
     this.avgAmplitudeStore = 0; //stores avg amplitude of all samples every frame
-    this.maxGain = random(.1);
     this.functions = [];
 
     this.gainNode = audioCtx.createGain();
+    this.gainNode.gain.value = random(.05,.1); //sets random gain for source between 0.5-.1
+    //create audio buffer (giant array) with one output (mono) and sampleRate/frameRate
+    //amount of array _element, with playback rate of samplerate per second
     this.buffer = audioCtx.createBuffer(1, round(sampleRate / frameRate), sampleRate);
-
-    //make buffer data the array containing raw audio data of the first (and only) channel of buffer
+    //make bufferData the array containing raw audio data of the first (and only) channel of buffer
     this.bufferData = this.buffer.getChannelData(0);
 
+    //create audio source through which one can play audio from buffer, and spatialize it with panner node
     this.audioPlayer = audioCtx.createBufferSource();
     this.audioPlayer.buffer = this.buffer; //make the audioPlayer use the data from the buffer to play
     this.audioPlayer.loop = true;
+    //create panner (used for audio spatialization)
     this.panner = audioCtx.createPanner();
-    this.panner.panningModel = "HRTF";
-    this.panner.distanceModel = "linear";
-    this.panner.maxDistance = fadeHeightDist;
+    this.panner.panningModel = "HRTF"; //set it to sound like if you were a person lsitening to the audio
+    this.panner.distanceModel = "linear"; //linearly fades volume
+    this.panner.maxDistance = fadeHeightDist; //volume is 0 once panner's are more than fadeHeightDistance away (once they're sillouhettes)
 
-    this.updatePanner();
-    this.audioPlayer.connect(this.panner); //make the audioPlayer player output through a personal gain
-    this.panner.connect(this.gainNode);
-    this.gainNode.connect(masterGain); //make the personal gain controlled by a master gain (which connects to system sound in the main script)
-
-
-
-    this.gainNode.gain.value = this.maxGain;
-    this.audioPlayer.start(0); //start at element one in the array buffer
+    this.updatePanner(); //set panner x,y
+    this.audioPlayer.connect(this.panner); //make the audioPlayer player route through panner node to spatialize its audio
+    this.panner.connect(this.gainNode); //route panner through gain node to randomize its volume
+    this.gainNode.connect(masterGain); //route the personal gain through a master gain (which connects to system sound in the main script)
+    this.audioPlayer.start(0); //start playing at element one in the array buffer
 
   }
   update() {
@@ -59,6 +58,14 @@ class Source {
     this.gainNode.gain.value = gain;
 
   }
+  /*
+  this is the method which actually creates the sound for the source to be played and associated visually
+  with the shape. It does this by randomly selecting from a number of osscillating functions,
+  the xincrement is (f(x) paradigm) is determined by a randomly determined min-max range
+  which is lerped inbetween through perlin noise. Then this "waveValue" is multiplied
+  by a fade value which is selected from a bunch of random wave function osscillating
+  much slower not multiply times per second.
+  */
   changeData() {
     this.avgAmplitudeStore = 0;
     let netAmplitude = 0;
@@ -118,15 +125,13 @@ class Source {
         fadeValue = waveValue;
       }
 
-      this.bufferData[i] = fadeValue;
+      this.bufferData[i] = fadeValue; //actually inserts to calcualted value into the audioBuffer
 
-        //one this.bufferData gives sense of amplitude;
-      netAmplitude+= abs(this.bufferData[i]);
+      netAmplitude+= (this.bufferData[i]); //storing
     }
     let newAvgAmp = netAmplitude/sampleNumber;
     let avgAmpDiff = newAvgAmp - this.avgAmplitudeStore;
     this.avgAmplitudeStore += avgAmpDiff; //avg amplitude change per frame of sound, used to control shapes' vertex height
-
   }
 
 

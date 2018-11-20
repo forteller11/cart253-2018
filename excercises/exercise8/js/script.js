@@ -30,7 +30,7 @@ changing FOV: up and down arrow keys
 "E" turns 2D visualization on or off.
 "R" turns pseudo-3D visualization on or off.
 
-references used to get accustomed to audio api
+references used to understand audio api
 https://webdesign.tutsplus.com/tutorials/web-audio-and-3d-soundscapes-introduction--cms-22650
 https://github.com/tutsplus/Web-Audio-and-3D-Soundscapes-Implementation/blob/master/demo.audio.js
 https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Web_audio_spatialization_basics
