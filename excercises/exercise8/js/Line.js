@@ -23,7 +23,7 @@ class Line {
 
   display(){ //draw line from start/end points of line
     if (twoDisplay === true){
-      strokeWeight(2);
+      strokeWeight(8);
       stroke(this.r,this.g,this.b,this.alpha);
       line(this.x1-(player.x)+width/2,this.y1-(player.y)+height/2,this.x2-(player.x)+width/2,this.y2-(player.y)+height/2);
     }

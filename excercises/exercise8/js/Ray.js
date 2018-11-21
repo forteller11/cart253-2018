@@ -128,7 +128,7 @@ class Ray {
               if (debugDisplay === true){ //shows where intersections happen if debugMode is on
                 stroke(this.r, this.g, this.b,50);
                 fill(this.r, this.g, this.b);
-                ellipse(intersectionX,intersectionY,7);
+                ellipse(intersectionX-(player.x)+width/2,intersectionY-(player.y)+height/2,7);
               }
               //if intersection happend closer than current stored closest collision
               //change collisionX,Y to this be the points of this intersection
@@ -139,7 +139,7 @@ class Ray {
               if (debugDisplay === true){ //shows where intersections happen if debugMode is on
                 stroke(this.r, this.g, this.b,50);
                 fill(this.r, this.g, this.b);
-                ellipse(intersectionX,intersectionY,7);
+                ellipse(intersectionX-(player.x)+width/2,intersectionY-(player.y)+height/2,7);
               }
               //if intersection happend closer than current stored closest collision
               //change collisionX,Y to this be the points of this intersection
