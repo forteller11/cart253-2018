@@ -94,7 +94,7 @@ function setup() {
 
   }
   masterGain.connect(audioCtx.destination); //routes output from all sources through a master gain
-  masterGain.gain.value = .17; //sets the master gain's value
+  masterGain.gain.value = .25; //sets the master gain's value
 
   player = new Player(width / 2, height / 2, 0); //spawn player in middle of screen with an angle of 0
 
