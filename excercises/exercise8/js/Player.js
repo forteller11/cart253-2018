@@ -28,13 +28,13 @@ class Player {
     let k = 0;
     for (let i = 0; i < shape.length; i++) {
       for (let j = 0; j < shape[i].vertNumber; j++) {
-        this.parentRay[k] = new Ray(shape[i].vertX[j], shape[i].vertY[j], true);
+        this.parentRay[k] = new Ray(true);
         k++;
       }
     }
     //create two extra rays to be used to designate the beginning and end of the FOV.
-    this.parentRay[k] = new Ray(100, 100, true);
-    this.parentRay[k + 1] = new Ray(100, 100, true);
+    this.parentRay[k] = new Ray(true);
+    this.parentRay[k + 1] = new Ray(true);
 
   }
   update() {

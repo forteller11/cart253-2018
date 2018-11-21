@@ -15,15 +15,15 @@ contain two children which its responsible for updating. parentRays offset its c
 
 */
 class Ray {
-  constructor(targetX, targetY, createChildren) {
+  constructor(createChildren) {
     this.x;
     this.y;
     this.r = 0;
     this.g = 0;
     this.b = 0;
 
-    this.targetX = targetX; //where the line is pointed (xvec)
-    this.targetY = targetY; //where the line is pointed (yvec)
+    this.targetX; //where the line is pointed (xvec)
+    this.targetY; //where the line is pointed (yvec)
     this.collidedX; //closest point of x intersection
     this.collidedY; //closest point of y intersection
     this.collidedRad; //distance to closest point of intersection
@@ -43,8 +43,8 @@ class Ray {
     this.children = []; //the array where any children will be put
     //if set to create children create two rays who are set NOT to create children.
     if (createChildren === true) {
-      this.children[0] = new Ray(targetX, targetY, false);
-      this.children[1] = new Ray(targetX, targetY, false);
+      this.children[0] = new Ray(false);
+      this.children[1] = new Ray(false);
     }
 
   }

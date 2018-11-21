@@ -159,7 +159,7 @@ function spawnHandler() {
             //change the amount of parentRays in the player obj if need be to account for the change in vertexes
       if (vertNumberDifference > 0) { //if the new shape has more vertexes give player as many new rays as needed
         for (let i = 0; i < vertNumberDifference; i++) {
-          let newRay = new Ray(100, 100, true);
+          let newRay = new Ray(true);
           player.parentRay.push(newRay);
         }
       }
