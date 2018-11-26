@@ -41,7 +41,7 @@ https://medium.com/creative-technology-concepts-code/recording-syncing-and-expor
 */
 let player;
 let shape = []; //array containg shapes
-const shapePopulation = 7; //population of shapes
+const shapePopulation = 2; //population of shapes
 let debugDisplay = false; //desplays rays in 2D perspective
 let twoDisplay = false; //displays player and shapes in 2D perspective
 let threeDisplay = true; //dvisualizes shape in pseudo-3D
