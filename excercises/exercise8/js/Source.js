@@ -38,39 +38,13 @@ class Source {
     this.audioPlayer.connect(this.panner); //make the audioPlayer player route through panner node to spatialize its audio
     this.panner.connect(this.gainNode); //route panner through gain node to randomize its volume
     this.gainNode.connect(masterGain); //route the personal gain through a master gain (which connects to system sound in the main script)
-    const self = this;
-    this.audioPlayer.onended = function () {
-      console.log("ended");
-      self.buffer = audioCtx.createBuffer(1, round(sampleRate / frameRate), sampleRate);
-      //make bufferData the array containing raw audio data of the first (and only) channel of buffer
-      self.bufferData = this.buffer.getChannelData(0);
-
-      //create audio source through which one can play audio from buffer, and spatialize it with panner node
-      self.audioPlayer = audioCtx.createBufferSource();
-      self.audioPlayer.buffer = this.buffer; //make the audioPlayer use the data from the buffer to play
-      self.audioPlayer.loop = false;
-      //create panner (used for audio spatialization)
-      self.panner = audioCtx.createPanner();
-      self.panner.panningModel = "HRTF"; //set it to sound like if you were a person lsitening to the audio
-      self.panner.distanceModel = "linear"; //linearly fades volume
-      self.panner.maxDistance = fadeHeightDist; //volume is 0 once panner's are more than fadeHeightDistance away (once they're sillouhettes)
-      self.changeData();
-
-      self.updatePanner(); //set panner x,y
-      self.audioPlayer.connect(self.panner); //make the audioPlayer player route through panner node to spatialize its audio
-      //audio players gets thrown away after first loop,  therefore must recreate it every frame.
-      self.audioPlayer.loop = false;
-      self.audioPlayer.start(0);
-  }
     this.audioPlayer.start(0); //start playing at element one in the array buffer
-
-
 
   }
   update() {
     // this.updatePanner();
     // this.changeGain();
-    // this.changeData();
+    this.changeData();
   }
   updatePanner(){
     this.panner.positionX.value = this.x;
