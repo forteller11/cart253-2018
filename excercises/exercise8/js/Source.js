@@ -47,9 +47,7 @@ class Source {
     this.changeData();
   }
   updatePanner(){
-    this.panner.positionX.value = this.x;
-    this.panner.positionY.value = this.y;
-    this.panner.positionZ.value = zPlane;
+    this.panner.setPosition(this.x,this.y,zPlane);
   }
   changeGain() {
     let distToPlayer = sqrt(sq(this.x-player.x)+sq(this.y-player.y));
