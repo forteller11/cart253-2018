@@ -207,10 +207,14 @@ class Player {
 
     let wHist = 0;
     let index = 0;
+
+    let startOfFovRay;
+    let endOfFovRay;
     // cycle through array of rays until you find the ray designated as the start of the fov
     while (this.parentRay[index].fovAngle1 === false) {
       index++;
     }
+    startOfFovRay = this.parentRay[index];
     //cycle through array (wrapping if need be) and draw rays until you find the ray designated as the end of the fov
     while (this.parentRay[index].fovAngle2 === false) {
       //v0-ray3 will be a shorthand for rays
@@ -250,12 +254,6 @@ class Player {
       index++;
       if (index >= this.parentRay.length) { //once index is past the length of the array, wrap
         index = 0;
-      }
-
-      if (debugDisplay === true) { //draw all rays falling with the fov in red-orange
-        stroke(255, 100, 0, 150);
-        strokeWeight(3);
-        line(ray1.x - (player.x) + width / 2, ray1.y - player.y + (height / 2), ray1.targetX - player.x + (width / 2), ray1.targetY - player.y + (height / 2));
       }
 
       //base height of wall, ramps from min height to max height depending on ray's collision's dist from player.
@@ -329,6 +327,33 @@ class Player {
         }
       }
       wHist += w0 + w1 + w2;
+    }
+    endOfFovRay = this.parentRay[index];
+    if (debugDisplay){ //fills in the FOV with orange from a 2-dimensional perspective
+      fill(255, 100, 0, 100);
+      noStroke();
+      if (this.fov < PI){
+        beginShape();
+        const xAjust = width/2;
+        const yAjust = height/2;
+        vertex(startOfFovRay.targetX+xAjust-player.x,startOfFovRay.targetY+yAjust-player.y);
+        vertex(xAjust,yAjust);
+        vertex(endOfFovRay.targetX+xAjust-player.x,endOfFovRay.targetY+yAjust-player.y);
+        vertex((cos(this.angle)*1000)+xAjust,(sin(this.angle)*1000)+yAjust);
+        endShape();
+      } else {
+        beginShape();
+        const xAjust = width/2;
+        const yAjust = height/2;
+        const vertFillRadius = width;
+        vertex(xAjust,yAjust);
+        vertex(startOfFovRay.targetX+xAjust-player.x,startOfFovRay.targetY+yAjust-player.y);
+        vertex((cos(this.angle-HALF_PI)*vertFillRadius)+xAjust,(sin(this.angle-HALF_PI)*vertFillRadius)+yAjust);
+        vertex((cos(this.angle)*vertFillRadius)+xAjust,(sin(this.angle)*vertFillRadius)+yAjust);
+        vertex((cos(this.angle+HALF_PI)*vertFillRadius)+xAjust,(sin(this.angle+HALF_PI)*vertFillRadius)+yAjust);
+        vertex(endOfFovRay.targetX+xAjust-player.x,endOfFovRay.targetY+yAjust-player.y);
+        endShape();
+      }
     }
   }
 

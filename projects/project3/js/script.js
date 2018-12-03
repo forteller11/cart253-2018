@@ -123,15 +123,27 @@ function draw() {
     textOpacity -= opacityDecrement;
     // textColor += opacityDecrement;
   }
-  //informaitonal text display
+  //instructions which appear at beginning of game in top right corner and fade once the player begins to move
+  textAlign(RIGHT);
   fill(textColor,textColor,textColor,textOpacity);
   noStroke();
-  text("w/a/s/d can be used for movement",xText,yText);
+  text("w/a/s/d to move",xText,yText);
   fill(textColor,textColor,textColor,textOpacity+fillDifference);
-  text("left/right arrow keys can be used to look around", xText, yText+verticalSpacing);
+  text("left/right arrow keys to look around", xText, yText+verticalSpacing);
   fill(textColor,textColor,textColor,textOpacity+fillDifference*2);
-  text("up/down arrow keys can be used to change field of view", xText, yText+verticalSpacing*2);
+  text("up/down arrow keys to change field of view", xText, yText+verticalSpacing*2);
+  fill(textColor,textColor,textColor,textOpacity+fillDifference*3);
+  text("q/e/r to switch on/off visulization modes", xText, yText+verticalSpacing*3);
 
+  //text which informs the player if a non pseudo-3D display is turned on
+  fill(textColor,textColor,textColor,255);
+  textAlign(LEFT);
+  if (twoDisplay){
+    text("2D display", verticalSpacing, yText/2+verticalSpacing/2);
+  }
+  if (debugDisplay){
+    text("                  with raycasting", verticalSpacing, yText/2+verticalSpacing/2);
+  }
   //update shapes
   for (let i = 0; i < shape.length; i++) {
     shape[i].update();
@@ -209,11 +221,13 @@ function spawnRandomShapeAtLocation(spawnX,spawnY){
 }
 
 function keyPressed() {
-  if (keyCode === 81) { //if you press Q turn switch debug display on/off
+  if (keyCode === 81) { //if you press Q turn switch debug display on/off and switch twoDisplay on/off
     if (debugDisplay === true) {
       debugDisplay = false;
+      twoDisplay = false;
     } else {
       debugDisplay = true;
+      twoDisplay = true;
     }
   }
   if (keyCode === 69) { //if you press E turn switch debug display on/off
