@@ -3,29 +3,40 @@ Project 3
 Charly Yan Miller
 Shapes with sounds in a virtual landscape
 
-Design Overview:
+Overview of game:
 In this game a player can explore an infinite field of gemoetric shapes which produce and vibrate
 to various tones, drones, textures... Each shape features unique 2D geometries,
 patterns of lines, colour and sounds.
 
-These shapes  These shapes are visualized using ray tech I developed in project 2
-(press "q" to enter "debugMode").
-I was influenced by 2001 space oddsy, and games as installations with no real mechanics,
-but just spaces to explore
-
 Design Rational:
-I haven't played many games this semester, but the games I have played tended to less
-mechanically and narratively driven are more interested in exploring the potential experiences
-players can have within 3D spaces. In many ways these games really remind me of art installations.
+I haven't played many games this semester (besides Lol), but the games I have played tended to less
+mechanically and narratively driven and more interested in exploring the potential experiences
+players can have within 3D spaces. In many ways these games really remind me of installations.
 I wanted to see if I could make an interesting virtual space of my own, but I really wanted
-to focus on developing coding skills and therefore wanted to procedural generate rather than
-meticulously design the world. If the world consisted of self contained objects then
-I wouldn't have to worry about the.
-I was also really into NMS back in the day and in particular their procedural sound design,
-also enter the fugue, also the effectivness of the whine in v r 1.
+to focus on developing coding skills and therefore wanted to procedurally generate rather than
+meticulously design the world. If the world consisted of self contained objects rather than
+scenes which relied heavily on the relationship between objects then I thought this
+might be realistically achievable with my current knowledge of coding. I also knew
+that sound seemd incredibly important to a player's experience of a virtual space and
+therefore the sound of this space would have to be an emphasis in the project.
+I was also influenced by the scene in 2001 space odyssey where the tribe of hominids
+come across the monolith whose presence and power is conveyed through the music/sound which it radiates.
 
-Tech Overview:
-The shapes are visualized in what kind of looks like 3D using ray tech I developed in project 2.
+Tech Overview (for more detailed overviews you can go back to my exercise 7 and 8):
+Visualization:
+I this project I used ray tech developed in project2 for my pong-light game, basically
+I spawn a ray for every vertex (2D) in the scene, make its origin the player position and then make
+the ray point towards its associated vertex. If the ray collides with a line (lines make up shapes)
+then I stored the position of the collision and the hieght, colour and alpha of the line
+at that point of collision. I then find the ray marking the start of the FOV, i itterate through rays
+by their angle until I reach the ray marking the end of the FOV all the while filling in shapes
+using the rays' collision information as the input. The closer the collision occurs, the "taller"
+I draw the shapes on the screen, this creates the illusion of perspective.
+Sound:
+Every shape's vertex has its own childed source or speaker which has a proecudrally generated
+sound and which also effects the vertex's height and therefore makes it "vibrate".
+The procedurally generated sound is created because every source during initialization
+has a unique range of pitches, wavetypes, and fadetypes which are selected which give a unique sound.
 
 On the type of perspective being created:
 I key thing to note is that one of the main reasons that the perspective feels not quite realistic
@@ -39,31 +50,6 @@ I think because it creates a sense of intimacy with the closest shape in the pla
 other shapes are relegated to appearing as mere black lines on the horizon (fog might function similarily).
 (i think if you were to graph the relationship "f(distanceToShape) = size" of a realistic perspective matrix it would
 take the form f = a/x (a rational function never reaching zero) instead of the current linear relationship f = ax)
-
-
-  the type of perspective that is elluded to in this game
-is
-
-to various  a landscape of with a never ending
-for this project I generated 2D shapes and sound, then I had the shapes be manipulated by
-Description -- what did I work on for this exercise
-I gave each shape a unique set of sounds both in terms of tonal quality, pitch, and volume.
-I used javascript's listener-panner paradigm to put the dynamically generated audio in a 3D space around the player.
-(Creating a sense of sonic direction and depth).
-
-I mapped the sounds to the hieght of the shapes so they vibrate according to
-the sounds they're emitting.
-I gave each shape a random amount of randomly positioned and strokeWeighted stripes to
-give the shapes more of a sense of depth, to break up the large patches of solid colours,
-to give shapes more distinguishing features and just to add more visual interest.
-
-I created a spawning/despawning system so that the player can walk infinitely in any direction
-and always discover new shapes while not needing a infinitely powerful computer.
-
-Where I want this to go:
-I think I'm more or less done with the main tech I wanted to impement, the only thing
-I would realistically want to do now is try to create more varied sounds (and possibly shapes).
-
 
 Controls:
 movement: wasd
@@ -168,6 +154,7 @@ function draw() {
     textOpacity -= opacityDecrement;
     // textColor += opacityDecrement;
   }
+
   //instructions which appear at beginning of game in top right corner and fade once the player begins to move
   textAlign(RIGHT);
   fill(textColor,textColor,textColor,textOpacity);
@@ -189,6 +176,7 @@ function draw() {
   if (debugDisplay){
     text("                  with raycasting", verticalSpacing, yText/2+verticalSpacing/2);
   }
+
   //update shapes
   for (let i = 0; i < shape.length; i++) {
     shape[i].update();
