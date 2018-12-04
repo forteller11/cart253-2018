@@ -1,8 +1,51 @@
 /*
-Exercise 8
+Project 3
 Charly Yan Miller
-procedurally generating noises in digital space
+Shapes with sounds in a virtual landscape
 
+Design Overview:
+In this game a player can explore an infinite field of gemoetric shapes which produce and vibrate
+to various tones, drones, textures... Each shape features unique 2D geometries,
+patterns of lines, colour and sounds.
+
+These shapes  These shapes are visualized using ray tech I developed in project 2
+(press "q" to enter "debugMode").
+I was influenced by 2001 space oddsy, and games as installations with no real mechanics,
+but just spaces to explore
+
+Design Rational:
+I haven't played many games this semester, but the games I have played tended to less
+mechanically and narratively driven are more interested in exploring the potential experiences
+players can have within 3D spaces. In many ways these games really remind me of art installations.
+I wanted to see if I could make an interesting virtual space of my own, but I really wanted
+to focus on developing coding skills and therefore wanted to procedural generate rather than
+meticulously design the world. If the world consisted of self contained objects then
+I wouldn't have to worry about the.
+I was also really into NMS back in the day and in particular their procedural sound design,
+also enter the fugue, also the effectivness of the whine in v r 1.
+
+Tech Overview:
+The shapes are visualized in what kind of looks like 3D using ray tech I developed in project 2.
+
+On the type of perspective being created:
+I key thing to note is that one of the main reasons that the perspective feels not quite realistic
+in the game is that the perceived height of any given line at any given point of contact with a ray
+increases LINEARLY as the player approaches said line. This means that if the height of a shape
+can actually reach and go below zero if the player is far enough away from a shape.
+This is why shapes in the game spring out of existence from a faint sillouhette, because
+of the linear perspective their heights would naturally be lower than zero past a certain distance from the player.
+Personally I love this effect which is why I chose to model perspective this way,
+I think because it creates a sense of intimacy with the closest shape in the player's immediate sourrondings as all
+other shapes are relegated to appearing as mere black lines on the horizon (fog might function similarily).
+(i think if you were to graph the relationship "f(distanceToShape) = size" of a realistic perspective matrix it would
+take the form f = a/x (a rational function never reaching zero) instead of the current linear relationship f = ax)
+
+
+  the type of perspective that is elluded to in this game
+is
+
+to various  a landscape of with a never ending
+for this project I generated 2D shapes and sound, then I had the shapes be manipulated by
 Description -- what did I work on for this exercise
 I gave each shape a unique set of sounds both in terms of tonal quality, pitch, and volume.
 I used javascript's listener-panner paradigm to put the dynamically generated audio in a 3D space around the player.
@@ -55,7 +98,8 @@ const zPlane = 0; //where all objects sit on the z-axis (up-down relative to the
 const masterGain = audioCtx.createGain(); //tunes the volume of all sources
 let fadeHeightDist; //the distance at which a shape will have shrunk down to a pure black sillouette
 let despawnDist; //the distance at which a shape will despawn
-let spawnRadius; //the radius within a shape will spawn within
+let maxSpawnRadius; //the max radius within a shape will spawn within
+let minSpawnRadius; //the min radius within a shape will spawn within
 const frameRate = 60;
 
 let textColor = 0; //fill of text
@@ -71,7 +115,8 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   fadeHeightDist = width * 2;
   despawnDist = fadeHeightDist * 3;
-  spawnRadius = despawnDist * 0.975;
+  maxSpawnRadius = despawnDist * 0.975;
+  minSpawnRadius = despawnDist * .3;
   //create border shape with huge radius souuronding the player with alpha set to 0
   //(ray casting always need to hit SOMETHING to not break and therefore the
   // player has to always be within a shape for sight to work properly)
@@ -95,7 +140,7 @@ function setup() {
   //spawn random shapes with random geometries and colours within the spawn distance of the player.
   for (let i = 1; i < shapePopulation; i++) {
     const spawnDirectionFromPlayer = random(TWO_PI); //angle the shape will be spawned (using player as origin)
-    const spawnDistanceFromPlayer = random(spawnRadius); //radius is to be randomized with its maxiumum dist within the spawn dist.
+    const spawnDistanceFromPlayer = random(minSpawnRadius,maxSpawnRadius); //radius is to be randomized with its maxiumum dist within the spawn dist.
     const shapeSpawnX = (cos(spawnDirectionFromPlayer)*spawnDistanceFromPlayer)+width/2; //set x spawn using angle&radius
     const shapeSpawnY = (sin(spawnDirectionFromPlayer)*spawnDistanceFromPlayer)+height/2; //set y spawn using angle&radius
     shape[i] = spawnRandomShapeAtLocation(shapeSpawnX,shapeSpawnY,i); //randomizes the shape's color, vertex number, angle.
@@ -188,8 +233,8 @@ function spawnHandler() {
       const maxOffsetAmount = HALF_PI;
       const randomAngleOffset = random(-maxOffsetAmount, maxOffsetAmount);
       //set x,y spawn to be a reflection of the previous shape's position (reflecting around the player) plus a random angle offset
-      const xSpawn = (cos(angleToShapeFromPlayer + randomAngleOffset + PI) * spawnRadius) + player.x;
-      const ySpawn = (sin(angleToShapeFromPlayer + randomAngleOffset + PI) * spawnRadius) + player.y;
+      const xSpawn = (cos(angleToShapeFromPlayer + randomAngleOffset + PI) * maxSpawnRadius) + player.x;
+      const ySpawn = (sin(angleToShapeFromPlayer + randomAngleOffset + PI) * maxSpawnRadius) + player.y;
       //actually spawn a new random using the calculated x/yspawn location
       let newShape = spawnRandomShapeAtLocation(xSpawn, ySpawn);
       shape.push(newShape); //add newly spawned shape to shape array

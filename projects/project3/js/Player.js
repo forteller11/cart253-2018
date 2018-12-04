@@ -43,9 +43,7 @@ class Player {
     this.changePos();
     this.updateRays();
     this.selectionSort(); //old method
-    if (threeDisplay === true) {
-      this.visualizeRays();
-    }
+    this.visualizeRays();
     if (twoDisplay === true) {
       this.display();
     }
@@ -208,13 +206,13 @@ class Player {
     let wHist = 0;
     let index = 0;
 
-    let startOfFovRay;
-    let endOfFovRay;
+    let startOfFovRay; //to be used to visualize the FOV in debugMode
+    let endOfFovRay; //to be used to visualize the FOV in debugMode
     // cycle through array of rays until you find the ray designated as the start of the fov
     while (this.parentRay[index].fovAngle1 === false) {
       index++;
     }
-    startOfFovRay = this.parentRay[index];
+    startOfFovRay = this.parentRay[index]; //to be used to visualize the FOV in debugMode
     //cycle through array (wrapping if need be) and draw rays until you find the ray designated as the end of the fov
     while (this.parentRay[index].fovAngle2 === false) {
       //v0-ray3 will be a shorthand for rays
@@ -255,103 +253,102 @@ class Player {
       if (index >= this.parentRay.length) { //once index is past the length of the array, wrap
         index = 0;
       }
+      if (threeDisplay) {
+        //base height of wall, ramps from min height to max height depending on ray's collision's dist from player.
+        let baseH0 = map(ray0.collidedRad, 0, fadeHeightDist, maxHeight, 0);
+        baseH0 = constrain(baseH0, minHeight, height);
+        let baseH1 = map(ray1.collidedRad, 0, fadeHeightDist, maxHeight, 0);
+        baseH1 = constrain(baseH1, minHeight, height);
+        let baseH2 = map(ray2.collidedRad, 0, fadeHeightDist, maxHeight, 0);
+        baseH2 = constrain(baseH2, minHeight, height);
+        let baseH3 = map(ray3.collidedRad, 0, fadeHeightDist, maxHeight, 0);
+        baseH3 = constrain(baseH3, minHeight, height);
+        //ceiling height of wall is the base height * the dynamic height of the line on collision
+        let ceilH0 = (baseH0 * ray0.collidedH);
+        let ceilH1 = (baseH1 * ray1.collidedH);
+        let ceilH2 = (baseH2 * ray2.collidedH);
+        let ceilH3 = (baseH3 * ray3.collidedH);
+        //is 0 when the player is at fadeHeightDist, multiplying the colors, creating pure black sillhouettes
+        let colorMultiplier = map((ray1.collidedRad), 0, fadeHeightDist, 1.5, 0);
+        let opacityFade = map(ray1.collidedRad, fadeHeightDist, despawnDist * .95, 1, 0);
+        opacityFade = constrain(opacityFade, 0, 255);
+        //calcs horizontal width that should be given between each ray so that the rays and in the fov
+        //are drawn to take up exactly the canvas width;
+        let w0 = map(angleDiff0, 0, this.fov, 0, width);
+        let w1 = map(angleDiff1, 0, this.fov, 0, width) + w0;
+        let w2 = map(angleDiff2, 0, this.fov, 0, width) + w1;
+        //take on color of the line which the ray collided with, also fill it with black as the ray is furthur away from the player
+        fill(ray1.collidedR * colorMultiplier, ray1.collidedG * colorMultiplier, ray1.collidedB * colorMultiplier, ray1.collidedAlpha * opacityFade);
+        // let sW = map((ray1.collidedRad), 0, fadeHeightDist, maxStroke, minStroke);
+        // strokeWeight(sW);
+        // stroke(ray1.collidedR, ray1.collidedG, ray1.collidedB, 255);
 
-      //base height of wall, ramps from min height to max height depending on ray's collision's dist from player.
-      let baseH0 = map(ray0.collidedRad, 0, fadeHeightDist, maxHeight, 0);
-      baseH0 = constrain(baseH0, minHeight, height);
-      let baseH1 = map(ray1.collidedRad, 0, fadeHeightDist, maxHeight, 0);
-      baseH1 = constrain(baseH1, minHeight, height);
-      let baseH2 = map(ray2.collidedRad, 0, fadeHeightDist, maxHeight, 0);
-      baseH2 = constrain(baseH2, minHeight, height);
-      let baseH3 = map(ray3.collidedRad, 0, fadeHeightDist, maxHeight, 0);
-      baseH3 = constrain(baseH3, minHeight, height);
-      //ceiling height of wall is the base height * the dynamic height of the line on collision
-      let ceilH0 = (baseH0 * ray0.collidedH);
-      let ceilH1 = (baseH1 * ray1.collidedH);
-      let ceilH2 = (baseH2 * ray2.collidedH);
-      let ceilH3 = (baseH3 * ray3.collidedH);
-      //is 0 when the player is at fadeHeightDist, multiplying the colors, creating pure black sillhouettes
-      let colorMultiplier = map((ray1.collidedRad), 0, fadeHeightDist, 1.5, 0);
-      let opacityFade = map(ray1.collidedRad, fadeHeightDist, despawnDist * .95, 1, 0);
-      opacityFade = constrain(opacityFade, 0, 255);
-      //calcs horizontal width that should be given between each ray so that the rays and in the fov
-      //are drawn to take up exactly the canvas width;
-      let w0 = map(angleDiff0, 0, this.fov, 0, width);
-      let w1 = map(angleDiff1, 0, this.fov, 0, width) + w0;
-      let w2 = map(angleDiff2, 0, this.fov, 0, width) + w1;
-      //take on color of the line which the ray collided with, also fill it with black as the ray is furthur away from the player
-      fill(ray1.collidedR * colorMultiplier, ray1.collidedG * colorMultiplier, ray1.collidedB * colorMultiplier, ray1.collidedAlpha * opacityFade);
-      // let sW = map((ray1.collidedRad), 0, fadeHeightDist, maxStroke, minStroke);
-      // strokeWeight(sW);
-      // stroke(ray1.collidedR, ray1.collidedG, ray1.collidedB, 255);
+        //draw the shape from each vert using the differences in width
 
-      //draw the shape from each vert using the differences in width
+        noStroke();
+        beginShape();
+        vertex(wHist, horizon - ceilH0); //topleft
+        vertex(wHist + w0, horizon - ceilH1); //topmiddle
+        vertex(wHist + w1, horizon - ceilH2); //top right
+        vertex(wHist + w1, horizon + baseH1); //bot right
+        vertex(wHist + w0, horizon + baseH2); //bot middle
+        vertex(wHist, horizon + baseH0); //botleft
+        endShape();
 
-      noStroke();
-      beginShape();
-      vertex(wHist, horizon - ceilH0); //topleft
-      vertex(wHist + w0, horizon - ceilH1); //topmiddle
-      vertex(wHist + w1, horizon - ceilH2); //top right
-      vertex(wHist + w1, horizon + baseH1); //bot right
-      vertex(wHist + w0, horizon + baseH2); //bot middle
-      vertex(wHist, horizon + baseH0); //botleft
-      endShape();
+        // sW = map((ray3.collidedRad), 0, fadeHeightDist, maxStroke, minStroke);
+        // strokeWeight(sW);
+        // stroke(ray3.collidedR, ray3.collidedG, ray3.collidedB, 255);
+        noStroke();
+        //take on color of the line which the ray collided with, also fill it with black as the ray is furthur away from the player
+        colorMultiplier = map((ray3.collidedRad), 0, fadeHeightDist, 1.5, 0)
+        fill(ray2.collidedR * colorMultiplier, ray2.collidedG * colorMultiplier, ray2.collidedB * colorMultiplier, ray2.collidedAlpha * opacityFade);
+        beginShape();
+        vertex(wHist + w1, horizon - ceilH2); //top left
+        vertex(wHist + w2, horizon - ceilH3); //topright
+        vertex(wHist + w2, horizon + baseH3); //bot right
+        vertex(wHist + w1, horizon + baseH2); //bot left
+        endShape();
 
-      // sW = map((ray3.collidedRad), 0, fadeHeightDist, maxStroke, minStroke);
-      // strokeWeight(sW);
-      // stroke(ray3.collidedR, ray3.collidedG, ray3.collidedB, 255);
-      noStroke();
-      //take on color of the line which the ray collided with, also fill it with black as the ray is furthur away from the player
-      colorMultiplier = map((ray3.collidedRad), 0, fadeHeightDist, 1.5, 0)
-      fill(ray2.collidedR * colorMultiplier, ray2.collidedG * colorMultiplier, ray2.collidedB * colorMultiplier, ray2.collidedAlpha * opacityFade);
-      beginShape();
-      vertex(wHist + w1, horizon - ceilH2); //top left
-      vertex(wHist + w2, horizon - ceilH3); //topright
-      vertex(wHist + w2, horizon + baseH3); //bot right
-      vertex(wHist + w1, horizon + baseH2); //bot left
-      endShape();
-
-      if (ray3.collidedRad < fadeHeightDist) { //only draw lines if not 100% a silloette (optimisation)
-        //set stroke of line to be background color if close to shape and fade to black as shape's become sillouhettes
-        stroke(bgR * colorMultiplier, bgG * colorMultiplier, bgB * colorMultiplier, ray2.collidedAlpha * opacityFade);
-        //draw all the stripes of the shape using their height values (0-1.2) as lerp amounts to place them on the shape
-        for (let k = 0; k < ray2.collidedStripeH.length; k++) {
-          let strokeWidth = map(ray2.collidedRad, 0, fadeHeightDist, ray2.collidedStripeW[k], 0);
-          strokeWidth = constrain(strokeWidth, 0, ray2.collidedStripeW[k] * opacityFade);
-          strokeWeight(strokeWidth);
-          // const h0 = lerp(horizon + baseH0, horizon - ceilH0, ray2.collidedStripeH[k]);
-          // const h1 = lerp(horizon + baseH1, horizon - ceilH1, ray2.collidedStripeH[k]);
-          const h2 = lerp(horizon + baseH2, horizon - ceilH2, ray2.collidedStripeH[k]); //y1 height of line
-          const h3 = lerp(horizon + baseH3, horizon - ceilH3, ray2.collidedStripeH[k]); //y2 height of line
-          line(wHist + w1, h2, wHist + w2, h3);
+        //draw the lines on the shape
+        if (ray3.collidedRad < fadeHeightDist) { //only draw lines if not 100% a silloette (optimisation)
+          //set stroke of line to be background color if close to shape and fade to black as shape's become sillouhettes
+          stroke(bgR * colorMultiplier, bgG * colorMultiplier, bgB * colorMultiplier, ray2.collidedAlpha * opacityFade);
+          //draw all the stripes of the shape using their height values (0-1.2) as lerp amounts to place them on the shape
+          for (let k = 0; k < ray2.collidedStripeH.length; k++) {
+            let strokeWidth = map(ray2.collidedRad, 0, fadeHeightDist, ray2.collidedStripeW[k], 0);
+            strokeWidth = constrain(strokeWidth, 0, ray2.collidedStripeW[k] * opacityFade);
+            strokeWeight(strokeWidth);
+            const h2 = lerp(horizon + baseH2, horizon - ceilH2, ray2.collidedStripeH[k]); //y1 height of line
+            const h3 = lerp(horizon + baseH3, horizon - ceilH3, ray2.collidedStripeH[k]); //y2 height of line
+            line(wHist + w1, h2, wHist + w2, h3);
+          }
         }
+        wHist += w0 + w1 + w2;
+
       }
-      wHist += w0 + w1 + w2;
+      endOfFovRay = this.parentRay[index]; //to be used to visualize the FOV in debugMode
     }
-    endOfFovRay = this.parentRay[index];
-    if (debugDisplay){ //fills in the FOV with orange from a 2-dimensional perspective
+    if (debugDisplay) { //fills in the FOV with orange from a 2-dimensional perspective
       fill(255, 100, 0, 100);
       noStroke();
-      if (this.fov < PI){
+      const xAjust = width / 2;
+      const yAjust = height / 2;
+      const vertFillRadius = width;
+      if (this.fov < PI) {
         beginShape();
-        const xAjust = width/2;
-        const yAjust = height/2;
-        vertex(startOfFovRay.targetX+xAjust-player.x,startOfFovRay.targetY+yAjust-player.y);
-        vertex(xAjust,yAjust);
-        vertex(endOfFovRay.targetX+xAjust-player.x,endOfFovRay.targetY+yAjust-player.y);
-        vertex((cos(this.angle)*1000)+xAjust,(sin(this.angle)*1000)+yAjust);
+        vertex(startOfFovRay.targetX + xAjust - player.x, startOfFovRay.targetY + yAjust - player.y); //start of Fov
+        vertex(xAjust, yAjust); //player
+        vertex(endOfFovRay.targetX + xAjust - player.x, endOfFovRay.targetY + yAjust - player.y); //end of Fov
+        vertex((cos(this.angle) * vertFillRadius) + xAjust, (sin(this.angle) * vertFillRadius) + yAjust);
         endShape();
-      } else {
+      } else { //if the FOV > 180 degrees then you have to approach filling in its space differently
         beginShape();
-        const xAjust = width/2;
-        const yAjust = height/2;
-        const vertFillRadius = width;
-        vertex(xAjust,yAjust);
-        vertex(startOfFovRay.targetX+xAjust-player.x,startOfFovRay.targetY+yAjust-player.y);
-        vertex((cos(this.angle-HALF_PI)*vertFillRadius)+xAjust,(sin(this.angle-HALF_PI)*vertFillRadius)+yAjust);
-        vertex((cos(this.angle)*vertFillRadius)+xAjust,(sin(this.angle)*vertFillRadius)+yAjust);
-        vertex((cos(this.angle+HALF_PI)*vertFillRadius)+xAjust,(sin(this.angle+HALF_PI)*vertFillRadius)+yAjust);
-        vertex(endOfFovRay.targetX+xAjust-player.x,endOfFovRay.targetY+yAjust-player.y);
+        vertex(xAjust, yAjust); //player
+        vertex(startOfFovRay.targetX + xAjust - player.x, startOfFovRay.targetY + yAjust - player.y); //start of fov
+        vertex((cos(this.angle - HALF_PI) * vertFillRadius) + xAjust, (sin(this.angle - HALF_PI) * vertFillRadius) + yAjust);
+        vertex((cos(this.angle) * vertFillRadius) + xAjust, (sin(this.angle) * vertFillRadius) + yAjust); //opposite of player direction
+        vertex((cos(this.angle + HALF_PI) * vertFillRadius) + xAjust, (sin(this.angle + HALF_PI) * vertFillRadius) + yAjust);
+        vertex(endOfFovRay.targetX + xAjust - player.x, endOfFovRay.targetY + yAjust - player.y); //end of fov
         endShape();
       }
     }
