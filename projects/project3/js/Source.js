@@ -1,20 +1,25 @@
+/*
+is tasked with generating the sound of the game. Each source has a unique sonic textures,
+range of pitches, and pattern of fading in and out of volume.
+*/
+
 class Source {
   constructor(x,y) {
     this.x = x;
     this.y = y;
-    this.t1 = random(100000);
-    this.t2 = random(100000);
-    this.t1MinIncrement = random(175,600)/sampleRate;
-    this.t1MaxIncrement = random(this.t1MinIncrement,this.t1MinIncrement+1500)/sampleRate;
-    this.t1NoiseIncrement = random(1)/sampleRate;
-    this.t1NoiseIndex = random(100000);
-    this.t2Increment = random(1)/sampleRate;
-    this.soundType = round(random(5.49)); //what type of function i used
-    this.fadeType = round(random(4.49)); //what type of function i used
+
+    this.t1 = random(100000); //the starting x value for the wave functions
+    this.t2 = random(100000); //the starting x value for the fade functions
+    this.t1MinIncrement = random(175,600)/sampleRate; //the minium increment to apply to this.t1 (the wavefunction)
+    this.t1MaxIncrement = random(this.t1MinIncrement,this.t1MinIncrement+1500)/sampleRate; //max increment to increase this.t1 (the wave function) by
+    this.t1NoiseIncrement = random(1)/sampleRate; //this is the perlin noise increment to lerp between the minium and maxium t1Increment
+    this.t1NoiseIndex = random(100000); //this sets the starting value to be put throughg perlin noise to  lerp between min/max t1Increment
+    this.t2Increment = random(1)/sampleRate; //to increase the f(x) of the wavetype (being this.t2)
+    this.soundType = round(random(5.49)); //randomly selects between 6 wavetype functions
+    this.fadeType = round(random(4.49)); //randomly selects between 5 fadetype functions
     noiseDetail(16, 0.65);
 
     this.avgAmplitudeStore = 0; //stores avg amplitude of all samples every frame
-    this.functions = [];
 
     this.gainNode = audioCtx.createGain();
     this.gainNode.gain.value = random(.05,.1); //sets random gain for source between 0.5-.1
@@ -39,51 +44,41 @@ class Source {
     this.panner.connect(this.gainNode); //route panner through gain node to randomize its volume
     this.gainNode.connect(masterGain); //route the personal gain through a master gain (which connects to system sound in the main script)
     this.audioPlayer.start(0); //start playing at element one in the array buffer
-    // const self = this;
-    //     this.audioPlayer.onended = function () {
-    //       console.log("i ended");
-    //     }
+
   }
   update() {
-    // this.updatePanner();
-    // this.changeGain();
     this.changeData();
   }
   updatePanner(){
     this.panner.setPosition(this.x,this.y,zPlane);
   }
-  changeGain() {
-    let distToPlayer = sqrt(sq(this.x-player.x)+sq(this.y-player.y));
-    let gain = map(distToPlayer,0,height,this.maxGain,0);
-    gain = constrain(gain,0,this.maxGain);
-    this.gainNode.gain.value = gain;
 
-  }
   /*
   this is the method which actually creates the sound for the source to be played and associated visually
   with the shape. It does this by randomly selecting from a number of osscillating functions,
   the xincrement is (f(x) paradigm) is determined by a randomly determined min-max range
   which is lerped inbetween through perlin noise. Then this "waveValue" is multiplied
-  by a fade value which is selected from a bunch of random wave function osscillating
-  much slower not multiply times per second.
+  by a fade value (basically controling the macro volume) which is selected from a bunch
+  of random wave function osscillating much slower (not > 60  times per second).
   */
   changeData() {
-    this.avgAmplitudeStore = 0;
+    this.avgAmplitudeStore = 0; //this attempts to represent the avg volume of the sound per frame by averaging all values together
     let netAmplitude = 0;
+    //assuming the frame rate is 60, generate enough samples to playback at the sampleRate for one frame.
     const sampleNumber = sampleRate / frameRate;
     for (let i = 0; i < sampleNumber; i++) {
       //first value is detail of noise (how many layers of random numbers to interpolate between)
       // second value determines how equally the layers of random value effects the noise final value (1 being totally equally)
       noiseDetail(6, 0.45);
-      this.t1NoiseIndex += this.t1NoiseIncrement;
-      const lerpAmount = noise(this.t1NoiseIndex);
-      //set increment of t1 to be between its min and max values, lerped accoridng to perlin noise
+      this.t1NoiseIndex += this.t1NoiseIncrement; //increment through perlinnoise space
+      const lerpAmount = noise(this.t1NoiseIndex); //using that value determine a lerp
+      //use that lerp to interpolate between t1's increments min and max values.
       const t1Inc = lerp(this.t1MinIncrement,this.t1MaxIncrement,lerpAmount);
-      this.t1 += t1Inc;
-      this.t2 += this.t2Increment;
+      this.t1 += t1Inc; //actually increment t1 (used for wavefunctions) by that calculated increment
+      this.t2 += this.t2Increment; //increment t2 (used for fadefunctions) by a set increment
 
-      let waveValue; //y value of wavefunction (high frequency)
-      let fadeValue; //y value of fadefunction to multiply the wavefunction by (low frequency)
+      let waveValue; //y value of wavefunction (high frequency, determines tonal quality/texture)
+      let fadeValue; //y value of fadefunction to multiply the wavefunction by (low frequency, determines ossillation of volume of sound over time)
 
       if (this.soundType === 0){ //static
         waveValue = random(-1,1);
@@ -126,12 +121,11 @@ class Source {
         fadeValue = 1;
       }
 
-      this.bufferData[i] = fadeValue*waveValue; //actually inserts to calcualted value into the audioBuffer
-      netAmplitude+= this.bufferData[i]; //storing
+      this.bufferData[i] = fadeValue*waveValue; //actually inserts the calculated value into the audioBuffer
+      netAmplitude+= this.bufferData[i]; //storing values for visualizations
     }
-    let newAvgAmp = netAmplitude/(sampleNumber*2);
-    let avgAmpDiff = newAvgAmp - this.avgAmplitudeStore;
-    this.avgAmplitudeStore = avgAmpDiff; //avg amplitude change per frame of sound, used to control shapes' vertex height
+      this.avgAmplitudeStore = netAmplitude/(sampleNumber); //average amplitude change per frame of sound, used to control shapes' vertex height
+
   }
 
 

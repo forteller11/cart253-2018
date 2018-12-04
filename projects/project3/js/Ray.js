@@ -3,7 +3,7 @@ a Ray has an origin (this.x,this.y) and a target(x,y) which represents the posit
 a unique vertex of a Shape class. It's main job is checking to see if it intersects
 with a line within a shape. It does this by itterating through every line in the scene,
 coverting the start/endpoints of itself and the line into slope form, and then using
- algebra to find out where the two functions intersect, it records the shortest point
+basic algebra to find out where the two functions intersect, it records the shortest point
 of intersection (from its origin) in the collidedX,collidedY variables, which are later
 used by the light Class to actually draw the light. Rays also calculate and store the
 angle of their line (origin --> target).

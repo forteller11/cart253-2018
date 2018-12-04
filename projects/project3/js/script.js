@@ -17,17 +17,17 @@ to focus on developing coding skills and therefore wanted to procedurally genera
 meticulously design the world. If the world consisted of self contained objects rather than
 scenes which relied heavily on the relationship between objects then I thought this
 might be realistically achievable with my current knowledge of coding. I also knew
-that sound seemd incredibly important to a player's experience of a virtual space and
+that sound was incredibly important to a player's experience of a virtual space and
 therefore the sound of this space would have to be an emphasis in the project.
 I was also influenced by the scene in 2001 space odyssey where the tribe of hominids
 come across the monolith whose presence and power is conveyed through the music/sound which it radiates.
 
 Tech Overview (for more detailed overviews you can go back to my exercise 7 and 8):
 Visualization:
-I this project I used ray tech developed in project2 for my pong-light game, basically
-I spawn a ray for every vertex (2D) in the scene, make its origin the player position and then make
-the ray point towards its associated vertex. If the ray collides with a line (lines make up shapes)
-then I stored the position of the collision and the hieght, colour and alpha of the line
+I this project I used ray tech developed in project 2 for my pong-light game, basically
+I spawn a ray for every vertex (2D) in the scene, make its origin the player's position and then make
+the ray point towards its associated vertex. When the ray collides with a line (lines make up shapes)
+then I stored the position of the collision and the height, colour and alpha of the line
 at that point of collision. I then find the ray marking the start of the FOV, i itterate through rays
 by their angle until I reach the ray marking the end of the FOV all the while filling in shapes
 using the rays' collision information as the input. The closer the collision occurs, the "taller"
@@ -39,17 +39,18 @@ The procedurally generated sound is created because every source during initiali
 has a unique range of pitches, wavetypes, and fadetypes which are selected which give a unique sound.
 
 On the type of perspective being created:
-I key thing to note is that one of the main reasons that the perspective feels not quite realistic
+I key thing to note is that one of the main reasons that the perspective doesn't feel quite realistic
 in the game is that the perceived height of any given line at any given point of contact with a ray
-increases LINEARLY as the player approaches said line. This means that if the height of a shape
+increases LINEARLY as the player approaches said line. This means that the height of a shape
 can actually reach and go below zero if the player is far enough away from a shape.
 This is why shapes in the game spring out of existence from a faint sillouhette, because
 of the linear perspective their heights would naturally be lower than zero past a certain distance from the player.
 Personally I love this effect which is why I chose to model perspective this way,
-I think because it creates a sense of intimacy with the closest shape in the player's immediate sourrondings as all
+it creates a sense of intimacy with the closest shape in the player's immediate sourrondings as all
 other shapes are relegated to appearing as mere black lines on the horizon (fog might function similarily).
-(i think if you were to graph the relationship "f(distanceToShape) = size" of a realistic perspective matrix it would
-take the form f = a/x (a rational function never reaching zero) instead of the current linear relationship f = ax)
+(i think if you were to graph the relationship "f(distanceToShape) = height" of a realistic perspective matrix it would
+take the form f = a/x (a rational function approaching but never reaching zero)
+instead of the current linear relationship f = ax which intersects and goes past y=0)
 
 Controls:
 movement: wasd

@@ -1,6 +1,10 @@
+/*
+The player class deals with the movement of the player, the target selection and general
+handling of it's childed ray objects. And using the data from the ray objects to visualize
+the scene in 3D.
+*/
 class Player {
   constructor(x, y, angle) {
-
     this.upKey = 87;
     this.downKey = 83;
     this.leftKey = 65;
@@ -12,10 +16,9 @@ class Player {
     this.updateListener();
     this.angularIncrement = (this.fov / 30) + (PI / 60);
 
-    this.vel = 0;
-    this.velX = 0;
-    this.velY = 0;
-    this.drag = 0.95; //multiplies velocities by drag every frame
+    this.velX = 0; //x compnent of velocity vector
+    this.velY = 0; //y compnent of velocity vector
+    this.drag = 0.95; //multiplies velocities by drag every frame to gradually decrease velocities
     this.velIncrement = 0.65; //the magnitude of the vector to add to the x,y componenets (velx,velly) on input
     this.fov = PI + 0.0001; //field of view
     this.fovIncrement = 0.08;
