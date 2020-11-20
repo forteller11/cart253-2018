@@ -1,7 +1,7 @@
 ###### Project 3
 ###### Charly Yan Miller
 
-## Overview of game:
+#### Overview of game:
 In this game a player can explore an infinite field of gemoetric shapes which produce and vibrate
 to various tones, drones, textures... Each shape features unique 2D geometries,
 patterns of lines, colour and sounds.
@@ -20,8 +20,8 @@ I was also influenced by the scene in 2001 space odyssey where the tribe of homi
 come across the monolith whose presence and power is conveyed through the music/sound which it radiates.
 Tech Overview (for more detailed overviews you can go back to my exercise 7 and 8):
 
-## Visualization
-I this project I used ray tech developed in project 2 for my pong-light game, basically
+#### Visualization
+In this project I used ray tech developed in project 2 for my pong-light game, basically
 I spawn a ray for every vertex (2D) in the scene, make its origin the player's position and then make
 the ray point towards its associated vertex. When the ray collides with a line (lines make up shapes)
 then I stored the position of the collision and the height, colour and alpha of the line
@@ -29,7 +29,8 @@ at that point of collision. I then find the ray marking the start of the FOV, i 
 by their angle until I reach the ray marking the end of the FOV all the while filling in shapes
 using the rays' collision information as the input. The closer the collision occurs, the "taller"
 I draw the shapes on the screen, this creates the illusion of perspective.
-Sound:
+
+#### Sound
 Every shape's vertex has its own childed source or speaker which has a proecudrally generated
 sound and which also effects the vertex's height and therefore makes it "vibrate".
 The procedurally generated sound is created because every source during initialization
