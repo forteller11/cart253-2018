@@ -35,8 +35,9 @@ Every shape's vertex has its own childed source or speaker which has a proecudra
 sound and which also effects the vertex's height and therefore makes it "vibrate".
 The procedurally generated sound is created because every source during initialization
 has a unique range of pitches, wavetypes, and fadetypes which are selected which give a unique sound.
-On the type of perspective being created:
-I key thing to note is that one of the main reasons that the perspective doesn't feel quite realistic
+
+#### On the representation of perspective
+A key thing to note is that one of the main reasons that the perspective doesn't feel quite realistic
 in the game is that the perceived height of any given line at any given point of contact with a ray
 increases LINEARLY as the player approaches said line. This means that the height of a shape
 can actually reach and go below zero if the player is far enough away from a shape.
