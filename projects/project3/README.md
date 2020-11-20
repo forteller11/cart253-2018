@@ -1,7 +1,7 @@
-Project 3
-Charly Yan Miller
+###### Project 3
+###### Charly Yan Miller
 
-Overview of game:
+## Overview of game:
 In this game a player can explore an infinite field of gemoetric shapes which produce and vibrate
 to various tones, drones, textures... Each shape features unique 2D geometries,
 patterns of lines, colour and sounds.
@@ -20,7 +20,7 @@ I was also influenced by the scene in 2001 space odyssey where the tribe of homi
 come across the monolith whose presence and power is conveyed through the music/sound which it radiates.
 Tech Overview (for more detailed overviews you can go back to my exercise 7 and 8):
 
-Visualization:
+## Visualization
 I this project I used ray tech developed in project 2 for my pong-light game, basically
 I spawn a ray for every vertex (2D) in the scene, make its origin the player's position and then make
 the ray point towards its associated vertex. When the ray collides with a line (lines make up shapes)
